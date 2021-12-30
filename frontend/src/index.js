@@ -1,13 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
+import { Provider } from 'react-redux';
 import App from './App';
+import GuardedRoute from './guardedroute/GuardedRoute';
+import store from './store/store';
+import Login from './features/login/Login'
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/Login" element={<Login />}/>
+        <Route 
+          path="/"
+          element={
+          <GuardedRoute>
+            <App />
+          </GuardedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  </Provider>
+  ,
   document.getElementById('root')
 );
 
