@@ -16,7 +16,6 @@ module.exports.register = async (req, resp) => {
         const token = createToken(data._id);
         resp.cookie('JWT', token, {httpOnly: true, maxAge: maxAge * 1000})
         resp.status(201).json({user: data._id})
-        resp.send('Created User');
     }
     catch(err) {
         handleErr(err);
