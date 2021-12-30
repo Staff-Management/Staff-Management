@@ -32,7 +32,6 @@ module.exports.login = async (req, resp) => {
         //changes the JWT token to expire after 1 day.
         resp.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
         resp.status(200).json({user: data._id});
-        resp.send('Login In')
     }catch (err) {
         console.log(err);
         resp.status(400);
