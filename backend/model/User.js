@@ -7,9 +7,20 @@ const userSchema = new Schema({
   email: {
     type: String,
     unique: true,
-    validate: [isEmail, "Please enter a valid email"]
+    lowercase: true,
+    required: [true, 'Please enter an email'],
+    validate: [isEmail, 'Please enter a valid email']
   },
-  password: String,
+  username: {
+    type: String,
+    unique: true,
+    required: [true, 'Please enter a username'],
+  },
+  password: {
+    type: String,
+    required: [true, 'Please enter a password'],
+    minlength: [8, 'Minimum password length is 6 character']
+  },
   enum: {
     type: String,
     default: 'user'
