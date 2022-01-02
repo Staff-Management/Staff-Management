@@ -88,20 +88,36 @@ function Login() {
   );
 }
 
-function handleLogin(event, dispatch, navigate){
+async function handleLogin(event, dispatch, navigate){
   // Should fetech user account here
   event.preventDefault();
   const username = event.target.username.value;
   const password = event.target.password.value;
-  if (username === 'admin' && password === 'admin')
-  {
-    dispatch(setLogin());
-    navigate('/');
-  }
-  else 
-  {
-    alert("Wrong username or password");
-  }
+  // if (username === 'admin' && password === 'admin')
+  // {
+  //   dispatch(setLogin());
+  //   navigate('/');
+  // }
+  // else 
+  // {
+  //   alert("Wrong username or password");
+  // }
+
+  try {
+    const res = await fetch('http://localhost:4000/login', {
+     method: 'POST',
+     body: JSON.stringify({ password, username}),
+     headers: {'Content-Type': 'application/json'}
+    })
+
+    const data = await res.json();
+    if (data.user){
+      dispatch(setLogin());
+      navigate('/');
+    }
+}catch(err){
+    console.log(err)
+}
 }
 
 export default Login;
