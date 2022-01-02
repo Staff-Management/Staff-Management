@@ -24,6 +24,14 @@ const userSchema = new Schema({
   enum: {
     type: String,
     default: 'user'
+  },
+  registrationToken: {
+    type: String,
+    createAt: {
+      type: Date, 
+      expires: 10, 
+      default: Date.now
+    }
   }
 });
 
