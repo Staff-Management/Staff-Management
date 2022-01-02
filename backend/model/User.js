@@ -42,8 +42,8 @@ userSchema.pre("save", async function (next) {
 });
 
 //Checks to see if password matches.
-userSchema.statics.login = async function (email, password) {
-  const user = await User.findOne({ email });
+userSchema.statics.login = async function (account, password) {
+  const user = await User.findOne().or([ { email: account }, { username: account } ]);
   let isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     throw new Error("email or password is wrong!");

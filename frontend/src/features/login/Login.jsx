@@ -43,9 +43,9 @@ function Login() {
               margin="normal"
               required
               fullWidth
-              id="username"
-              label="Username"
-              name="username"
+              id="account"
+              label="Username or Email"
+              name="account"
               autoFocus
             />
             <TextField
@@ -91,22 +91,13 @@ function Login() {
 async function handleLogin(event, dispatch, navigate){
   // Should fetech user account here
   event.preventDefault();
-  const username = event.target.username.value;
+  const account = event.target.account.value;
   const password = event.target.password.value;
-  // if (username === 'admin' && password === 'admin')
-  // {
-  //   dispatch(setLogin());
-  //   navigate('/');
-  // }
-  // else 
-  // {
-  //   alert("Wrong username or password");
-  // }
 
   try {
     const res = await fetch('http://localhost:4000/login', {
      method: 'POST',
-     body: JSON.stringify({ password, username}),
+     body: JSON.stringify({ account, password }),
      headers: {'Content-Type': 'application/json'}
     })
 

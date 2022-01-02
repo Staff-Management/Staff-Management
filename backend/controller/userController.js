@@ -50,9 +50,9 @@ module.exports.register = async (req, resp) => {
 }
 
 module.exports.login = async (req, resp) => {
-    const { username, password } = req.body;
+    const { account, password } = req.body;
     try {
-        const data = await user.login(username, password);
+        const data = await user.login(account, password);
         const token = createToken(data._id);
         //changes the JWT token to expire after 1 day.
         resp.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
