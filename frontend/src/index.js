@@ -8,6 +8,8 @@ import {
 import { Provider } from 'react-redux';
 import App from './App';
 import GuardedRoute from './guardedroute/GuardedRoute';
+import Onboarding from './features/onboarding/Onboarding';
+import SignUp from './features/signup/SignUp';
 import store from './store/store';
 import Login from './features/login/Login'
 import reportWebVitals from './reportWebVitals';
@@ -17,13 +19,17 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/Login" element={<Login />}/>
-        <Route 
+        {/* <Route 
           path="/"
           element={
           <GuardedRoute>
             <App />
           </GuardedRoute>
           }
+        /> */}
+        <Route 
+          path="/"
+          element={<Onboarding />}
         />
       </Routes>
     </BrowserRouter>
