@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 export default function GuardedRoute({ children }){
-  const user = useSelector(selectUser);
+  const user = localStorage.getItem("user");
   return (
     user ? children : <Navigate replace to="/Login" />
   )

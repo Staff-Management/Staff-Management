@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import {
   BrowserRouter,
@@ -16,23 +16,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/Login" element={<Login />}/>
-        {/* <Route 
-          path="/"
-          element={
-          <GuardedRoute>
-            <App />
-          </GuardedRoute>
-          }
-        /> */}
-        <Route 
-          path="/"
-          element={<Onboarding />}
-        />
-      </Routes>
-    </BrowserRouter>
+    <App />
   </Provider>
   ,
   document.getElementById('root')

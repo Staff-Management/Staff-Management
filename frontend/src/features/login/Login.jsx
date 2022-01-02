@@ -20,6 +20,28 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const theme = createTheme();
+  const [values, setValues] = React.useState({
+    account: "",
+    password: "",
+    remember: false
+  });
+
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      [event.target.name]: event.target.value
+    });
+    console.log(values);
+  };
+
+  const handleCheckbox = (event) => {
+    console.log(event.target.checked);
+    setValues({
+      ...values,
+      [event.target.name]: event.target.checked
+    });
+    console.log(values);
+  }
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -38,7 +60,7 @@ function Login() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={(event) => handleLogin(event, dispatch, navigate)} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={(event) => handleLogin(event, values, dispatch, navigate)} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -46,6 +68,7 @@ function Login() {
               id="account"
               label="Username or Email"
               name="account"
+              onChange={handleChange}
               autoFocus
             />
             <TextField
@@ -56,9 +79,16 @@ function Login() {
               label="Password"
               type="password"
               id="password"
+              onChange={handleChange}
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={
+                <Checkbox
+                  id="remember"
+                  name='remember'
+                  color="primary"
+                  onChange={handleCheckbox}/>
+              }
               label="Remember me"
             />
             <Button
@@ -88,11 +118,11 @@ function Login() {
   );
 }
 
-async function handleLogin(event, dispatch, navigate){
+async function handleLogin(event, values, dispatch, navigate){
   // Should fetech user account here
   event.preventDefault();
-  const account = event.target.account.value;
-  const password = event.target.password.value;
+  const account = values.account;
+  const password = values.password;
 
   try {
     const res = await fetch('http://localhost:4000/login', {
@@ -101,14 +131,15 @@ async function handleLogin(event, dispatch, navigate){
      headers: {'Content-Type': 'application/json'}
     })
 
-    const data = await res.json();
-    if (data.user){
+    const response = await res.json();
+    if (response.user){
+      localStorage.setItem('user', JSON.stringify(response.user));
       dispatch(setLogin());
       navigate('/');
     }
-}catch(err){
-    console.log(err)
-}
+  } catch(err){
+      console.log(err)
+  }
 }
 
 export default Login;
