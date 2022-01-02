@@ -23,7 +23,15 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['employee', 'hr']
+    default: 'user'
+  },
+  registrationToken: {
+    type: String,
+    createAt: {
+      type: Date, 
+      expires: 10, 
+      default: Date.now
+    }
   }
 });
 
