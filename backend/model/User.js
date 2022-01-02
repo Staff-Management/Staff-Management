@@ -21,9 +21,9 @@ const userSchema = new Schema({
     required: [true, 'Please enter a password'],
     minlength: [8, 'Minimum password length is 6 character']
   },
-  enum: {
+  role: {
     type: String,
-    default: 'user'
+    enum: ['employee', 'hr']
   },
   registrationToken: {
     type: String,
