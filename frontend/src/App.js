@@ -10,6 +10,7 @@ import GuardedRoute from './guardedroute/GuardedRoute';
 import Onboarding from './features/onboarding/Onboarding';
 import SignUp from './features/signup/SignUp';
 import Login from './features/login/Login'
+import Token from './features/token/Token'
 import Navigation from './main/navigation/navigation'
 import Visa from './main/visa/visa'
 import PersonalInformation from './main/personal/personal'
