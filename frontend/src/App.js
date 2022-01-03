@@ -34,9 +34,7 @@ function App() {
         <Route 
           path="/"
           element={
-          <GuardedRoute>
             <SignUp />
-          </GuardedRoute>
           }
         />
         <Route 
@@ -50,9 +48,7 @@ function App() {
         <Route 
           path="/signup"
           element={
-          <GuardedRoute>
             <SignUp />
-          </GuardedRoute>
           }
         />
         <Route 
