@@ -13,25 +13,20 @@ const userSchema = new Schema({
   },
   username: {
     type: String,
-    // unique: true,
-    // required: [true, 'Please enter a username'],
+    unique: true,
+    required: [true, 'Please enter a username'],
   },
   password: {
     type: String,
-    // required: [true, 'Please enter a password'],
-    minlength: [8, 'Minimum password length is 8 character']
+    required: [true, 'Please enter a password'],
+    // minlength: [8, 'Minimum password length is 8 character']
   },
   role: {
     type: String,
+    default: 'employee',
     enum: ['employee', 'hr']
-  },
-  registrationToken: {
-    type: String,
-    index: { unique: true, expires: '10s' }
-  },
+  }
 });
-
-userSchema.path('registrationToken').index({ expires: 10 })
 
 //Hashing the password
 userSchema.pre("save", async function (next) {

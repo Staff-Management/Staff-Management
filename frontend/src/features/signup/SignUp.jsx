@@ -9,11 +9,13 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Token from './Token';
+import Token from './TokenForm';
 import Account from './Account';
+import { selectEmail, selectToken, selectUsername, setEmail, selectPassword, selectRePassword } from '../../slices/userSlice'
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const steps = ['Token', 'Account'];
 
@@ -31,10 +33,62 @@ function getStepContent(step) {
 const theme = createTheme();
 
 export default function Onboarding() {
+  const dispatch = useDispatch();
+  const reg_token = useSelector(selectToken);
+  const username = useSelector(selectUsername);
+  const password = useSelector(selectPassword);
+  const repassword = useSelector(selectRePassword);
+  const email = useSelector(selectEmail);
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
 
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
+  const handleNext = async () => {
+    if (activeStep === 0)
+    {
+      try
+      {
+        const res = await fetch('http://localhost:4000/check', {
+          method: 'POST',
+          body: JSON.stringify({ reg_token }),
+          headers: {'Content-Type': 'application/json'}
+        })
+        const response = await res.json();
+        console.log(response);
+        dispatch(setEmail({ email: response.email }))
+        setActiveStep(activeStep + 1);
+      }
+      catch(err)
+      {
+        alert('Invalid Token');
+        console.log(err);
+      }
+    }
+    else if (activeStep === 1)
+    {
+      // Should check username duplicate here
+      if (password !== repassword)
+      {
+        alert("Passwords are not the same")
+      }
+      else
+      {
+        try
+        {
+          const res = await fetch('http://localhost:4000/register', {
+            method: 'POST',
+            body: JSON.stringify({ username, email, password }),
+            headers: {'Content-Type': 'application/json'}
+          })
+          const response = await res.json();
+          setActiveStep(activeStep + 1);
+        }
+        catch(err)
+        {
+          alert('Invalid Account');
+          console.log(err);
+        }
+      }
+    }
   };
 
   const handleBack = () => {
@@ -77,8 +131,11 @@ export default function Onboarding() {
                 <Typography variant="h5" gutterBottom>
                   Sign Up Successfully!
                 </Typography>
-                <Typography variant="subtitle1">
-                </Typography>
+                <div style={{color: 'transparent'}}>
+                  { 
+                    setTimeout(() => { navigate('/onboarding')}, 3000)
+                  }
+                </div>
               </React.Fragment>
             ) : (
               <React.Fragment>

@@ -125,11 +125,10 @@ async function handleLogin(event, values, dispatch, navigate){
 
   try {
     const res = await fetch('http://localhost:4000/login', {
-     method: 'POST',
-     body: JSON.stringify({ account, password }),
-     headers: {'Content-Type': 'application/json'}
+      method: 'POST',
+      body: JSON.stringify({ account, password }),
+      headers: {'Content-Type': 'application/json'}
     })
-
     const response = await res.json();
     if (response.user){
       if (values.remember)
