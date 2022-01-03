@@ -10,10 +10,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { FormGroup } from '@mui/material';
+import { Avatar, FormGroup } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormLabel from '@mui/material/FormLabel';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 const PhoneNumber = React.forwardRef(function TextMaskCustom(props, ref) {
   const { onChange, ...other } = props;
@@ -61,6 +64,7 @@ export default function PersonalForm() {
     citizen: false,
     work_auth: "",
     cellPhone: "",
+    Phone: "",
     workPhone: "",
     address1: "",
     address2: "",
@@ -89,65 +93,101 @@ export default function PersonalForm() {
       [event.target.name]: event.target.checked
     });
     console.log(values);
-  }
+  };
 
   const Greencard_citizen = (
     values.perm_citizen === null ?
-    <></>
-    :
-    (
-      values.perm_citizen ?
-      <React.Fragment>
-        <Grid item xs={12} sm={6}>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  id='greenCard'
-                  name='greenCard'
-                  onChange={handleCheckbox}
-                />
-              }
-              label="Green Card"
-            />
-          </FormGroup>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  id='citizen'
-                  name='citizen'
-                  onChange={handleCheckbox}
-                />
-              }
-              label="Citizen"
-            />
-          </FormGroup>
-        </Grid>
-      </React.Fragment>
+      <></>
       :
-      <Grid item xs={12} sm={6}>
-        <FormControl variant="standard" fullWidth>
-          <InputLabel id="work_auth">Work Authorization</InputLabel>
-          <Select
-            labelId="work_auth"
-            id="work_auth"
-            name="work_auth"
-            label="Work Authorization"
-            value={values.work_auth}
-            onChange={handleChange}
-          >
-            <MenuItem value={'h1b'}>H1-B</MenuItem>
-            <MenuItem value={'l2'}>L2</MenuItem>
-            <MenuItem value={'f1'}>F1(CPT/OPT)</MenuItem>
-            <MenuItem value={'h4'}>H4</MenuItem>
-            <MenuItem value={'other'}>Other</MenuItem>
-          </Select>
-        </FormControl>
-      </Grid>
-    )
+      (
+        values.perm_citizen ?
+          <React.Fragment>
+            <Grid item xs={12} sm={6}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      id='greenCard'
+                      name='greenCard'
+                      onChange={handleCheckbox}
+                    />
+                  }
+                  label="Green Card"
+                />
+              </FormGroup>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      id='citizen'
+                      name='citizen'
+                      onChange={handleCheckbox}
+                    />
+                  }
+                  label="Citizen"
+                />
+              </FormGroup>
+            </Grid>
+          </React.Fragment>
+          :
+          <Grid item xs={12} sm={12}>
+            <FormControl variant="standard" fullWidth>
+              <InputLabel id="work_auth">Work Authorization</InputLabel>
+              <Select
+                labelId="work_auth"
+                id="work_auth"
+                name="work_auth"
+                label="Work Authorization"
+                value={values.work_auth}
+                onChange={handleChange}
+              >
+                <MenuItem value={'h1b'}>H1-B</MenuItem>
+                <MenuItem value={'l2'}>L2</MenuItem>
+                <MenuItem value={'f1'}>F1(CPT/OPT)</MenuItem>
+                <MenuItem value={'h4'}>H4</MenuItem>
+                <MenuItem value={'other'}>Others</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+      )
+  );
+
+  const driver_license = (
+    values.license === null ?
+      <></>
+      :
+      (
+        values.license ?
+          <React.Fragment>
+            <Grid item xs={12} sm={12}>
+              <FormGroup>
+                <TextField
+                  id='outlined-basic'
+                  variant="outlined"
+                  label="Driver License Number"
+                  onChange={handleCheckbox}
+                />
+                <TextField
+                  id='outlined-basic'
+                  variant="outlined"
+                  label="Expiration Date"
+                  onChange={handleCheckbox}
+                />
+                <label htmlFor="contained-button-file">
+                  <Input accept="image/*" id="contained-button-file" multiple type="file" />
+                  <Button variant="contained" component="span">
+                    Upload a license photo
+                  </Button>
+                </label>
+              </FormGroup>
+            </Grid>
+          </React.Fragment>
+          :
+          <Grid item xs={12} sm={12}>
+          </Grid>
+      )
   );
 
   return (
@@ -243,6 +283,18 @@ export default function PersonalForm() {
             />
           </FormControl>
         </Grid>
+        <Grid item xs={12} s={6}>
+          <Typography variant="h6" gutterBottom>
+            Avatar Profile
+          </Typography>
+          <Avatar alt="default" src="/frontend/public/beaconfire400x400.png" />
+          <label htmlFor="contained-button-file">
+            <Input accept="image/*" id="contained-button-file" multiple type="file" />
+            <Button style={{ height: "25px" }} variant="contained" component="span">
+              Upload
+            </Button>
+          </label>
+        </Grid>
         <Grid item xs={12} sm={12}>
           <FormControl component="fieldset">
             <FormLabel component="legend">Are you a citizen or permanent resident of the U.S?</FormLabel>
@@ -255,30 +307,301 @@ export default function PersonalForm() {
               <FormControlLabel value='yes' control={<Radio />} label="Yes" />
               <FormControlLabel value='' control={<Radio />} label="No" />
             </RadioGroup>
-        </FormControl>
+          </FormControl>
         </Grid>
-        { Greencard_citizen }
+
+        {Greencard_citizen}
+
         <Grid item xs={12} sm={6}>
-          
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Do you have a driver license?</FormLabel>
+            <RadioGroup
+              aria-label="license"
+              id='license'
+              name="license"
+              onChange={handleChange}
+            >
+              <FormControlLabel value='yes' control={<Radio />} label="Yes" />
+              <FormControlLabel value='' control={<Radio />} label="No" />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+
+        {driver_license}
+
+        <Grid item xs={12} sm={6}>
+
         </Grid>
         <Grid item xs={12} sm={6}>
-          
+
         </Grid>
         <Grid item xs={12} sm={6}>
-          
+
         </Grid>
         <Grid item xs={12} sm={6}>
-          
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          
+
         </Grid>
       </Grid>
+
+
+      <Typography variant="h6" gutterBottom mt={'30px'}>
+        Reference
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            required
+            id="firstname"
+            name="firstname"
+            label="First Name"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            required
+            id="middlename"
+            name="middlename"
+            label="Middle Name"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            required
+            id="lastname"
+            name="lastname"
+            label="Last Name"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl variant="standard" fullWidth>
+            <InputLabel htmlFor="Phone" required>Phone</InputLabel>
+            <Input
+              value={values.Phone}
+              onChange={handleChange}
+              name="Phone"
+              id="Phone"
+              inputComponent={PhoneNumber}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="address1"
+            name="address1"
+            label="Address line 1"
+            fullWidth
+            autoComplete="shipping address-line1"
+            variant="standard"
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            required
+            id="city"
+            name="city"
+            label="City"
+            fullWidth
+            autoComplete="shipping address-level2"
+            variant="standard"
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            id="state"
+            name="state"
+            label="State/Province/Region"
+            fullWidth
+            variant="standard"
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <TextField
+            required
+            id="zip"
+            name="zip"
+            label="Zip / Postal code"
+            fullWidth
+            autoComplete="shipping postal-code"
+            variant="standard"
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="email"
+            name="email"
+            label="Email"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="relationship"
+            name="relationship"
+            label="Relationship"
+            fullWidth
+            variant="standard"
+            onChange={handleChange}
+          />
+        </Grid>
+      </Grid>
+
+      <Typography variant="h6" gutterBottom mt={'30px'}>
+        Emergency Contact 1
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            required
+            id="firstname"
+            name="firstname"
+            label="First Name"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            required
+            id="middlename"
+            name="middlename"
+            label="Middle Name"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            required
+            id="lastname"
+            name="lastname"
+            label="Last Name"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl variant="standard" fullWidth>
+            <InputLabel htmlFor="Phone" required>Phone</InputLabel>
+            <Input
+              value={values.Phone}
+              onChange={handleChange}
+              name="Phone"
+              id="Phone"
+              inputComponent={PhoneNumber}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="email"
+            name="email"
+            label="Email"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="relationship"
+            name="relationship"
+            label="Relationship"
+            fullWidth
+            variant="standard"
+            onChange={handleChange}
+          />
+        </Grid>
+      </Grid>
+
+      <Typography variant="h6" gutterBottom mt={'30px'}>
+        Emergency Contact 2
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            required
+            id="firstname"
+            name="firstname"
+            label="First Name"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            required
+            id="middlename"
+            name="middlename"
+            label="Middle Name"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            required
+            id="lastname"
+            name="lastname"
+            label="Last Name"
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl variant="standard" fullWidth>
+            <InputLabel htmlFor="Phone" required>Phone</InputLabel>
+            <Input
+              value={values.Phone}
+              onChange={handleChange}
+              name="Phone"
+              id="Phone"
+              inputComponent={PhoneNumber}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="email"
+            name="email"
+            label="Email"
+            fullWidth
+            variant="standard"
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            required
+            id="relationship"
+            name="relationship"
+            label="Relationship"
+            fullWidth
+            variant="standard"
+            onChange={handleChange}
+          />
+        </Grid>
+      </Grid>
+
       <Typography variant="h6" gutterBottom mt={'30px'}>
         Contact Info
       </Typography>
       <Grid container spacing={3}>
-      <Grid item xs={12} sm={12}>
+        <Grid item xs={12} sm={12}>
           <TextField
             disabled
             InputLabelProps={{ shrink: true }}
@@ -384,6 +707,7 @@ export default function PersonalForm() {
           />
         </Grid>
       </Grid>
+
       <Typography variant="h6" gutterBottom mt={'30px'}>
         Vehicle Info
       </Typography>
