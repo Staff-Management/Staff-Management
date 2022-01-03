@@ -9,8 +9,12 @@ import { setLogin } from './slices/userSlice';
 import GuardedRoute from './guardedroute/GuardedRoute';
 import Onboarding from './features/onboarding/Onboarding';
 import SignUp from './features/signup/SignUp';
-import Login from './features/login/Login';
-import Token from './features/token/Token';
+import Login from './features/login/Login'
+import Navigation from './main/navigation/navigation'
+import Visa from './main/visa/visa'
+import PersonalInformation from './main/personal/personal'
+import Housing from './main/housing/housing'
+
 
 function App() {
   const dispatch = useDispatch();
@@ -58,6 +62,7 @@ function App() {
           </GuardedRoute>
           }
         />
+        <Route path="/nav/:page" element={<Navigation />}/>
         {/* <Route 
           path="/"
           element={<Onboarding />}
