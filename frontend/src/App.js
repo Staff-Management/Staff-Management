@@ -9,7 +9,8 @@ import { setLogin } from './slices/userSlice';
 import GuardedRoute from './guardedroute/GuardedRoute';
 import Onboarding from './features/onboarding/Onboarding';
 import SignUp from './features/signup/SignUp';
-import Login from './features/login/Login'
+import Login from './features/login/Login';
+import Token from './features/token/Token';
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,30 @@ function App() {
           element={
           <GuardedRoute>
             <SignUp />
+          </GuardedRoute>
+          }
+        />
+        <Route 
+          path="/onboarding"
+          element={
+          <GuardedRoute>
+            <Onboarding />
+          </GuardedRoute>
+          }
+        />
+        <Route 
+          path="/signup"
+          element={
+          <GuardedRoute>
+            <SignUp />
+          </GuardedRoute>
+          }
+        />
+        <Route 
+          path="/token"
+          element={
+          <GuardedRoute>
+            <Token />
           </GuardedRoute>
           }
         />

@@ -13,12 +13,12 @@ const userSchema = new Schema({
   },
   username: {
     type: String,
-    unique: true,
-    required: [true, 'Please enter a username'],
+    // unique: true,
+    // required: [true, 'Please enter a username'],
   },
   password: {
     type: String,
-    required: [true, 'Please enter a password'],
+    // required: [true, 'Please enter a password'],
     minlength: [8, 'Minimum password length is 8 character']
   },
   role: {
@@ -27,17 +27,16 @@ const userSchema = new Schema({
   },
   registrationToken: {
     type: String,
-    createAt: {
-      type: Date, 
-      expires: 10, 
-      default: Date.now
-    }
-  }
+    index: { unique: true, expires: '10s' }
+  },
 });
+
+userSchema.path('registrationToken').index({ expires: 10 })
 
 //Hashing the password
 userSchema.pre("save", async function (next) {
-  this.password = await bcrypt.hash(this.password, 10);
+  if (this.password)
+    this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
@@ -46,7 +45,7 @@ userSchema.statics.login = async function (account, password) {
   const user = await User.findOne().or([ { email: account }, { username: account } ]);
   let isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    throw new Error("email or password is wrong!");
+    throw new Error("Account or password is wrong!");
   }
   return user;
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { setLogin } from '../../slices/userSlice';
 import { useNavigate } from 'react-router-dom'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -16,14 +15,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Login() {
-  const dispatch = useDispatch();
+function Token() {
   const navigate = useNavigate();
   const theme = createTheme();
   const [values, setValues] = React.useState({
-    account: "",
-    password: "",
-    remember: false
+    email: "",
   });
 
   const handleChange = (event) => {
@@ -31,17 +27,8 @@ function Login() {
       ...values,
       [event.target.name]: event.target.value
     });
-    console.log(values);
   };
 
-  const handleCheckbox = (event) => {
-    console.log(event.target.checked);
-    setValues({
-      ...values,
-      [event.target.name]: event.target.checked
-    });
-    console.log(values);
-  }
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -58,38 +45,18 @@ function Login() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Token Generation
           </Typography>
-          <Box component="form" onSubmit={(event) => handleLogin(event, values, dispatch, navigate)} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={(event) => handleGenerate(event, values, navigate)} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="account"
-              label="Username or Email"
-              name="account"
+              id="email"
+              name="email"
+              label="Email"
               onChange={handleChange}
               autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              onChange={handleChange}
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  id="remember"
-                  name='remember'
-                  color="primary"
-                  onChange={handleCheckbox}/>
-              }
-              label="Remember me"
             />
             <Button
               type="submit"
@@ -97,20 +64,8 @@ function Login() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Generate Token and Send Email
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>
@@ -118,28 +73,21 @@ function Login() {
   );
 }
 
-async function handleLogin(event, values, dispatch, navigate){
+async function handleGenerate(event, values, navigate){
   event.preventDefault();
-  const account = values.account;
-  const password = values.password;
-
+  const email = values.email;
   try {
-    const res = await fetch('http://localhost:4000/login', {
+    const res = await fetch('http://localhost:4000/token', {
      method: 'POST',
-     body: JSON.stringify({ account, password }),
+     body: JSON.stringify({ email }),
      headers: {'Content-Type': 'application/json'}
     })
-
     const response = await res.json();
-    if (response.user){
-      if (values.remember)
-        localStorage.setItem('user', JSON.stringify(response.user));
-      dispatch(setLogin());
-      navigate('/');
-    }
+    console.log(response);
+    navigate('/');
   } catch(err){
       console.log(err)
   }
 }
 
-export default Login;
+export default Token;
