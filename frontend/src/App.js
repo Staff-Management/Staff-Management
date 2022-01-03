@@ -29,7 +29,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/Login" element={<Login />}/>
+        <Route path="/Login" element={<Login />}/>
         <Route 
           path="/"
           element={
@@ -37,14 +37,8 @@ function App() {
             <SignUp />
           </GuardedRoute>
           }
-        /> */}
-
+        />
         <Route path="/nav/:page" element={<Navigation />}/>
-
-        {/* <Route path="/Home" element={<Navigation />}/>
-        <Route path="/Visa" element={<Visa />}/>
-        <Route path="/Personal" element={<PersonalInformation />}/>
-        <Route path="/Housing" element={<Housing />}/> */}
         {/* <Route 
           path="/"
           element={<Onboarding />}
