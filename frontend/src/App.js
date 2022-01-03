@@ -38,10 +38,13 @@ function App() {
           </GuardedRoute>
           }
         /> */}
-        <Route path="/Home" element={<Navigation />}/>
+
+        <Route path="/nav/:page" element={<Navigation />}/>
+
+        {/* <Route path="/Home" element={<Navigation />}/>
         <Route path="/Visa" element={<Visa />}/>
         <Route path="/Personal" element={<PersonalInformation />}/>
-        <Route path="/Housing" element={<Housing />}/>
+        <Route path="/Housing" element={<Housing />}/> */}
         {/* <Route 
           path="/"
           element={<Onboarding />}
