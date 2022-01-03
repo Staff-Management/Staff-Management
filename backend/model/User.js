@@ -19,25 +19,19 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: [true, 'Please enter a password'],
-    minlength: [8, 'Minimum password length is 8 character']
+    // minlength: [8, 'Minimum password length is 8 character']
   },
   role: {
     type: String,
+    default: 'employee',
     enum: ['employee', 'hr']
-  },
-  registrationToken: {
-    type: String,
-    createAt: {
-      type: Date, 
-      expires: 10, 
-      default: Date.now
-    }
   }
 });
 
 //Hashing the password
 userSchema.pre("save", async function (next) {
-  this.password = await bcrypt.hash(this.password, 10);
+  if (this.password)
+    this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
@@ -46,7 +40,7 @@ userSchema.statics.login = async function (account, password) {
   const user = await User.findOne().or([ { email: account }, { username: account } ]);
   let isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    throw new Error("email or password is wrong!");
+    throw new Error("Account or password is wrong!");
   }
   return user;
 };

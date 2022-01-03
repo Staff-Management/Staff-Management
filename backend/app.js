@@ -7,6 +7,7 @@ const FileStore = require("session-file-store")(session);
 const publicPath = path.join(__dirname, "/public");
 require("./db");
 const userRoutes = require('./router/userRouter');
+const tokenRoutes = require('./router/tokenRouter')
 
 // app.set('view engine', 'pug');
 // app.set('views','./public/views');
@@ -27,5 +28,6 @@ app.use(
 );
 app.use(express.static(publicPath));
 app.use(userRoutes);
+app.use(tokenRoutes);
 
 module.exports = app;

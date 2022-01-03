@@ -119,21 +119,20 @@ function Login() {
 }
 
 async function handleLogin(event, values, dispatch, navigate){
-  // Should fetech user account here
   event.preventDefault();
   const account = values.account;
   const password = values.password;
 
   try {
     const res = await fetch('http://localhost:4000/login', {
-     method: 'POST',
-     body: JSON.stringify({ account, password }),
-     headers: {'Content-Type': 'application/json'}
+      method: 'POST',
+      body: JSON.stringify({ account, password }),
+      headers: {'Content-Type': 'application/json'}
     })
-
     const response = await res.json();
     if (response.user){
-      localStorage.setItem('user', JSON.stringify(response.user));
+      if (values.remember)
+        localStorage.setItem('user', JSON.stringify(response.user));
       dispatch(setLogin());
       navigate('/');
     }

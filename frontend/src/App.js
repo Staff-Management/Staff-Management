@@ -10,6 +10,12 @@ import GuardedRoute from './guardedroute/GuardedRoute';
 import Onboarding from './features/onboarding/Onboarding';
 import SignUp from './features/signup/SignUp';
 import Login from './features/login/Login'
+import Token from './features/token/Token'
+import Navigation from './main/navigation/navigation'
+import Visa from './main/visa/visa'
+import PersonalInformation from './main/personal/personal'
+import Housing from './main/housing/housing'
+
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +39,31 @@ function App() {
           </GuardedRoute>
           }
         />
+        <Route 
+          path="/onboarding"
+          element={
+          <GuardedRoute>
+            <Onboarding />
+          </GuardedRoute>
+          }
+        />
+        <Route 
+          path="/signup"
+          element={
+          <GuardedRoute>
+            <SignUp />
+          </GuardedRoute>
+          }
+        />
+        <Route 
+          path="/token"
+          element={
+          <GuardedRoute>
+            <Token />
+          </GuardedRoute>
+          }
+        />
+        <Route path="/nav/:page" element={<Navigation />}/>
         {/* <Route 
           path="/"
           element={<Onboarding />}

@@ -11,11 +11,12 @@ const createToken = (id) => {
 }
 //handling errors 
 const handleErrors = (err) =>{
+  console.log(err);
   let errors = { email: '', password: '', loginErr: ''};
     
   //duplicate email
   if (err.code === 11000){
-    errors.email = 'Email already exists';
+    errors.email = 'Email or Username already exists';
     return errors;
   }
 
@@ -61,4 +62,3 @@ module.exports.login = async (req, resp) => {
     resp.status(400).json({ errors })
   }
 }
-
