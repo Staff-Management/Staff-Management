@@ -132,6 +132,7 @@ async function handleLogin(event, values, dispatch, navigate){
     console.log(res);
     const response = await res.json();
     if (response.user){
+      localStorage.clear();
       if (values.remember)
         localStorage.setItem('user', JSON.stringify(response.user));
       dispatch(setLogin());
