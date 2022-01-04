@@ -129,7 +129,6 @@ async function handleLogin(event, values, dispatch, navigate){
       body: JSON.stringify({ account, password }),
       headers: { 'Content-Type': 'application/json' }
     })
-    console.log(res);
     const response = await res.json();
     if (response.user){
       localStorage.clear();
