@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
-const { isEmail } = require('validator')
+const { isEmail, isMobilePhone } = require('validator')
 const bcrypt = require("bcryptjs");
+const Car = require('./Car');
+const Reference = require('./Reference');
+const EmContact = require('./EmContact');
+const WorkAuth = require("./WorkAuth");
+const License = require("./License")
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -25,7 +30,66 @@ const userSchema = new Schema({
     type: String,
     default: 'employee',
     enum: ['employee', 'hr']
-  }
+  },
+  firstName: {
+    type: String,
+    required: [true, 'Please enter your first name'],
+  },
+  secondName: {
+    type: String,
+    required: [true, 'Please enter your second name'],
+  },
+  preName: String, 
+  midName: String, 
+  avatar: {
+    type: Buffer, 
+    //default: 'path to img'
+  },
+  address: {
+    type: String,
+    required: [true, 'Please enter your address'],
+  },
+  cellPhone: {
+    type: String,
+    required: [true, 'Please enter your phone number'],
+    validate: [isMobilePhone, 'please enter a valid number']
+  },
+  workPhone: {
+    type: String,
+    validate: [isMobilePhone, 'please enter a valid number']
+  },
+  carInfo: [{
+    type: mongoose.Schema.ObjectId,
+    ref: Car
+  }],
+  SSN: {
+    type: String,
+    required: [true, 'Please enter your last 4 number of your SSN'],
+  },
+  DOB: {
+    type: date,
+    required: [true, 'Please enter your date of birth'],
+  },
+  Gender: {
+    type: String,
+    required: [true, 'Please enter your gender'],
+  },
+  reference: [{
+    type: mongoose.Schema.ObjectId,
+    ref: Reference,
+  }],
+  EmergencyContact: [{
+    type: mongoose.Schema.ObjectId,
+    ref: EmContact,
+  }],
+  workAuth: [{
+    type: mongoose.Schema.ObjectId,
+    ref: WorkAuth,
+  }],
+  driverLicense: [{
+    type: mongoose.Schema.ObjectId,
+    ref: License,
+  }],
 });
 
 //Hashing the password
