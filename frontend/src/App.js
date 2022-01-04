@@ -30,7 +30,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/Login" element={<Login />}/>
+        {/* <Route path="/Login" element={<Login />}/>
         <Route 
           path="/"
           element={
@@ -63,11 +63,11 @@ function App() {
           </GuardedRoute>
           }
         />
-        <Route path="/nav/:page" element={<Navigation />}/>
-        {/* <Route 
+        <Route path="/nav/:page" element={<Navigation />}/> */}
+        <Route 
           path="/"
           element={<Onboarding />}
-        /> */}
+        />
       </Routes>
     </BrowserRouter>
   );

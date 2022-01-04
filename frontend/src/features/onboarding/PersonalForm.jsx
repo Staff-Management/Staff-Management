@@ -14,9 +14,12 @@ import { Avatar, FormGroup } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormLabel from '@mui/material/FormLabel';
-import { styled } from '@mui/material/styles';
+import { styled, Theme, makeStyles } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { useCallback } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 
 const PhoneNumber = React.forwardRef(function TextMaskCustom(props, ref) {
   const { onChange, ...other } = props;
@@ -75,8 +78,12 @@ export default function PersonalForm() {
     vehicleMaker: "",
     vehicleModel: "",
     vehicleType: "",
-    vehicleColor: ""
+    vehicleColor: "",
   });
+
+  const [contactList, setContactList] = React.useState([{
+    contact: "",
+  }])
 
   const handleChange = (event) => {
     setValues({
@@ -94,6 +101,53 @@ export default function PersonalForm() {
     });
     console.log(values);
   };
+
+  const handleContactChange = (e, index) => {
+    const { name, value } = e.target;
+    const list = [...contactList];
+    list[index][name] = value;
+    setContactList(list);
+  };
+
+  const handleContactRemove = (index) => {
+    const list = [...contactList];
+    list.splice(index, 1);
+    setContactList(list);
+  };
+
+  const handleContactAdd = () => {
+    setContactList([...contactList, { contact: "" }]);
+  };
+
+  const handleSubmission = (event) => {
+
+  };
+
+  const visa_status = (
+    values.work_auth === 'other' ?
+      <Grid item xs={12} sm={6}>
+        <TextField
+          id='outlined-basic'
+          variant="standard"
+          label="Specify Work Authorization"
+          onChange={handleChange}
+        />
+        <TextField
+          id='outlined-basic'
+          variant="standard"
+          label="Start Date"
+          onChange={handleChange}
+        />
+        <TextField
+          id='outlined-basic'
+          variant="standard"
+          label="Expiration Date"
+          onChange={handleChange}
+        />
+      </Grid>
+      :
+      <></>
+  )
 
   const Greencard_citizen = (
     values.perm_citizen === null ?
@@ -150,6 +204,7 @@ export default function PersonalForm() {
                 <MenuItem value={'other'}>Others</MenuItem>
               </Select>
             </FormControl>
+            {visa_status}
           </Grid>
       )
   );
@@ -177,10 +232,10 @@ export default function PersonalForm() {
                 />
                 <label htmlFor="contained-button-file">
                   <Input accept="image/*" id="contained-button-file" multiple type="file" />
-                  <Button variant="contained" component="span">
-                    Upload a license photo
-                  </Button>
                 </label>
+                <Button onClick={handleSubmission} variant="contained" component="span">
+                  Upload a license photo
+                </Button>
               </FormGroup>
             </Grid>
           </React.Fragment>
@@ -191,7 +246,7 @@ export default function PersonalForm() {
   );
 
   return (
-    <React.Fragment>
+    <React.Fragment >
       <Typography variant="h6" gutterBottom>
         Personal Info
       </Typography>
@@ -285,15 +340,25 @@ export default function PersonalForm() {
         </Grid>
         <Grid item xs={12} s={6}>
           <Typography variant="h6" gutterBottom>
-            Avatar Profile
+            Profile Photo
           </Typography>
-          <Avatar alt="default" src="/frontend/public/beaconfire400x400.png" />
+          <Avatar alt="" />
           <label htmlFor="contained-button-file">
-            <Input accept="image/*" id="contained-button-file" multiple type="file" />
-            <Button style={{ height: "25px" }} variant="contained" component="span">
-              Upload
-            </Button>
+            <Input
+              accept="image/*"
+              id="contained-button-file"
+              multiple
+              type="file"
+            />
           </label>
+          <Button
+            style={{ height: "25px" }}
+            variant="contained"
+            component="span"
+            onClick={handleSubmission}
+          >
+            Upload
+          </Button>
         </Grid>
         <Grid item xs={12} sm={12}>
           <FormControl component="fieldset">
@@ -459,143 +524,92 @@ export default function PersonalForm() {
         </Grid>
       </Grid>
 
-      <Typography variant="h6" gutterBottom mt={'30px'}>
-        Emergency Contact 1
-      </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={3}>
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            required
-            id="firstname"
-            name="firstname"
-            label="First Name"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            required
-            id="middlename"
-            name="middlename"
-            label="Middle Name"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            required
-            id="lastname"
-            name="lastname"
-            label="Last Name"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl variant="standard" fullWidth>
-            <InputLabel htmlFor="Phone" required>Phone</InputLabel>
-            <Input
-              value={values.Phone}
-              onChange={handleChange}
-              name="Phone"
-              id="Phone"
-              inputComponent={PhoneNumber}
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="email"
-            name="email"
-            label="Email"
-            fullWidth
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="relationship"
-            name="relationship"
-            label="Relationship"
-            fullWidth
-            variant="standard"
-            onChange={handleChange}
-          />
-        </Grid>
-      </Grid>
-
-      <Typography variant="h6" gutterBottom mt={'30px'}>
-        Emergency Contact 2
-      </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={3}>
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            required
-            id="firstname"
-            name="firstname"
-            label="First Name"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            required
-            id="middlename"
-            name="middlename"
-            label="Middle Name"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            required
-            id="lastname"
-            name="lastname"
-            label="Last Name"
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <FormControl variant="standard" fullWidth>
-            <InputLabel htmlFor="Phone" required>Phone</InputLabel>
-            <Input
-              value={values.Phone}
-              onChange={handleChange}
-              name="Phone"
-              id="Phone"
-              inputComponent={PhoneNumber}
-            />
-          </FormControl>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="email"
-            name="email"
-            label="Email"
-            fullWidth
-            variant="standard"
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id="relationship"
-            name="relationship"
-            label="Relationship"
-            fullWidth
-            variant="standard"
-            onChange={handleChange}
-          />
-        </Grid>
-      </Grid>
+      <formControl className="Contact" autoComplete="off">
+        <div className='form-field'>
+          <Typography id="emergency_contact" variant="h6" gutterBottom mt={'30px'}>
+            Emergency Contact
+          </Typography>
+          {contactList.map((singleContact, index) => (
+            <div key={index} className='contact'>
+              <div className='first-contact'>
+                <Grid item xs={12} lg={6}>
+                  <TextField
+                    InputLabelProps={{ shrink: true }}
+                    required
+                    id="contact"
+                    name="contact"
+                    label="First Name"
+                    variant="standard"
+                  />
+                  <TextField
+                    InputLabelProps={{ shrink: true }}
+                    required
+                    id="contact"
+                    name="contact"
+                    label="Middle Name"
+                    variant="standard"
+                  />
+                  <TextField
+                    InputLabelProps={{ shrink: true }}
+                    required
+                    id="contact"
+                    name="contact"
+                    label="Last Name"
+                    variant="standard"
+                  />
+                </Grid>
+                <FormControl variant="standard" fullWidth>
+                  <InputLabel htmlFor="Phone" required>Phone</InputLabel>
+                  <Input
+                    value={values.Phone}
+                    onChange={handleContactChange}
+                    name="contact"
+                    id="contact"
+                    inputComponent={PhoneNumber}
+                  />
+                </FormControl>
+                <TextField
+                  required
+                  id="contact"
+                  name="contact"
+                  label="Email"
+                  fullWidth
+                  variant="standard"
+                />
+                <TextField
+                  required
+                  id="contact"
+                  name="contact"
+                  label="Relationship"
+                  fullWidth
+                  variant="standard"
+                  onChange={handleChange}
+                />
+                {contactList.length - 1 === index && contactList.length < 4 && (
+                  <Button
+                    color="primary"
+                    onClick={handleContactAdd}
+                    className='add-btn'
+                  >
+                    Add more emergency contact
+                  </Button>
+                )}
+              </div>
+              <div className='second-contact'>
+                {contactList.length !== 1 && (
+                  <Button
+                    color="primary"
+                    onClick={handleContactRemove}
+                    className='remove-btn'
+                  >
+                    Remove emergency contact
+                  </Button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </formControl>
 
       <Typography variant="h6" gutterBottom mt={'30px'}>
         Contact Info
@@ -757,6 +771,6 @@ export default function PersonalForm() {
           />
         </Grid>
       </Grid>
-    </React.Fragment>
+    </React.Fragment >
   );
 }

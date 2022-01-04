@@ -8,7 +8,8 @@ export const slice = createSlice({
     token: '',
     username: '',
     password: '',
-    repassword: ''
+    repassword: '',
+    workauth: '',
   },
   reducers: {
     setLogin: (state, action) => {
@@ -29,10 +30,13 @@ export const slice = createSlice({
     setRePassword: (state, action) => {
       state.repassword = action.payload.repassword;
     },
+    setWorkAuth: (state, action) => {
+      state.workauth = action.payload.workauth;
+    }
   },
 });
 
-export const { setLogin, setEmail, setToken, setUsername, setPassword, setRePassword } = slice.actions;
+export const { setLogin, setEmail, setToken, setUsername, setPassword, setRePassword, setWorkAuth } = slice.actions;
 
 export const selectUser = state => state.user.loggedin;
 export const selectEmail = state => state.user.email;
@@ -40,5 +44,6 @@ export const selectToken = state => state.user.token;
 export const selectUsername = state => state.user.username;
 export const selectPassword = state => state.user.password;
 export const selectRePassword = state => state.user.repassword;
+export const selectWorkAuth = state => state.user.workauth;
 
 export default slice.reducer;
