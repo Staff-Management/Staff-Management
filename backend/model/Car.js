@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const Car = new Schema({
+const car = new Schema({
     make: String, 
     model: String, 
     Color: String,
 });
 
 
-const Car = mongoose.model("Car", Car);
+const Car = mongoose.model("Car", car);
 module.exports = Car;
