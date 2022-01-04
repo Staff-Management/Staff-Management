@@ -13,9 +13,9 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Token from './TokenForm';
 import Account from './Account';
-import { selectEmail, selectToken, selectUsername, setEmail, selectPassword, selectRePassword } from '../../slices/userSlice'
+import { selectEmail, selectToken, selectUsername, setEmail, selectPassword, selectRePassword, setToken } from '../../slices/userSlice'
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const steps = ['Token', 'Account'];
 
@@ -33,7 +33,12 @@ function getStepContent(step) {
 const theme = createTheme();
 
 export default function Onboarding() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
+  if (searchParams.get("token") !== null)
+  {
+    dispatch(setToken({ token: searchParams.get("token") }))
+  }
   const reg_token = useSelector(selectToken);
   const username = useSelector(selectUsername);
   const password = useSelector(selectPassword);

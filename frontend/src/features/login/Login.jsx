@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { setLogin } from '../../slices/userSlice';
+import { setLogin, setRole, setUsername, setEmail } from '../../slices/userSlice';
 import { useNavigate } from 'react-router-dom'
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -127,17 +127,24 @@ async function handleLogin(event, values, dispatch, navigate){
     const res = await fetch('http://localhost:4000/login', {
       method: 'POST',
       body: JSON.stringify({ account, password }),
-      headers: {'Content-Type': 'application/json'}
+      headers: { 'Content-Type': 'application/json' }
     })
     const response = await res.json();
     if (response.user){
+      localStorage.clear();
       if (values.remember)
         localStorage.setItem('user', JSON.stringify(response.user));
       dispatch(setLogin());
-      navigate('/');
+      dispatch(setEmail({ email: response.user.email }))
+      dispatch(setUsername({ username: response.user.username }))
+      dispatch(setRole({ role: response.user.role }))
+      navigate('/onboarding');
     }
-  } catch(err){
-      console.log(err)
+  }
+  catch(err)
+  {
+    alert("Wrong Username or Password");
+    console.log(err)
   }
 }
 

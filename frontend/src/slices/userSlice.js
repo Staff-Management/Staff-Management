@@ -5,6 +5,7 @@ export const slice = createSlice({
   initialState: {
     loggedin: false,
     email: '',
+    role: '',
     token: '',
     username: '',
     password: '',
@@ -17,6 +18,9 @@ export const slice = createSlice({
     },
     setEmail: (state, action) => {
       state.email = action.payload.email;
+    },
+    setRole: (state, action) => {
+      state.role = action.payload.role;
     },
     setToken: (state, action) => {
       state.token = action.payload.token;
@@ -36,10 +40,11 @@ export const slice = createSlice({
   },
 });
 
-export const { setLogin, setEmail, setToken, setUsername, setPassword, setRePassword, setWorkAuth } = slice.actions;
+export const { setLogin, setEmail, setRole, setToken, setUsername, setPassword, setRePassword, setWorkAuth } = slice.actions;
 
-export const selectUser = state => state.user.loggedin;
+export const selectLogin = state => state.user.loggedin;
 export const selectEmail = state => state.user.email;
+export const selectRole = state => state.user.role;
 export const selectToken = state => state.user.token;
 export const selectUsername = state => state.user.username;
 export const selectPassword = state => state.user.password;

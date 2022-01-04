@@ -13,6 +13,12 @@ const tokenRoutes = require('./router/tokenRouter')
 // app.set('views','./public/views');
 const oneDay = 1000 * 60 * 60 * 24;
 app.use(express.json());
+app.use((req, res, next) => {
+  res.append('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.append('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 app.use(
   session({
     name: "SESSIONID",

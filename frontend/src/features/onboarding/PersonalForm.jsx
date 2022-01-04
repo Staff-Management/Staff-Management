@@ -585,7 +585,7 @@ export default function PersonalForm() {
                   variant="standard"
                   onChange={handleChange}
                 />
-                {contactList.length - 1 === index && contactList.length < 4 && (
+                {contactList.length - 1 === index && contactList.length < 10 && (
                   <Button
                     color="primary"
                     onClick={handleContactAdd}

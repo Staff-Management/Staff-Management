@@ -34,7 +34,9 @@ module.exports.token = async (req, resp) => {
       from: process.env.MY_EMAIL,
       to: data.email,
       subject: 'Registration Token',
-      text: `Here is your registration token:\n\n ${data.token}\n\nPlease note that this token will expire in 3 hours.`
+      text: `Please follow this link to register your account:
+        \n\n http://localhost:3000/signup?token=${data.token} \n\n
+        Please note that this token will expire in 3 hours.`
     };
 
     transporter.sendMail(mailOptions, function(error, info){
