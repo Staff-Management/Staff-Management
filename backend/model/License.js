@@ -6,6 +6,7 @@ const driverLicense = new Schema({
     expDate: Date,
     photo: {
         Type: Buffer,
+        //something
     }
 });
 
