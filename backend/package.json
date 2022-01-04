@@ -20,7 +20,7 @@
     "validator": "^13.7.0"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index"
   },
   "author": "",
   "license": "ISC"

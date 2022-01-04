@@ -46,7 +46,7 @@ export default function Onboarding() {
   const email = useSelector(selectEmail);
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = React.useState(0);
-  
+
   const handleNext = async () => {
     if (activeStep === 0)
     {

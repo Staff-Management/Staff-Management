@@ -7,6 +7,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { setLogin } from './slices/userSlice';
 import GuardedRoute from './guardedroute/GuardedRoute';
+import HRRoute from './guardedroute/HRRoute';
 import Onboarding from './features/onboarding/Onboarding';
 import SignUp from './features/signup/SignUp';
 import Login from './features/login/Login'
@@ -34,7 +35,7 @@ function App() {
         <Route 
           path="/"
           element={
-            <SignUp />
+            <Login />
           }
         />
         <Route 
@@ -54,9 +55,9 @@ function App() {
         <Route 
           path="/token"
           element={
-          <GuardedRoute>
+          <HRRoute>
             <Token />
-          </GuardedRoute>
+          </HRRoute>
           }
         />
         <Route path="/nav/:page" element={<Navigation />}/>
