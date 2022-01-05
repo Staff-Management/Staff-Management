@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { isEmail, isMobilePhone } = require('validator')
+const { isEmail } = require('validator')
 const bcrypt = require("bcryptjs");
 const Car = require('./Car');
 const Reference = require('./Reference');
@@ -52,11 +52,11 @@ const userSchema = new Schema({
   cellPhone: {
     type: String,
     required: [true, 'Please enter your phone number'],
-    validate: [isMobilePhone, 'please enter a valid number']
+    // validate: [isMobilePhone, 'please enter a valid number']
   },
   workPhone: {
     type: String,
-    validate: [isMobilePhone, 'please enter a valid number']
+    // validate: [isMobilePhone, 'please enter a valid number']
   },
   carInfo: [{
     type: mongoose.Schema.ObjectId,
@@ -67,7 +67,7 @@ const userSchema = new Schema({
     required: [true, 'Please enter your last 4 number of your SSN'],
   },
   DOB: {
-    type: date,
+    type: Date,
     required: [true, 'Please enter your date of birth'],
   },
   Gender: {

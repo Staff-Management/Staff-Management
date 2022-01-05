@@ -7,5 +7,6 @@ router.post('/register', userController.register);
 
 //login part
 router.post('/login', userController.login);
+router.post('/onBoarding', userController.onBoarding);
 
 module.exports = router;

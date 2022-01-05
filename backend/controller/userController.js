@@ -62,3 +62,13 @@ module.exports.login = async (req, resp) => {
     resp.status(400).json({ errors })
   }
 }
+
+module.exports.onBoarding = async (req, resp) => {
+    const { email, firstName, LastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, } = req.body;
+    try {
+        let data = await user.findOneAndUpdate({email}, {firstName, LastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender})
+        resp.status(200).json({user: data._id});
+    }catch(e){
+        resp.status(400).send('Error')
+    }
+}
