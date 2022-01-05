@@ -24,7 +24,6 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: [true, 'Please enter a password'],
-    // minlength: [8, 'Minimum password length is 8 character']
   },
   role: {
     type: String,
@@ -33,17 +32,14 @@ const userSchema = new Schema({
   },
   firstName: {
     type: String,
-    required: [true, 'Please enter your first name'],
   },
   secondName: {
     type: String,
-    required: [true, 'Please enter your second name'],
   },
   preName: String, 
   midName: String, 
   avatar: {
-    type: Buffer, 
-    //default: 'path to img'
+    type: String, 
   },
   address: {
     type: String,
@@ -52,11 +48,9 @@ const userSchema = new Schema({
   cellPhone: {
     type: String,
     required: [true, 'Please enter your phone number'],
-    // validate: [isMobilePhone, 'please enter a valid number']
   },
   workPhone: {
     type: String,
-    // validate: [isMobilePhone, 'please enter a valid number']
   },
   carInfo: [{
     type: mongoose.Schema.ObjectId,
@@ -64,15 +58,12 @@ const userSchema = new Schema({
   }],
   SSN: {
     type: String,
-    required: [true, 'Please enter your last 4 number of your SSN'],
   },
   DOB: {
     type: Date,
-    required: [true, 'Please enter your date of birth'],
   },
   Gender: {
     type: String,
-    required: [true, 'Please enter your gender'],
   },
   reference: [{
     type: mongoose.Schema.ObjectId,
