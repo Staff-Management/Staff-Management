@@ -7,7 +7,7 @@ const workAuth = new Schema({
         enum: ['Green Card', 'Citizen', 'H1-B', 'L2', 'F1(CPT/OPT)', 'H4', 'other']
     },
     photo: {
-        type: Buffer,
+        type: String,
     },
     startDate: Date,
     endDate: Date,

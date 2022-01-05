@@ -1,6 +1,7 @@
 require('dotenv').config();
 const user = require("../model/User");
 const jwt = require('jsonwebtoken');
+const Car = require("../model/Car");
 
 //generates JWT Token
 const maxAge = 1 * 24 * 60 * 60; //Set the maxage for the jwt token to .24 hours
@@ -64,11 +65,21 @@ module.exports.login = async (req, resp) => {
 }
 
 module.exports.onBoarding = async (req, resp) => {
-    const { email, firstName, LastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, } = req.body;
-    try {
-        let data = await user.findOneAndUpdate({email}, {firstName, LastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender})
-        resp.status(200).json({user: data._id});
-    }catch(e){
-        resp.status(400).send('Error')
-    }
+  const { email, firstName, lastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, make, model, color, Number, expDate, photo} = req.body;
+  // console.log(req.body);
+  try {
+      const data1 = await Car.create({  make, model, color });
+      // console.log(data1);
+      try {
+        //Use populate to get data for the id of embeded data
+          const data = await user.findOneAndUpdate({email}, {firstName, lastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, $push: { carInfo: data1._id} } )
+          resp.status(200).json({user: data});
+      }catch(e){
+          console.log(e);
+          resp.status(400).send('Error in the inner try')
+      }
+  }catch(e) {
+    console.log(e);
+    resp.status(400).send('Error in the outer try')
+  }
 }
