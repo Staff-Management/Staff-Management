@@ -8,6 +8,7 @@ const publicPath = path.join(__dirname, "/public");
 require("./db");
 const userRoutes = require('./router/userRouter');
 const tokenRoutes = require('./router/tokenRouter')
+const fs = require('fs')
 
 // app.set('view engine', 'pug');
 // app.set('views','./public/views');
@@ -35,5 +36,31 @@ app.use(
 app.use(express.static(publicPath));
 app.use(userRoutes);
 app.use(tokenRoutes);
+
+const AWS = require('aws-sdk');
+AWS.config.loadFromPath('./aws_config.json');
+
+const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+s3.listBuckets(function(err, data) {
+  if (err) {
+    console.log("Error", err);
+  } else {
+    console.log("Success", data.Buckets);
+  }
+});
+
+var params = {
+  Bucket: "staff-management", 
+  Key: "avatar/pier.jpg"
+ };
+
+s3.getObject(params, function(err, data) {
+  if (err)
+    console.log(err, err.stack);
+  else
+  {
+    const buf = Buffer.from(data.Body);
+  }
+ });
 
 module.exports = app;

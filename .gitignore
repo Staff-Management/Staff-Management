@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# ASW s3 config
+aws_config.json
