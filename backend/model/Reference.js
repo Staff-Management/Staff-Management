@@ -3,26 +3,22 @@ const Schema = mongoose.Schema;
 const { isEmail } = require('validator')
 
 const ref = new Schema({
-    firstName: {
-        type: String,
-        required: [true, 'Please enter your first name'],
-      },
-      secondName: {
-        type: String,
-        required: [true, 'Please enter your second name'],
-      }, 
-      midName: String, 
-      email: {
-        type: String,
-        unique: true,
-        lowercase: true,
-        required: [true, 'Please enter an email'],
-        validate: [isEmail, 'Please enter a valid email']
-      },
-      Relationship: {
-        type: String, 
-        required: [true, 'Please enter your relationship'],
-      }
+  refFirstName: {
+    type: String,
+  },
+  refSecondName: {
+    type: String,
+  }, 
+  refMidName: String, 
+  refEmail: {
+    type: String,
+    unique: true,
+    lowercase: true,
+    validate: [isEmail, 'Please enter a valid email']
+  },
+  refRelationship: {
+    type: String, 
+  }
 });
 
 

@@ -2,6 +2,10 @@ require('dotenv').config();
 const user = require("../model/User");
 const jwt = require('jsonwebtoken');
 const Car = require("../model/Car");
+const EmContact = require("../model/EmContact");
+const License = require("../model/License");
+const Reference = require("../model/Reference");
+const WorkAuth = require("../model/WorkAuth");
 
 //generates JWT Token
 const maxAge = 1 * 24 * 60 * 60; //Set the maxage for the jwt token to .24 hours
@@ -65,21 +69,22 @@ module.exports.login = async (req, resp) => {
 }
 
 module.exports.onBoarding = async (req, resp) => {
-  const { email, firstName, lastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, make, model, color, Number, expDate, photo} = req.body;
-  // console.log(req.body);
-  try {
-      const data1 = await Car.create({  make, model, color });
-      // console.log(data1);
-      try {
-        //Use populate to get data for the id of embeded data
-          const data = await user.findOneAndUpdate({email}, {firstName, lastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, $push: { carInfo: data1._id} } )
-          resp.status(200).json({user: data});
-      }catch(e){
-          console.log(e);
-          resp.status(400).send('Error in the inner try')
-      }
-  }catch(e) {
-    console.log(e);
-    resp.status(400).send('Error in the outer try')
-  }
+  const { email, firstName, lastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, make, model, color, emFirstName, emSecondName, emMidName, emEmail, emRelationship, number, expDate, photo, refFirstName, refSecondName, refMidName, refEmail, refRelationship, visa, workPhoto, startDate, endDate} = req.body;
+    try {
+        const data1 = await Car.create({  make, model, color });
+        const data2 = await EmContact.create({  emFirstName, emSecondName, emMidName, emEmail, emRelationship });
+        const data3 = await License.create({  number, expDate, photo });
+        const data4 = await Reference.create({  refFirstName, refSecondName, refMidName, refEmail, refRelationship });
+        const data5 = await WorkAuth.create({  visa, workPhoto, startDate, endDate });
+        try {
+            const data = await user.findOneAndUpdate({email}, {firstName, lastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, $push: { carInfo: data1._id, EmergencyContact: data2._id}, driverLicense: data3._id,  reference: data4._id, workAuth: data5._id }  )
+            resp.status(200).json({user: data});
+        }catch(e){
+            console.log(e);
+            resp.status(400).send('Error in the inner try')
+        }
+    }catch(e) {
+        console.log(e);
+        resp.status(400).send('Error in the outer try')
+    }
 }

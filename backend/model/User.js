@@ -65,22 +65,22 @@ const userSchema = new Schema({
   Gender: {
     type: String,
   },
-  reference: [{
+  reference: {
     type: mongoose.Schema.ObjectId,
     ref: Reference,
-  }],
+  },
   EmergencyContact: [{
     type: mongoose.Schema.ObjectId,
     ref: EmContact,
   }],
-  workAuth: [{
+  workAuth: {
     type: mongoose.Schema.ObjectId,
     ref: WorkAuth,
-  }],
-  driverLicense: [{
+  },
+  driverLicense: {
     type: mongoose.Schema.ObjectId,
     ref: License,
-  }],
+  },
 });
 
 //Hashing the password
