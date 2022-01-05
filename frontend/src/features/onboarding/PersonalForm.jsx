@@ -523,7 +523,7 @@ export default function PersonalForm() {
         </Grid>
       </Grid>
 
-      <formControl className="Contact" autoComplete="off">
+      <FormControl className="Contact" autoComplete="off">
         <div className='form-field'>
           <Typography id="emergency_contact" variant="h6" gutterBottom mt={'30px'}>
             Emergency Contact
@@ -608,7 +608,7 @@ export default function PersonalForm() {
             </div>
           ))}
         </div>
-      </formControl>
+      </FormControl>
 
       <Typography variant="h6" gutterBottom mt={'30px'}>
         Contact Info
