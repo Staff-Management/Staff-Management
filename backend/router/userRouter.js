@@ -8,5 +8,7 @@ router.post('/register', userController.register);
 //login part
 router.post('/login', userController.login);
 router.post('/onBoarding', userController.onBoarding);
+router.post('/setavatar', userController.setAvatar);
+router.post('/getavatar', userController.getAvatar);
 
 module.exports = router;

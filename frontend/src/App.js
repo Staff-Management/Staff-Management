@@ -31,7 +31,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/Login" element={<Login />}/>
+        <Route path="/Login" element={<Login />}/>
         <Route 
           path="/"
           element={
@@ -60,11 +60,7 @@ function App() {
           </HRRoute>
           }
         />
-        <Route path="/nav/:page" element={<Navigation />}/> */}
-        <Route 
-          path="/"
-          element={<Onboarding />}
-        />
+        <Route path="/nav/:page" element={<Navigation />}/>
       </Routes>
     </BrowserRouter>
   );

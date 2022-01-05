@@ -1,7 +1,33 @@
 require('dotenv').config();
+const { v4: uuidv4 } = require('uuid');
 const user = require("../model/User");
 const jwt = require('jsonwebtoken');
 const Car = require("../model/Car");
+const AWS = require('aws-sdk');
+AWS.config.loadFromPath('./aws_config.json');
+
+const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+// s3.listBuckets(function(err, data) {
+//   if (err) {
+//     console.log("Error", err);
+//   } else {
+//     console.log("Success", data.Buckets);
+//   }
+// });
+
+// var params = {
+//   Bucket: "staff-management", 
+//   Key: "avatar/pier.jpg"
+//  };
+
+// s3.getObject(params, function(err, data) {
+//   if (err)
+//     console.log(err, err.stack);
+//   else
+//   {
+//     const buf = Buffer.from(data.Body);
+//   }
+//  });
 
 //generates JWT Token
 const maxAge = 1 * 24 * 60 * 60; //Set the maxage for the jwt token to .24 hours
@@ -66,20 +92,69 @@ module.exports.login = async (req, resp) => {
 
 module.exports.onBoarding = async (req, resp) => {
   const { email, firstName, lastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, make, model, color, Number, expDate, photo} = req.body;
-  // console.log(req.body);
   try {
-      const data1 = await Car.create({  make, model, color });
-      // console.log(data1);
-      try {
-        //Use populate to get data for the id of embeded data
-          const data = await user.findOneAndUpdate({email}, {firstName, lastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, $push: { carInfo: data1._id} } )
-          resp.status(200).json({user: data});
-      }catch(e){
-          console.log(e);
-          resp.status(400).send('Error in the inner try')
-      }
+    const data1 = await Car.create({  make, model, color });
+    try {
+      //Use populate to get data for the id of embeded data
+      const data = await user.findOneAndUpdate({email}, {firstName, lastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, $push: { carInfo: data1._id} } )
+      resp.status(200).json({user: data});
+    }catch(e){
+      console.log(e);
+      resp.status(400).send('Error')
+    }
   }catch(e) {
     console.log(e);
-    resp.status(400).send('Error in the outer try')
+    resp.status(400).send('Error')
+  }
+}
+
+module.exports.setAvatar = async (req, resp) => {
+  const { email, image_data } = req.body;
+  const file_name = `${uuidv4()}.jpg`
+  const buffer = Buffer.from(image_data.replace(/^data:image\/\w+;base64,/, ''), 'base64');
+  try {
+    const params = {
+      Bucket: 'staff-management',
+      Key: `avatar/${file_name}`,
+      Body: buffer,
+    }
+    const stored = await s3.upload(params).promise();
+    try {
+      const data = await user.findOneAndUpdate({ email }, { avatar: `avatar/${file_name}` });
+      resp.status(200).json({user: data});
+    }
+    catch(e) {
+      console.log(e);
+      resp.status(400).send('Error')
+    }
+  }
+  catch(e) {
+    console.log(e);
+    resp.status(400).send('Error')
+  }
+}
+
+module.exports.getAvatar = async (req, resp) => {
+  const { email } = req.body;
+  try {
+    const data = await user.findOne({ email });
+    const file_path = data.avatar;
+    const params = {
+      Bucket: 'staff-management',
+      Key: file_path,
+    }
+    try {
+      const img = await s3.getObject(params).promise();
+      const base64_str = img.Body.toString('base64');
+      resp.status(200).json({ src: base64_str });
+    }
+    catch(e) {
+      console.log(e);
+      resp.status(400).send('Error')
+    }
+  }
+  catch(e) {
+    console.log(e);
+    resp.status(400).send('Error')
   }
 }

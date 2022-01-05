@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -17,6 +18,8 @@ import FormLabel from '@mui/material/FormLabel';
 import { styled, Theme, makeStyles } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { selectEmail } from 'slices/userSlice';
+import { useSelector } from 'react-redux';
 import { useCallback } from 'react';
 import { useState } from 'react';
 
@@ -53,6 +56,7 @@ const SSN = React.forwardRef(function TextMaskCustom(props, ref) {
 });
 
 export default function PersonalForm() {
+  const email = useSelector(selectEmail);
   const [values, setValues] = React.useState({
     firstName: "",
     middleName: "",
@@ -78,7 +82,17 @@ export default function PersonalForm() {
     vehicleModel: "",
     vehicleType: "",
     vehicleColor: "",
+    avatar_file: null,
+    avatar_image: "",
+    avatar_src: ""
   });
+
+  useEffect(() => {
+    if (values.avatar_image.includes('data:image/jpeg'))
+    {
+      uploadImage();
+    }
+  }, [values.avatar_image])
 
   const [contactList, setContactList] = React.useState([{
     contact: "",
@@ -93,7 +107,6 @@ export default function PersonalForm() {
   };
 
   const handleCheckbox = (event) => {
-    console.log(event.target.checked);
     setValues({
       ...values,
       [event.target.name]: event.target.checked
@@ -118,10 +131,73 @@ export default function PersonalForm() {
     setContactList([...contactList, { contact: "" }]);
   };
 
-  const handleSubmission = (event) => {
-
+  const handleAvatarChange = (event) => {
+    setValues({
+      ...values,
+      avatar_file: event.target.files[0]
+    });
   };
 
+  const uploadImage = async () => {
+    const image_data = values.avatar_image;
+    try {
+      const res = await fetch('http://localhost:4000/setavatar', {
+        method: 'POST',
+        body: JSON.stringify({ email, image_data }),
+        headers: {'Content-Type': 'application/json'}
+      })
+      const response = await res.json();
+      console.log(response);
+    } catch(err){
+      console.log(err)
+    }
+  };
+
+  const handleAvatar = async (event) => {
+    event.preventDefault();
+    let reader = new FileReader()
+    reader.onload = (e) => {
+      setValues({
+        ...values,
+        avatar_image: e.target.result
+      });
+    }
+    reader.readAsDataURL(values.avatar_file);
+  };
+
+  const showAvatar = async () => {
+    try {
+      const res = await fetch('http://localhost:4000/getavatar', {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+        headers: {'Content-Type': 'application/json'}
+      })
+      const response = await res.json();
+      setValues({
+        ...values,
+        avatar_src: `data:image/jpeg;base64,${response.src}`
+      });
+    } catch(err){
+      console.log(err)
+    }
+  };
+
+  const removeImage = (field_name) => {
+    setValues({
+      ...values,
+      [field_name]: ""
+    })
+  }
+
+  const displayAvatar = (
+    values.avatar_src === "" ?
+    <></>
+    :
+    <div>
+      <img src={values.avatar_src} style={{width: 100, height: 100}}></img>
+    </div>
+  )
+  
   const visa_status = (
     values.work_auth === 'other' ?
       <Grid item xs={12} sm={6}>
@@ -232,7 +308,7 @@ export default function PersonalForm() {
                 <label htmlFor="contained-button-file">
                   <Input accept="image/*" id="contained-button-file" multiple type="file" />
                 </label>
-                <Button onClick={handleSubmission} variant="contained" component="span">
+                <Button variant="contained" component="span">
                   Upload a license photo
                 </Button>
               </FormGroup>
@@ -338,26 +414,35 @@ export default function PersonalForm() {
           </FormControl>
         </Grid>
         <Grid item xs={12} s={6}>
-          <Typography variant="h6" gutterBottom>
-            Profile Photo
-          </Typography>
-          <Avatar alt="" />
-          <label htmlFor="contained-button-file">
-            <Input
+          <Box component="form" onSubmit={(event) => handleAvatar(event)} noValidate sx={{ mt: 1 }}>
+            <Typography variant="h6" gutterBottom>
+              Profile Photo
+            </Typography>
+            {/* <Avatar alt="" /> */}
+            <TextField
               accept="image/*"
-              id="contained-button-file"
-              multiple
+              id="avatar"
+              name="avatar"
               type="file"
+              onChange={handleAvatarChange}
+              fullWidth
             />
-          </label>
+            <Button
+              type='submit'
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Upload
+            </Button>
+          </Box>
+          { displayAvatar }
           <Button
-            style={{ height: "25px" }}
-            variant="contained"
-            component="span"
-            onClick={handleSubmission}
-          >
-            Upload
-          </Button>
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={() => showAvatar()}
+            >
+              Fetch Avatar
+            </Button>
         </Grid>
         <Grid item xs={12} sm={12}>
           <FormControl component="fieldset">

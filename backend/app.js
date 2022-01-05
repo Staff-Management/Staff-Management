@@ -13,7 +13,7 @@ const fs = require('fs')
 // app.set('view engine', 'pug');
 // app.set('views','./public/views');
 const oneDay = 1000 * 60 * 60 * 24;
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 app.use((req, res, next) => {
   res.append('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -36,31 +36,5 @@ app.use(
 app.use(express.static(publicPath));
 app.use(userRoutes);
 app.use(tokenRoutes);
-
-const AWS = require('aws-sdk');
-AWS.config.loadFromPath('./aws_config.json');
-
-const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-s3.listBuckets(function(err, data) {
-  if (err) {
-    console.log("Error", err);
-  } else {
-    console.log("Success", data.Buckets);
-  }
-});
-
-var params = {
-  Bucket: "staff-management", 
-  Key: "avatar/pier.jpg"
- };
-
-s3.getObject(params, function(err, data) {
-  if (err)
-    console.log(err, err.stack);
-  else
-  {
-    const buf = Buffer.from(data.Body);
-  }
- });
 
 module.exports = app;
