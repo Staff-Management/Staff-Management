@@ -10,5 +10,10 @@ router.post('/login', userController.login);
 router.post('/onBoarding', userController.onBoarding);
 router.post('/setavatar', userController.setAvatar);
 router.post('/getavatar', userController.getAvatar);
+router.post('/updateDriv', userController.updateDriv);
+router.post('/updateWork', userController.updateWorkAuth);
+router.post('/updateRef', userController.updateRef);
+router.post('/updateCar', userController.updateCar);
+router.post('/updateContact', userController.updateContact);
 
 module.exports = router;

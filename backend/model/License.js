@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const driverLicense = new Schema({
-    Number: String,
+    number: String,
     expDate: Date,
     photo: {
-        Type: String,
+        type: String,
         //something
     }
 });

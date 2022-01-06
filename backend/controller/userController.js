@@ -145,3 +145,84 @@ module.exports.getAvatar = async (req, resp) => {
   }
 
 }
+
+module.exports.updateDriv = async (req, resp) => {
+  const { email, number, expDate, photo} = req.body;
+  try {
+      const data = await user.findOne({email})
+      const dataId = data.driverLicense;
+      // console.log(dataId);
+      try {
+          const dl = await License.findByIdAndUpdate(dataId, { number, expDate, photo })
+          resp.status(200).json({user: data});
+      }catch(e){
+          console.log(e);
+          resp.status(400).send('Error in the inner try')
+      }
+  }catch(e) {
+      console.log(e);
+      resp.status(400).send('Error in the outer try')
+  }
+}
+
+module.exports.updateRef = async (req, resp) => {
+  const { email, refFirstName, refSecondName, refMidName, refEmail, refRelationship} = req.body;
+  try {
+      const data = await user.findOne({email})
+      const dataId = data.reference;
+      // console.log(dataId);
+      try {
+          const dl = await Reference.findByIdAndUpdate(dataId, { refFirstName, refSecondName, refMidName, refEmail, refRelationship })
+          resp.status(200).json({user: data});
+      }catch(e){
+          console.log(e);
+          resp.status(400).send('Error in the inner try')
+      }
+  }catch(e) {
+      console.log(e);
+      resp.status(400).send('Error in the outer try')
+  }
+}
+
+module.exports.updateWorkAuth = async (req, resp) => {
+  const { email, visa, workPhoto, startDate, endDate} = req.body;
+  try {
+      const data = await user.findOne({email})
+      const dataId = data.workAuth;
+      // console.log(dataId);
+      try {
+          const dl = await WorkAuth.findByIdAndUpdate(dataId, { visa, workPhoto, startDate, endDate })
+          resp.status(200).json({user: data});
+      }catch(e){
+          console.log(e);
+          resp.status(400).send('Error in the inner try')
+      }
+  }catch(e) {
+      console.log(e);
+      resp.status(400).send('Error in the outer try')
+  }
+}
+
+module.exports.updateCar = async (req, resp) => {
+  const { email, make, model, color } = req.body;
+  try {
+      const addCar = await Car.create({ make, model, color });
+      const data = await user.findOneAndUpdate({email}, { $push: {carInfo: addCar._id} } )
+      resp.status(200).json({ data })
+  }catch(e) {
+      console.log(e);
+      resp.status(400).send('Error in the outer try')
+  }
+}
+
+module.exports.updateContact = async (req, resp) => {
+  const { email, emFirstName, emSecondName, emMidName, emEmail, emRelationship } = req.body;
+  try {
+      const addContact = await EmContact.create({ emFirstName, emSecondName, emMidName, emEmail, emRelationship });
+      const data = await user.findOneAndUpdate({email}, { $push: {EmergencyContact: addContact._id} } )
+      resp.status(200).json({ data })
+  }catch(e) {
+      console.log(e);
+      resp.status(400).send('Error in the outer try')
+  }
+}
