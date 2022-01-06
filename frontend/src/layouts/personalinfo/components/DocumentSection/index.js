@@ -6,31 +6,30 @@ import MDBox from "components/MDBox";
 
 // Material Dashboard 2 React components
 import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
 
 // @mui icons
-import ForumIcon from '@mui/icons-material/Forum';
+import PageviewIcon from '@mui/icons-material/Pageview';
 
 
-function Emergency() {
+function DocumentSection() {
 
     return (
+
         <MDBox>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
                     <MDBox mb={1.5}>
                         <ProfileInfoCard
-                            title="Emergency Contact"
+                            title="Documents"
                             info={{
-                            fullName: "John Doe",
-                            phone: "(111) 111 - 1111",
-                            address: "1234 Street Name Philadelphia, PA 07012",
+                            upload1: "Symbol | File Name1 | 1/5/2017",
+                            upload2: "Symbol | File Name2 | 12/28/2012",
+                            upload3: "Symbol | File Name3 | 1/21/2009",
                             }}
                             social={[
                                 {
-                                    link: "https://www.wechat.com/",
-                                    icon: <ForumIcon />,
+                                    link: "https://www.google.com/docs/about/",
+                                    icon: <PageviewIcon />,
                                     color: "github",
                                 },
                             ]}
@@ -44,4 +43,4 @@ function Emergency() {
     )
 }
 
-export default Emergency;
+export default DocumentSection;

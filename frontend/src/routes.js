@@ -36,7 +36,7 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 React layouts
-import Dashboard from "layouts/dashboard";
+import PersonalInfo from "layouts/personalinfo";
 import Tables from "layouts/tables";
 
 // @mui icons
@@ -47,9 +47,9 @@ const routes = [
     type: "collapse",
     name: "Dashboard",
     key: "dashboard",
-    icon: <Icon fontSize="small">dashboard</Icon>,
+    icon: <Icon fontSize="small">Personal Info</Icon>,
     route: "/dashboard",
-    component: <Dashboard />,
+    component: <PersonalInfo />,
   },
   {
     type: "collapse",

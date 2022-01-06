@@ -23,21 +23,17 @@ import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 
-// Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-
-// Dashboard components
+// Personal Info components
 import Profile from "./components/Profile";
-import Address from "layouts/dashboard/components/Address";
+import Address from "layouts/personalinfo/components/Address";
 import Contact from "./components/Contact";
 import Employment from "./components/Employment";
 import Emergency from "./components/Emergency";
 import DocumentSection from "./components/DocumentSection";
 
 
-function Dashboard() {
+function PersonalInfo() {
 
   return (
     <DashboardLayout>
@@ -85,4 +81,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default PersonalInfo;
