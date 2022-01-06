@@ -8,5 +8,10 @@ router.post('/register', userController.register);
 //login part
 router.post('/login', userController.login);
 router.post('/onBoarding', userController.onBoarding);
+router.post('/updateDriv', userController.updateDriv);
+router.post('/updateWork', userController.updateWorkAuth);
+router.post('/updateRef', userController.updateRef);
+router.post('/updateCar', userController.updateCar);
+router.post('/updateContact', userController.updateContact);
 
 module.exports = router;
