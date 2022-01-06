@@ -10,7 +10,6 @@ import { IMaskInput } from 'react-imask';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { Avatar, FormGroup } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormLabel from '@mui/material/FormLabel';
@@ -109,23 +108,6 @@ export default function PersonalForm() {
       [event.target.name]: event.target.checked
     });
     console.log(values);
-  };
-
-  const handleContactChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...contactList];
-    list[index][name] = value;
-    setContactList(list);
-  };
-
-  const handleContactRemove = (index) => {
-    const list = [...contactList];
-    list.splice(index, 1);
-    setContactList(list);
-  };
-
-  const handleContactAdd = () => {
-    setContactList([...contactList, { contact: "" }]);
   };
 
   const handleAvatarChange = (event) => {
