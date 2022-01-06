@@ -3,12 +3,18 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './App';
 import store from './store/store';
+import { MaterialUIControllerProvider } from "context";
+import { BrowserRouter } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <BrowserRouter>
+    <Provider store={store}>
+      <MaterialUIControllerProvider>
+        <App />
+      </MaterialUIControllerProvider>
+    </Provider>
+  </BrowserRouter>
   ,
   document.getElementById('root')
 );
