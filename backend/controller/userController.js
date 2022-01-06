@@ -7,6 +7,7 @@ const EmContact = require("../model/EmContact");
 const License = require("../model/License");
 const Reference = require("../model/Reference");
 const WorkAuth = require("../model/WorkAuth");
+const EmAddress = require('../model/Address');
 const AWS = require('aws-sdk');
 AWS.config.loadFromPath('./aws_config.json');
 
@@ -74,15 +75,18 @@ module.exports.login = async (req, resp) => {
 }
 
 module.exports.onBoarding = async (req, resp) => {
-  const { email, firstName, lastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, make, model, color, emFirstName, emSecondName, emMidName, emEmail, emRelationship, number, expDate, photo, refFirstName, refSecondName, refMidName, refEmail, refRelationship, visa, workPhoto, startDate, endDate} = req.body;
+  const { email, firstName, lastName, preName, midName, address1, address2, city, state, zipCode, cellPhone, workPhone, SSN, DOB, gender, make, model, color, emFirstName, emSecondName, emMidName, emEmail, emRelationship, number, expDate, photo, refFirstName, refSecondName, refMidName, refEmail, refRelationship, visa, workPhoto, startDate, endDate} = req.body;
   try {
     const data1 = await Car.create({  make, model, color });
     const data2 = await EmContact.create({  emFirstName, emSecondName, emMidName, emEmail, emRelationship });
-    const data3 = await License.create({  number, expDate, photo });
-    const data4 = await Reference.create({  refFirstName, refSecondName, refMidName, refEmail, refRelationship });
-    const data5 = await WorkAuth.create({  visa, workPhoto, startDate, endDate });
+    const data3 = await EmAddress.create({  address1, address2, city, state, zipCode });
+    const data4 = await License.create({  number, expDate, photo });
+    const data5 = await Reference.create({  refFirstName, refSecondName, refMidName, refEmail, refRelationship });
+    const data6 = await WorkAuth.create({  visa, workPhoto, startDate, endDate });
     try {
-      const data = await user.findOneAndUpdate({email}, {firstName, lastName, preName, midName, address, cellPhone, workPhone, SSN, DOB, gender, $push: { carInfo: data1._id, EmergencyContact: data2._id}, driverLicense: data3._id,  reference: data4._id, workAuth: data5._id }  )
+      const data = await user.findOneAndUpdate({email}, {firstName, lastName, preName, midName, cellPhone, workPhone, SSN, DOB, gender, 
+        $push: { carInfo: data1._id, EmergencyContact: data2._id}, driverLicense: data4._id,  
+        reference: data5._id, workAuth: data6._id, address: data3._id}  )
       resp.status(200).json({user: data});
     }catch(e){
       console.log(e);
@@ -146,6 +150,17 @@ module.exports.getAvatar = async (req, resp) => {
 
 }
 
+module.exports.updateProfile = async (req, resp) => {
+  const { email, firstName, lastName, preName, midName, cellPhone, workPhone, SSN, DOB, gender } = req.body;
+  try {
+      const data = await user.findOneAndUpdate({email}, { firstName, lastName, preName, midName, cellPhone, workPhone, SSN, DOB, gender } )
+      resp.status(200).json({ data })
+  }catch(e) {
+      console.log(e);
+      resp.status(400).send('Error in the outer try')
+  }
+}
+
 module.exports.updateDriv = async (req, resp) => {
   const { email, number, expDate, photo} = req.body;
   try {
@@ -154,6 +169,25 @@ module.exports.updateDriv = async (req, resp) => {
       // console.log(dataId);
       try {
           const dl = await License.findByIdAndUpdate(dataId, { number, expDate, photo })
+          resp.status(200).json({user: data});
+      }catch(e){
+          console.log(e);
+          resp.status(400).send('Error in the inner try')
+      }
+  }catch(e) {
+      console.log(e);
+      resp.status(400).send('Error in the outer try')
+  }
+}
+
+module.exports.updateAddress = async (req, resp) => {
+  const { email, address1, address2, city, state, zipCode } = req.body;
+  try {
+      const data = await user.findOne({email})
+      const dataId = data.address;
+      // console.log(dataId);
+      try {
+          const dl = await EmAddress.findByIdAndUpdate(dataId, { address1, address2, city, state, zipCode })
           resp.status(200).json({user: data});
       }catch(e){
           console.log(e);

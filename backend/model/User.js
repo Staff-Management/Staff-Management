@@ -3,6 +3,7 @@ const { isEmail } = require('validator')
 const bcrypt = require("bcryptjs");
 const Car = require('./Car');
 const Reference = require('./Reference');
+const EmAddress = require('./Address');
 const EmContact = require('./EmContact');
 const WorkAuth = require("./WorkAuth");
 const License = require("./License")
@@ -42,8 +43,8 @@ const userSchema = new Schema({
     type: String, 
   },
   address: {
-    type: String,
-    required: [true, 'Please enter your address'],
+    type: mongoose.Schema.ObjectId,
+    ref: EmAddress,
   },
   cellPhone: {
     type: String,
