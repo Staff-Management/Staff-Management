@@ -8,6 +8,7 @@ import Onboarding from './features/onboarding/Onboarding';
 import SignUp from './features/signup/SignUp';
 import Login from './features/login/Login'
 import Token from './features/token/Token'
+import Dashboard from './layouts/dashboard'
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -154,7 +155,9 @@ function App() {
         <Route 
           path="/"
           element={
-            <Login />
+            <GuardedRoute>
+              <Dashboard />
+            </GuardedRoute>
           }
         />
         <Route 
