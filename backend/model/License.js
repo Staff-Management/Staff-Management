@@ -6,7 +6,6 @@ const driverLicense = new Schema({
     expDate: Date,
     photo: {
         type: String,
-        //something
     }
 });
 
