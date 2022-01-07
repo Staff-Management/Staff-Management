@@ -106,8 +106,6 @@ export default function PersonalForm(props) {
   }
 
   const handleChange = (event) => {
-    console.log(event.target.name);
-    console.log(event.target.value);
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -495,7 +493,7 @@ export default function PersonalForm(props) {
               onChange={handleChange}
             >
               <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="" control={<Radio />} label="No" />
+              <FormControlLabel value="no" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
           {driver_license}
@@ -516,7 +514,7 @@ export default function PersonalForm(props) {
               onChange={handleChange}
             >
               <FormControlLabel value="yes" control={<Radio />} label="Yes" />
-              <FormControlLabel value="" control={<Radio />} label="No" />
+              <FormControlLabel value="no" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
         </Grid>

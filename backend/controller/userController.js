@@ -3,11 +3,11 @@ const { v4: uuidv4 } = require('uuid');
 const user = require("../model/User");
 const jwt = require('jsonwebtoken');
 const Car = require("../model/Car");
-const EmContact = require("../model/EmContact");
-const License = require("../model/License");
+const EmergencyContact = require("../model/EmergencyContact");
+const DriverLicense = require("../model/DriverLicense");
 const Reference = require("../model/Reference");
 const WorkAuth = require("../model/WorkAuth");
-const EmAddress = require('../model/Address');
+const Address = require('../model/Address');
 const AWS = require('aws-sdk');
 AWS.config.loadFromPath('./aws_config.json');
 
@@ -75,18 +75,63 @@ module.exports.login = async (req, resp) => {
 }
 
 module.exports.onBoarding = async (req, resp) => {
-  const { email, firstName, lastName, preName, midName, address1, address2, city, state, zipCode, cellPhone, workPhone, SSN, DOB, gender, make, model, color, emFirstName, emSecondName, emMidName, emEmail, emRelationship, number, expDate, photo, refFirstName, refSecondName, refMidName, refEmail, refRelationship, visa, workPhoto, startDate, endDate} = req.body;
+  const { email, all_info, em_contact } = req.body;
+  const { 
+    firstName,
+    lastName,
+    preferredName,
+		middleName,
+		address1,
+		address2,
+		city,
+		state,
+		zip,
+		country,
+		cell_phone,
+		work_phone,
+		ssn,
+		birthday,
+		gender,
+		vehicle_maker,
+		vehicle_model,
+		vehicle_color,
+		driverLicense,
+		driverLicense_num,
+		driverLicense_exp,
+		ref_firstname,
+		ref_lastname,
+		ref_middlename,
+		ref_email,
+		ref_phone,
+		ref_relationship,
+    ref_address1,
+		ref_city,
+		ref_state,
+		ref_zip,
+		ref_country,
+		work_auth,
+		perm_citizen,
+		green_card_citizen,
+		other_work_auth,
+		workAuth_start,
+		workAuth_exp 
+  } = all_info
   try {
-    const data1 = await Car.create({  make, model, color });
-    const data2 = await EmContact.create({  emFirstName, emSecondName, emMidName, emEmail, emRelationship });
-    const data3 = await EmAddress.create({  address1, address2, city, state, zipCode });
-    const data4 = await License.create({  number, expDate, photo });
-    const data5 = await Reference.create({  refFirstName, refSecondName, refMidName, refEmail, refRelationship });
-    const data6 = await WorkAuth.create({  visa, workPhoto, startDate, endDate });
+    let emergency_id = [];
+    const car_info = await Car.create({  vehicle_maker, vehicle_model, vehicle_color });
+    const address_info = await Address.create({  address1, address2, city, state, zip, country });
+    const dl_info = await DriverLicense.create({  driverLicense_num, driverLicense_exp });
+    const ref_info = await Reference.create({  ref_firstname, ref_middlename, ref_lastname, ref_address1, ref_city, ref_state, ref_country, ref_zip, ref_phone, ref_email, ref_relationship });
+    const work_auth_info = await WorkAuth.create({  work_auth, other_work_auth, workAuth_start, workAuth_exp  });
+    for (const contact of em_contact)
+    {
+      const emergency = await EmergencyContact.create(contact);
+      emergency_id.push(emergency._id)
+    }
     try {
-      const data = await user.findOneAndUpdate({email}, {firstName, lastName, preName, midName, cellPhone, workPhone, SSN, DOB, gender, 
-        $push: { carInfo: data1._id, EmergencyContact: data2._id}, driverLicense: data4._id,  
-        reference: data5._id, workAuth: data6._id, address: data3._id}  )
+      console.log(emergency_id);
+      const data = await user.findOneAndUpdate({ email }, { firstName, lastName, preferredName, middleName, cell_phone, work_phone, ssn, birthday, gender, green_card_citizen, perm_citizen, driverLicense, car_info : car_info._id,
+        dl_info: dl_info._id, ref_info: ref_info._id, work_auth_info: work_auth_info._id, address_info: address_info._id, $push: { emergency_contact_info: { $each: emergency_id } }}  )
       resp.status(200).json({user: data});
     }catch(e){
       console.log(e);

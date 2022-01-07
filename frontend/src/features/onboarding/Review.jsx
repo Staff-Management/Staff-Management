@@ -11,6 +11,18 @@ export default function Review(props) {
   const email = useSelector(selectEmail);
   const contact_info = useSelector(selectContactInfo);
   const contact = useSelector(selectEmergencyContact);
+  const em_contact = JSON.parse(JSON.stringify(contact));
+  const all_info = Object.assign(JSON.parse(JSON.stringify(personal_info)), JSON.parse(JSON.stringify(contact_info)));
+  delete all_info.avatar_file
+  delete all_info.avatar_data
+  delete all_info.avatar_src
+  delete all_info.driverLicense_file
+  delete all_info.driverLicense_data
+  delete all_info.driverLicense_src
+  delete all_info.workAuth_file
+  delete all_info.workAuth_data
+  delete all_info.workAuth_src
+  // console.log(Object.keys(all_info).length);
 
   const dl = (
     personal_info.driverLicense === 'yes' ?
@@ -89,6 +101,25 @@ export default function Review(props) {
         </Grid>
       </React.Fragment>
   )
+
+  const handleConfirm = async () => {
+    try
+    {
+      console.log(em_contact);
+      const res = await fetch('http://localhost:4000/onboarding', {
+        method: 'POST',
+        body: JSON.stringify({ email, all_info, em_contact }),
+        headers: {'Content-Type': 'application/json'}
+      })
+      const response = await res.json();
+      props.handleNext();
+    }
+    catch(err)
+    {
+      alert('Error');
+      console.log(err);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -356,7 +387,7 @@ export default function Review(props) {
         </Button>
         <Button
           variant="contained"
-          onClick={props.handleNext}
+          onClick={handleConfirm}
           sx={{ mt: 3, ml: 1 }}
         >
           Confirm

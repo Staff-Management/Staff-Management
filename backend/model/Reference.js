@@ -2,25 +2,42 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const { isEmail } = require('validator')
 
-const ref = new Schema({
-  refFirstName: {
+const referenceSchema = new Schema({
+  ref_firstname: {
     type: String,
   },
-  refSecondName: {
+  ref_middlename: {
     type: String,
   }, 
-  refMidName: String, 
-  refEmail: {
+  ref_lastname: {
     type: String,
-    unique: true,
-    lowercase: true,
-    validate: [isEmail, 'Please enter a valid email']
   },
-  refRelationship: {
+  ref_address1: {
+    type: String,
+  },
+  ref_city: {
+    type: String,
+  },
+  ref_state: {
+    type: String,
+  },
+  ref_country: {
+    type: String,
+  },
+  ref_zip: {
+    type: String,
+  },
+  ref_phone: {
+    type: String,
+  },
+  ref_email: {
+    type: String,
+  },
+  ref_relationship: {
     type: String, 
   }
 });
 
 
-const Reference = mongoose.model("Reference", ref);
+const Reference = mongoose.model("Reference", referenceSchema);
 module.exports = Reference;

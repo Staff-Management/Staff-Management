@@ -1,18 +1,21 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const workAuth = new Schema({
-    visa: {
-        type: String,
-        enum: ['Green Card', 'Citizen', 'H1-B', 'L2', 'F1(CPT/OPT)', 'H4', 'other']
-    },
-    workPhoto: {
+const workAuthSchema = new Schema({
+    work_auth: {
         type: String,
     },
-    startDate: Date,
-    endDate: Date,
+    other_work_auth: {
+        type: String,
+    },
+    workAuth_start: {
+        type: String,
+    },
+    workAuth_exp: {
+        type: String,
+    }
 });
 
 
-const WorkAuth = mongoose.model("Work Authorization", workAuth);
+const WorkAuth = mongoose.model("Work Authorization", workAuthSchema);
 module.exports = WorkAuth;

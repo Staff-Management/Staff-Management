@@ -3,19 +3,17 @@ const { isEmail } = require('validator')
 const bcrypt = require("bcryptjs");
 const Car = require('./Car');
 const Reference = require('./Reference');
-const EmAddress = require('./Address');
-const EmContact = require('./EmContact');
+const Address = require('./Address');
+const EmergencyContact = require("./EmergencyContact")
 const WorkAuth = require("./WorkAuth");
-const License = require("./License")
+const DriverLicense = require("./DriverLicense")
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   email: {
     type: String,
     unique: true,
-    lowercase: true,
     required: [true, 'Please enter an email'],
-    validate: [isEmail, 'Please enter a valid email']
   },
   username: {
     type: String,
@@ -34,52 +32,65 @@ const userSchema = new Schema({
   firstName: {
     type: String,
   },
-  secondName: {
+  middleName: {
     type: String,
   },
-  preName: String, 
-  midName: String, 
+  lastName: {
+    type: String,
+  },
+  preferredName: {
+    type: String,
+  },
   avatar: {
     type: String, 
   },
-  address: {
-    type: mongoose.Schema.ObjectId,
-    ref: EmAddress,
-  },
-  cellPhone: {
+  cell_phone: {
     type: String,
   },
-  workPhone: {
+  work_phone: {
     type: String,
   },
-  carInfo: [{
+  car_info: {
     type: mongoose.Schema.ObjectId,
     ref: Car
-  }],
-  SSN: {
+  },
+  ssn: {
     type: String,
   },
-  DOB: {
-    type: Date,
-  },
-  Gender: {
+  birthday: {
     type: String,
   },
-  reference: {
+  gender: {
+    type: String,
+  },
+  driverLicense: {
+    type: String
+  },
+  perm_citizen: {
+    type: String
+  },
+  green_card_citizen: {
+    type: String
+  },
+  ref_info: {
     type: mongoose.Schema.ObjectId,
     ref: Reference,
   },
-  EmergencyContact: [{
+  emergency_contact_info: [{
     type: mongoose.Schema.ObjectId,
-    ref: EmContact,
+    ref: EmergencyContact,
   }],
-  workAuth: {
+  address_info: {
+    type: mongoose.Schema.ObjectId,
+    ref: Address,
+  },
+  work_auth_info: {
     type: mongoose.Schema.ObjectId,
     ref: WorkAuth,
   },
-  driverLicense: {
+  dl_info: {
     type: mongoose.Schema.ObjectId,
-    ref: License,
+    ref: DriverLicense,
   },
 });
 
