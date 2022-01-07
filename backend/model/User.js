@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { isEmail } = require('validator')
 const bcrypt = require("bcryptjs");
 const Car = require('./Car');
 const Reference = require('./Reference');

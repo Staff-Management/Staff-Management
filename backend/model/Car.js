@@ -2,9 +2,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const carSchema = new Schema({
-    vehicle_maker: String, 
-    vehicle_model: String, 
-    vehicle_color: String,
+    vehicle_maker: {
+        type: String,
+    },
+    vehicle_model: {
+        type: String,
+    },
+    vehicle_color: {
+        type: String,
+    }
 });
 
 
