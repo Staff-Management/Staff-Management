@@ -15,7 +15,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-function createData(name, workAuth, expDate, dayLeft, actionRequired) {
+function createZackData(name, workAuth, expDate, dayLeft, actionRequired) {
   return {
     name,
     workAuth,
@@ -29,23 +29,113 @@ function createData(name, workAuth, expDate, dayLeft, actionRequired) {
         startDate: '3/24/2019',
         endDate: '3/25/2020',
         documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020 ',
-          '(ICON) I-20_2/1/2020 ',
-          '(ICON) I-983_1/25/2020 ',
+          '(ICON) OPT STEM Receipt_3/20/2020, ',
+          '(ICON) I-20_2/1/2020, ',
+          '(ICON) I-983_1/25/2020, ',
           '(ICON) OPT EAD_11/20/2019 '
         ],
         nextStep: 'OPT STEM EAD',
         actionReq: 'Send Notification'
       },
+    ],
+  };
+}
+
+function createKikiData(name, workAuth, expDate, dayLeft, actionRequired) {
+  return {
+    name,
+    workAuth,
+    expDate,
+    dayLeft,
+    actionRequired,
+    details: [
       {
         name: 'Kiki Liu',
         visa: 'F1/OPT',
         startDate: '3/24/2020',
         endDate: '3/25/2021',
         documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020 ',
-          '(ICON) I-20_2/1/2020 ',
-          '(ICON) I-983_1/25/2020 ',
+          '(ICON) OPT STEM Receipt_3/20/2020, ',
+          '(ICON) I-20_2/1/2020, ',
+          '(ICON) I-983_1/25/2020, ',
+          '(ICON) OPT EAD_11/20/2019 '
+        ],
+        nextStep: 'OPT STEM EAD',
+        actionReq: 'Send Notification'
+      },
+    ],
+  };
+}
+
+function createAnthonyData(name, workAuth, expDate, dayLeft, actionRequired) {
+  return {
+    name,
+    workAuth,
+    expDate,
+    dayLeft,
+    actionRequired,
+    details: [
+      {
+        name: 'Anthony Wang',
+        visa: 'F1/OPT',
+        startDate: '6/24/2020',
+        endDate: '8/25/2021',
+        documentReceived: [
+          '(ICON) OPT STEM Receipt_3/20/2020, ',
+          '(ICON) I-20_2/1/2020, ',
+          '(ICON) I-983_1/25/2020, ',
+          '(ICON) OPT EAD_11/20/2019 '
+        ],
+        nextStep: 'OPT STEM EAD',
+        actionReq: 'Send Notification'
+      },
+    ],
+  };
+}
+
+function createSteveData(name, workAuth, expDate, dayLeft, actionRequired) {
+  return {
+    name,
+    workAuth,
+    expDate,
+    dayLeft,
+    actionRequired,
+    details: [
+      {
+        name: 'Steve Whong',
+        visa: 'F1/OPT',
+        startDate: '1/4/2020',
+        endDate: '5/5/2021',
+        documentReceived: [
+          '(ICON) OPT STEM Receipt_3/20/2020, ',
+          '(ICON) I-20_2/1/2020, ',
+          '(ICON) I-983_1/25/2020, ',
+          '(ICON) OPT EAD_11/20/2019 '
+        ],
+        nextStep: 'OPT STEM EAD',
+        actionReq: 'Send Notification'
+      },
+    ],
+  };
+}
+
+function createKevinData(name, workAuth, expDate, dayLeft, actionRequired) {
+  return {
+    name,
+    workAuth,
+    expDate,
+    dayLeft,
+    actionRequired,
+    details: [
+      {
+        name: 'Kevin Liu',
+        visa: 'F1/OPT',
+        startDate: '12/4/2020',
+        endDate: '1/20/2021',
+        documentReceived: [
+          '(ICON) OPT STEM Receipt_3/20/2020, ',
+          '(ICON) I-20_2/1/2020, ',
+          '(ICON) I-983_1/25/2020, ',
           '(ICON) OPT EAD_11/20/2019 '
         ],
         nextStep: 'OPT STEM EAD',
@@ -148,12 +238,24 @@ Row.propTypes = {
   }).isRequired,
 };
 
-const rows = [
-  createData('Zack', 'F1/OPT', '3/25/2020', '10', 'Send Notification'),
-  createData('Kiki', 'F1/OPT', '5/25/2020', '61', 'Send Notification'),
-  createData('Anthony', 'F1/OPT', '6/21/2020', '41', 'Send Notification'),
-  createData('Steve', 'F1/OPT', '6/16/2020', '66', 'Send Notification'),
-  createData('Kevin', 'F1/OPT', '8/18/2020', '88', 'Send Notification'),
+const rows1 = [
+  createZackData('Zack', 'F1/OPT', '3/25/2020', '10', 'Send Notification')
+];
+
+const rows2 = [
+  createKikiData('Kiki', 'F1/OPT', '5/25/2020', '61', 'Send Notification')
+];
+
+const rows3 = [
+  createAnthonyData('Anthony', 'F1/OPT', '6/21/2020', '41', 'Send Notification')
+];
+
+const rows4 = [
+  createSteveData('Steve', 'F1/OPT', '6/16/2020', '66', 'Send Notification')
+];
+
+const rows5 = [
+  createKevinData('Kevin', 'F1/OPT', '8/18/2020', '88', 'Send Notification')
 ];
 
 export default function CollapsibleTable() {
@@ -169,7 +271,19 @@ export default function CollapsibleTable() {
             <TableCell align="left">Action Required</TableCell>
           </TableRow>
           <TableBody>
-            {rows.map((row) => (
+            {rows1.map((row) => (
+              <Row key={row.name} row={row} />
+            ))}
+            {rows2.map((row) => (
+              <Row key={row.name} row={row} />
+            ))}
+            {rows3.map((row) => (
+              <Row key={row.name} row={row} />
+            ))}
+            {rows4.map((row) => (
+              <Row key={row.name} row={row} />
+            ))}
+            {rows5.map((row) => (
               <Row key={row.name} row={row} />
             ))}
           </TableBody>
