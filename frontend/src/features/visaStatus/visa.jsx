@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
+import CssBaseline from '@mui/material/CssBaseline';
 import FormControl from '@mui/material/FormControl';
 import { IMaskInput } from 'react-imask';
 import MenuItem from '@mui/material/MenuItem';
@@ -16,6 +17,7 @@ import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { selectEmail } from 'slices/userSlice';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
@@ -33,6 +35,9 @@ export default function PersonalForm() {
   const [isCheck, setIsCheck] = React.useState(false);
   const [optEad, setOptEad] = React.useState(false);
 
+  /* 
+    2 routes   
+  */
   const handleChange = (event) => {
     setValues({
       ...values,
@@ -45,6 +50,11 @@ export default function PersonalForm() {
   const handlePending = (event) => {
     setIsPending(true);
   };
+
+  const theme = createTheme();
+
+  //fetch
+  //setIspending = true
   /* For  newI20 variable */
   const handleCheck = () => {
     setIsCheck(true);
@@ -160,12 +170,12 @@ export default function PersonalForm() {
       :
       (
       <React.Fragment>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={12}>
           <Typography variant="6">
               Please upload a copy of your OPT EAD CARD
           </Typography>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={12}>
         <Box component="form" noValidate sx={{ mt: 1 }}>
           <TextField
             accept="image/*"
@@ -202,12 +212,12 @@ export default function PersonalForm() {
       (
         values.optStem ?
             <React.Fragment>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <Typography variant="6">
                   Please upload a copy of your OPT STEM EAD CARD
               </Typography>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
             <Box component="form"  noValidate sx={{ mt: 1 }}>
               <TextField
                 accept="image/*"
@@ -245,11 +255,13 @@ export default function PersonalForm() {
   return (
     <DashboardLayout>
       <DashboardNavbar/>
+      <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Typography variant="h6" gutterBottom sx={{ backgroundColor: '#546E7A', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
         Status Notification
       </Typography>
       <Grid container spacing={3} mb={3}>
-        <Grid item xs={12} sm={12}>
+        <Grid item xs={2} sm={2}>
           <FormControl component="fieldset">
             <FormLabel component="legend">Do you have a STEM OPT?</FormLabel>
             <RadioGroup
@@ -265,6 +277,7 @@ export default function PersonalForm() {
         </Grid>
         {stem_opt}
       </Grid>
+      </ThemeProvider>
     </DashboardLayout >
   );
 }
