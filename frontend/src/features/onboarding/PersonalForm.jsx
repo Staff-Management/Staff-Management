@@ -99,12 +99,12 @@ export default function PersonalForm(props) {
   }, [values['avatar_data']])
 
   useEffect(() => {
-    if (values['driverLicense_data'])
+    if (values['driverLicense_data'] && values['driverLicense_file'])
       uploadFile('driverLicense');
   }, [values['driverLicense_data']])
 
   useEffect(() => {
-    if (values['workAuth_data'])
+    if (values['workAuth_data'] && values['workAuth_file'])
       uploadFile('workAuth');
   }, [values['workAuth_data']])
 
