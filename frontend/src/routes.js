@@ -38,6 +38,7 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React layouts
 import PersonalInfo from "layouts/personalinfo";
 import Tables from "layouts/tables";
+import Onboarding from "features/onboarding/Onboarding";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -58,6 +59,14 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/tables",
     component: <Tables />,
+  },
+  {
+    type: "collapse",
+    name: "Onboarding",
+    key: "onboarding",
+    icon: <Icon fontSize="small">app_registration</Icon>,
+    route: "/onboarding",
+    component: <Onboarding />,
   },
 ];
 
