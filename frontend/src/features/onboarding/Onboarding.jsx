@@ -19,14 +19,14 @@ import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 const steps = ['Personal Info', 'Contact Info', 'Review your Application'];
 
-function getStepContent(step) {
+function getStepContent(step, handleNext, handleBack) {
   switch (step) {
     case 0:
-      return <PersonalForm />;
+      return <PersonalForm handleNext={handleNext}/>;
     case 1:
-      return <ContactForm />;
+      return <ContactForm handleNext={handleNext} handleBack={handleBack}/>;
     case 2:
-      return <Review />;
+      return <Review handleNext={handleNext} handleBack={handleBack}/>;
     default:
       throw new Error('Unknown step');
   }
@@ -73,8 +73,8 @@ export default function Onboarding() {
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  {getStepContent(activeStep)}
-                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  {getStepContent(activeStep, handleNext, handleBack)}
+                  {/* <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     {activeStep !== 0 && (
                       <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                         Back
@@ -88,7 +88,7 @@ export default function Onboarding() {
                     >
                       {activeStep === steps.length - 1 ? 'Confirm' : 'Next'}
                     </Button>
-                  </Box>
+                  </Box> */}
                 </React.Fragment>
               )}
             </React.Fragment>

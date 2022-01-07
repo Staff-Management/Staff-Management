@@ -15,19 +15,18 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import { selectEmail } from 'slices/userSlice';
+import { selectEmail, setPersonalInfo, selectPersonalInfo } from 'slices/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { setPersonalInfo } from 'slices/userSlice';
 
 const PhoneNumber = React.forwardRef(function TextMaskCustom(props, ref) {
   const { onChange, ...other } = props;
   return (
     <IMaskInput
       {...other}
-      mask="(#00) 000-0000"
-      definitions={{
-        "#": /[1-9]/
-      }}
+      mask="(000) 000-0000"
+      // definitions={{
+      //   "#": /[1-9]/
+      // }}
       inputRef={ref}
       onAccept={(value) => onChange({ target: { name: props.name, value } })}
       overwrite
@@ -40,10 +39,10 @@ const SSN = React.forwardRef(function TextMaskCustom(props, ref) {
   return (
     <IMaskInput
       {...other}
-      mask="#00-00-0000"
-      definitions={{
-        "#": /[1-9]/
-      }}
+      mask="000-00-0000"
+      // definitions={{
+      //   "#": /[0-9]/
+      // }}
       inputRef={ref}
       onAccept={(value) => onChange({ target: { name: props.name, value } })}
       overwrite
@@ -51,8 +50,9 @@ const SSN = React.forwardRef(function TextMaskCustom(props, ref) {
   );
 });
 
-export default function PersonalForm() {
+export default function PersonalForm(props) {
   const email = useSelector(selectEmail);
+  const personal_info = useSelector(selectPersonalInfo);
   const dispatch = useDispatch();
   const [values, setValues] = React.useState({
     firstName: "",
@@ -61,7 +61,7 @@ export default function PersonalForm() {
     preferredName: "",
     birthday: "",
     gender: "",
-    ssn: "",
+    ssn: personal_info.ssn,
     avatar_file: null,
     avatar_data: "",
     avatar_src: "",
@@ -70,18 +70,18 @@ export default function PersonalForm() {
     driverLicense_exp: "",
     driverLicense_file: "",
     driverLicense_data: "",
-    perm_citizen: null,
+    perm_citizen: "",
     green_card_citizen: "",
-    workAuth: "",
+    work_auth: "",
     other_work_auth: "",
     workAuth_start: "",
     workAuth_exp: "",
-    workAuth_file: "",
+    workAuth_file: null,
     workAuth_data: "",
     ref_firstname: "",
     ref_middlename: "",
     ref_lastname: "",
-    ref_phone: "",
+    ref_phone: personal_info.ref_phone,
     ref_email: "",
     ref_address1: "",
     ref_city: "",
@@ -97,8 +97,13 @@ export default function PersonalForm() {
   }, [values['avatar_data']])
 
   useEffect(() => {
-    dispatch(setPersonalInfo({...values, avatar_file: "", driverLicense_file: "", workAuth_file: ""}))
-  })
+    setValues(personal_info);
+  }, []);
+
+  const handleSave = () => {
+    dispatch(setPersonalInfo({...values, avatar_file: "", driverLicense_file: "", workAuth_file: ""}));
+    props.handleNext();
+  }
 
   const handleChange = (event) => {
     setValues({
@@ -189,6 +194,7 @@ export default function PersonalForm() {
             fullWidth
             type="date"
             variant="standard"
+            defaultValue={personal_info.workAuth_start}
             onChange={handleChange}
           />
         </Grid>
@@ -201,6 +207,7 @@ export default function PersonalForm() {
             fullWidth
             type="date"
             variant="standard"
+            defaultValue={personal_info.workAuth_exp}
             onChange={handleChange}
           />
         </Grid>
@@ -235,6 +242,7 @@ export default function PersonalForm() {
           variant="standard"
           label="Specify Work Authorization"
           fullWidth
+          defaultValue={personal_info.other_work_auth}
           onChange={handleChange}
         />
       </Grid>
@@ -256,6 +264,7 @@ export default function PersonalForm() {
                 id='green_card_citizen'
                 name="green_card_citizen"
                 row
+                defaultValue={personal_info.green_card_citizen}
                 onChange={handleChange}
               >
                 <Grid item xs={12} sm={6}>
@@ -273,11 +282,11 @@ export default function PersonalForm() {
               <FormControl variant="standard" fullWidth>
                 <InputLabel id="workAuth">Work Authorization</InputLabel>
                 <Select
-                  labelId="workAuth"
-                  id="workAuth"
-                  name="workAuth"
+                  labelId="work_auth"
+                  id="work_auth"
+                  name="work_auth"
                   label="Work Authorization"
-                  value={values.workAuth}
+                  defaultValue={personal_info.work_auth}
                   onChange={handleChange}
                 >
                   <MenuItem value={'h1b'}>H1-B</MenuItem>
@@ -312,6 +321,7 @@ export default function PersonalForm() {
                 name='driverLicense_num'
                 variant="standard"
                 label="Driver License Number"
+                defaultValue={personal_info.driverLicense_num}
                 onChange={handleChange}
               />
             </Grid>
@@ -324,6 +334,7 @@ export default function PersonalForm() {
                 fullWidth
                 type="date"
                 variant="standard"
+                defaultValue={personal_info.driverLicense_exp}
                 onChange={handleChange}
               />
             </Grid>
@@ -367,6 +378,7 @@ export default function PersonalForm() {
             fullWidth
             autoComplete="given-name"
             variant="standard"
+            defaultValue={personal_info.firstName}
             onChange={handleChange}
           />
         </Grid>
@@ -378,6 +390,7 @@ export default function PersonalForm() {
             fullWidth
             autoComplete="middle-name"
             variant="standard"
+            defaultValue={personal_info.middleName}
             onChange={handleChange}
           />
         </Grid>
@@ -390,6 +403,7 @@ export default function PersonalForm() {
             fullWidth
             autoComplete="family-name"
             variant="standard"
+            defaultValue={personal_info.lastName}
             onChange={handleChange}
           />
         </Grid>
@@ -401,6 +415,7 @@ export default function PersonalForm() {
             fullWidth
             autoComplete="preferred-name"
             variant="standard"
+            defaultValue={personal_info.preferredName}
             onChange={handleChange}
           />
         </Grid>
@@ -415,6 +430,7 @@ export default function PersonalForm() {
             autoComplete="date-of-birth"
             type="date"
             variant="standard"
+            defaultValue={personal_info.birthday}
             onChange={handleChange}
           />
         </Grid>
@@ -426,7 +442,7 @@ export default function PersonalForm() {
               id="gender"
               name="gender"
               label="Gender"
-              value={values.gender}
+              defaultValue={personal_info.gender}
               onChange={handleChange}
             >
               <MenuItem value={'male'}>Male</MenuItem>
@@ -473,6 +489,7 @@ export default function PersonalForm() {
               aria-label="driverLicense"
               id='driverLicense'
               name="driverLicense"
+              defaultValue={personal_info.driverLicense}
               onChange={handleChange}
             >
               <FormControlLabel value="yes" control={<Radio />} label="Yes" />
@@ -493,6 +510,7 @@ export default function PersonalForm() {
               aria-label="perm_citizen"
               id='perm_citizen'
               name="perm_citizen"
+              defaultValue={personal_info.perm_citizen}
               onChange={handleChange}
             >
               <FormControlLabel value={true} control={<Radio />} label="Yes" />
@@ -511,6 +529,7 @@ export default function PersonalForm() {
           <TextField
             required
             fullWidth
+            defaultValue={personal_info.ref_firstname}
             onChange={handleChange}
             id="ref_firstname"
             name="ref_firstname"
@@ -521,6 +540,7 @@ export default function PersonalForm() {
         <Grid item xs={12} sm={4}>
           <TextField
             fullWidth
+            defaultValue={personal_info.ref_middlename}
             onChange={handleChange}
             id="ref_middlename"
             name="ref_middlename"
@@ -532,6 +552,7 @@ export default function PersonalForm() {
           <TextField
             required
             fullWidth
+            defaultValue={personal_info.ref_lastname}
             onChange={handleChange}
             id="ref_lastname"
             name="ref_lastname"
@@ -554,7 +575,8 @@ export default function PersonalForm() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            onChange={handleChange}onChange={handleChange}
+            defaultValue={personal_info.ref_email}
+            onChange={handleChange}
             id="ref_email"
             name="ref_email"
             label="Email"
@@ -565,6 +587,7 @@ export default function PersonalForm() {
         <Grid item xs={12} sm={12}>
           <TextField
             required
+            defaultValue={personal_info.ref_address1}
             id="ref_address1"
             name="ref_address1"
             label="Address line 1"
@@ -576,6 +599,7 @@ export default function PersonalForm() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
+            defaultValue={personal_info.ref_city}
             id="ref_city"
             name="ref_city"
             label="City"
@@ -591,6 +615,7 @@ export default function PersonalForm() {
             label="State/Province/Region"
             fullWidth
             variant="standard"
+            defaultValue={personal_info.ref_state}
             onChange={handleChange}
           />
         </Grid>
@@ -602,6 +627,7 @@ export default function PersonalForm() {
             label="Zip / Postal code"
             fullWidth
             variant="standard"
+            defaultValue={personal_info.ref_zip}
             onChange={handleChange}
           />
         </Grid>
@@ -613,6 +639,7 @@ export default function PersonalForm() {
             label="Country"
             fullWidth
             variant="standard"
+            defaultValue={personal_info.ref_country}
             onChange={handleChange}
           />
         </Grid>
@@ -624,10 +651,20 @@ export default function PersonalForm() {
             label="Relationship"
             fullWidth
             variant="standard"
+            defaultValue={personal_info.relationship}
             onChange={handleChange}
           />
         </Grid>
       </Grid>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button
+          variant="contained"
+          onClick={handleSave}
+          sx={{ mt: 3, ml: 1 }}
+        >
+          Next
+        </Button>
+      </Box>
     </React.Fragment >
   );
 }

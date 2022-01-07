@@ -8,18 +8,19 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { IMaskInput } from 'react-imask';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import { useSelector, useDispatch } from 'react-redux';
-import { setContactInfo } from 'slices/userSlice';
+import { setContactInfo, selectContactInfo, selectEmail, selectEmergencyContact } from 'slices/userSlice';
 
 const PhoneNumber = React.forwardRef(function TextMaskCustom(props, ref) {
   const { onChange, ...other } = props;
   return (
     <IMaskInput
       {...other}
-      mask="(#00) 000-0000"
-      definitions={{
-        "#": /[1-9]/
-      }}
+      mask="(000) 000-0000"
+      // definitions={{
+      //   "#": /[1-9]/
+      // }}
       inputRef={ref}
       onAccept={(value) => onChange({ target: { name: props.name, value } })}
       overwrite
@@ -27,11 +28,15 @@ const PhoneNumber = React.forwardRef(function TextMaskCustom(props, ref) {
   );
 });
 
-export default function ContactForm() {
+export default function ContactForm(props) {
   const dispatch = useDispatch();
+  const [contactList, setContactList] = React.useState([{}])
+  const email = useSelector(selectEmail);
+  const contact_info = useSelector(selectContactInfo);
+  const emergency_contact = useSelector(selectEmergencyContact);
   const [values, setValues] = React.useState({
-    cell_phone: "",
-    work_phone: "",
+    cell_phone: contact_info.cell_phone,
+    work_phone: contact_info.work_phone,
     address1: "",
     address2: "",
     city: "",
@@ -43,11 +48,18 @@ export default function ContactForm() {
     vehicle_color: ""
   });
 
-  const [contactList, setContactList] = React.useState([{}])
-
   useEffect(() => {
+    setValues(contact_info);
+    // setContactList(emergency_contact);
+  }, []);
+
+  const handleSave = (action) => {
     dispatch(setContactInfo({val: {...values}, list: [...contactList]}))
-  })
+    if (action === 'next')
+      props.handleNext();
+    else
+      props.handleBack();
+  }
 
   const handleChange = (event) => {
     setValues({
@@ -83,7 +95,7 @@ export default function ContactForm() {
           <TextField
             disabled
             InputLabelProps={{ shrink: true }}
-            value={'disabled@email.com'}
+            value={email}
             id="email"
             name="email"
             label="Email"
@@ -124,6 +136,7 @@ export default function ContactForm() {
             fullWidth
             autoComplete="shipping address-line1"
             variant="standard"
+            defaultValue={contact_info.address1}
             onChange={handleChange}
           />
         </Grid>
@@ -135,6 +148,7 @@ export default function ContactForm() {
             fullWidth
             autoComplete="shipping address-line2"
             variant="standard"
+            defaultValue={contact_info.address2}
             onChange={handleChange}
           />
         </Grid>
@@ -147,6 +161,7 @@ export default function ContactForm() {
             fullWidth
             autoComplete="shipping address-level2"
             variant="standard"
+            defaultValue={contact_info.city}
             onChange={handleChange}
           />
         </Grid>
@@ -157,6 +172,7 @@ export default function ContactForm() {
             label="State/Province/Region"
             fullWidth
             variant="standard"
+            defaultValue={contact_info.state}
             onChange={handleChange}
           />
         </Grid>
@@ -169,6 +185,7 @@ export default function ContactForm() {
             fullWidth
             autoComplete="shipping postal-code"
             variant="standard"
+            defaultValue={contact_info.zip}
             onChange={handleChange}
           />
         </Grid>
@@ -181,6 +198,7 @@ export default function ContactForm() {
             fullWidth
             autoComplete="shipping country"
             variant="standard"
+            defaultValue={contact_info.country}
             onChange={handleChange}
           />
         </Grid>
@@ -199,6 +217,7 @@ export default function ContactForm() {
                     <Grid item xs={12} sm={4}>
                       <TextField
                         required
+                        defaultValue={emergency_contact[index] ? emergency_contact[index].em_firstname : ""}
                         onChange={(event) => handleContactChange(event, index)}
                         fullWidth
                         id="em_firstname"
@@ -210,6 +229,7 @@ export default function ContactForm() {
                     <Grid item xs={12} sm={4}>
                       <TextField
                         required
+                        defaultValue={emergency_contact[index] ? emergency_contact[index].em_middlename : ""}
                         onChange={(event) => handleContactChange(event, index)}
                         fullWidth
                         id="em_middlename"
@@ -221,6 +241,7 @@ export default function ContactForm() {
                     <Grid item xs={12} sm={4}>
                       <TextField
                         required
+                        defaultValue={emergency_contact[index] ? emergency_contact[index].em_lastname : ""}
                         onChange={(event) => handleContactChange(event, index)}
                         fullWidth
                         id="em_lastname"
@@ -245,6 +266,7 @@ export default function ContactForm() {
                       <TextField
                         required
                         onChange={(event) => handleContactChange(event, index)}
+                        defaultValue={emergency_contact[index] ? emergency_contact[index].em_email : ""}
                         id="em_email"
                         name="em_email"
                         label="Email"
@@ -256,6 +278,7 @@ export default function ContactForm() {
                       <TextField
                         required
                         onChange={(event) => handleContactChange(event, index)}
+                        defaultValue={emergency_contact[index] ? emergency_contact[index].relationship : ""}
                         id="relationship"
                         name="relationship"
                         label="Relationship"
@@ -312,6 +335,7 @@ export default function ContactForm() {
             fullWidth
             autoComplete="vehicle-maker"
             variant="standard"
+            defaultValue={contact_info.vehicle_maker}
             onChange={handleChange}
           />
         </Grid>
@@ -323,6 +347,7 @@ export default function ContactForm() {
             fullWidth
             autoComplete="vehicle-model"
             variant="standard"
+            defaultValue={contact_info.vehicle_model}
             onChange={handleChange}
           />
         </Grid>
@@ -334,10 +359,23 @@ export default function ContactForm() {
             fullWidth
             autoComplete="vehicle-color"
             variant="standard"
+            defaultValue={contact_info.vehicle_color}
             onChange={handleChange}
           />
         </Grid>
       </Grid>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button onClick={() => handleSave('back')} sx={{ mt: 3, ml: 1 }}>
+          Back
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => handleSave('next')}
+          sx={{ mt: 3, ml: 1 }}
+        >
+          Next
+        </Button>
+      </Box>
     </React.Fragment>
   );
 }

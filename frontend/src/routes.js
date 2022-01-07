@@ -45,6 +45,7 @@ import SignUp from "features/signup/SignUp";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import GuardedRoute from "guardedroute/GuardedRoute";
 
 const routes = [
   {
@@ -77,7 +78,10 @@ const routes = [
     key: "applications",
     icon: <Icon fontSize="small">approval</Icon>,
     route: "/applications",
-    component: <Onboarding />,
+    component:
+    <GuardedRoute>
+      <Onboarding />
+    </GuardedRoute>,
   },
   {
     type: "collapse",

@@ -48,7 +48,6 @@ const userSchema = new Schema({
   },
   cellPhone: {
     type: String,
-    required: [true, 'Please enter your phone number'],
   },
   workPhone: {
     type: String,
