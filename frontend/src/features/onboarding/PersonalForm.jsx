@@ -24,9 +24,6 @@ const PhoneNumber = React.forwardRef(function TextMaskCustom(props, ref) {
     <IMaskInput
       {...other}
       mask="(000) 000-0000"
-      // definitions={{
-      //   "#": /[1-9]/
-      // }}
       inputRef={ref}
       onAccept={(value) => onChange({ target: { name: props.name, value } })}
       overwrite
@@ -40,9 +37,6 @@ const SSN = React.forwardRef(function TextMaskCustom(props, ref) {
     <IMaskInput
       {...other}
       mask="000-00-0000"
-      // definitions={{
-      //   "#": /[0-9]/
-      // }}
       inputRef={ref}
       onAccept={(value) => onChange({ target: { name: props.name, value } })}
       overwrite

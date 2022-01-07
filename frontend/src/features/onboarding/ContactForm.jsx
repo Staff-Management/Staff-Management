@@ -18,9 +18,6 @@ const PhoneNumber = React.forwardRef(function TextMaskCustom(props, ref) {
     <IMaskInput
       {...other}
       mask="(000) 000-0000"
-      // definitions={{
-      //   "#": /[1-9]/
-      // }}
       inputRef={ref}
       onAccept={(value) => onChange({ target: { name: props.name, value } })}
       overwrite

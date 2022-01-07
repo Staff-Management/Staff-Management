@@ -22,8 +22,7 @@ export default function Review(props) {
   delete all_info.workAuth_file
   delete all_info.workAuth_data
   delete all_info.workAuth_src
-  // console.log(Object.keys(all_info).length);
-
+  
   const dl = (
     personal_info.driverLicense_own === 'yes' ?
       <React.Fragment>

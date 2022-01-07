@@ -2,13 +2,10 @@ const express = require('express');
 const userController = require('../controller/userController')
 const router = express.Router();
 
-//This request is only used to create an account to test /login request. 
-router.post('/register', userController.register);
 
-//login part
+router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.post('/onboarding', userController.onBoarding);
-// router.post('/setavatar', userController.setAvatar);
 router.post('/getavatar', userController.getAvatar);
 router.post('/uploadfile', userController.uploadFile);
 router.post('/updateDriv', userController.updateDriv);

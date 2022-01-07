@@ -14,7 +14,7 @@ AWS.config.loadFromPath('./aws_config.json');
 const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 //generates JWT Token
-const maxAge = 1 * 24 * 60 * 60; //Set the maxage for the jwt token to .24 hours
+const maxAge = 1 * 24 * 60 * 60;
 const createToken = (id) => {
   return jwt.sign({id}, process.env.JWT_SECRET_KEY, {
     expiresIn: maxAge
@@ -144,32 +144,6 @@ module.exports.onBoarding = async (req, resp) => {
   }
 }
 
-// module.exports.setAvatar = async (req, resp) => {
-//   const { email, image_data } = req.body;
-//   const file_name = `${uuidv4()}.jpg`
-//   const buffer = Buffer.from(image_data.replace(/^data:image\/\w+;base64,/, ''), 'base64');
-//   try {
-//     const params = {
-//       Bucket: 'staff-management',
-//       Key: `avatar/${file_name}`,
-//       Body: buffer,
-//     }
-//     const stored = await s3.upload(params).promise();
-//     try {
-//       const data = await user.findOneAndUpdate({ email }, { avatar: `avatar/${file_name}` });
-//       resp.status(200).json({user: data});
-//     }
-//     catch(e) {
-//       console.log(e);
-//       resp.status(400).send('Error')
-//     }
-//   }
-//   catch(e) {
-//     console.log(e);
-//     resp.status(400).send('Error')
-//   }
-// }
-
 module.exports.uploadFile = async (req, resp) => {
   const { email, file_data, extension, field_name } = req.body;
   const file_name = `${uuidv4()}.${extension}`
@@ -239,7 +213,6 @@ module.exports.updateDriv = async (req, resp) => {
   try {
       const data = await user.findOne({email})
       const dataId = data.driverLicense;
-      // console.log(dataId);
       try {
           const dl = await License.findByIdAndUpdate(dataId, { number, expDate, photo })
           resp.status(200).json({user: data});
@@ -258,7 +231,6 @@ module.exports.updateAddress = async (req, resp) => {
   try {
       const data = await user.findOne({email})
       const dataId = data.address;
-      // console.log(dataId);
       try {
           const dl = await EmAddress.findByIdAndUpdate(dataId, { address1, address2, city, state, zipCode })
           resp.status(200).json({user: data});
@@ -277,7 +249,6 @@ module.exports.updateRef = async (req, resp) => {
   try {
       const data = await user.findOne({email})
       const dataId = data.reference;
-      // console.log(dataId);
       try {
           const dl = await Reference.findByIdAndUpdate(dataId, { refFirstName, refSecondName, refMidName, refEmail, refRelationship })
           resp.status(200).json({user: data});
@@ -296,7 +267,6 @@ module.exports.updateWorkAuth = async (req, resp) => {
   try {
       const data = await user.findOne({email})
       const dataId = data.workAuth;
-      // console.log(dataId);
       try {
           const dl = await WorkAuth.findByIdAndUpdate(dataId, { visa, workPhoto, startDate, endDate })
           resp.status(200).json({user: data});

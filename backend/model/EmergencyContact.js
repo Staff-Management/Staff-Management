@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { isEmail } = require('validator')
 
 const emergencyContactSchema = new Schema({
   em_firstname: {
