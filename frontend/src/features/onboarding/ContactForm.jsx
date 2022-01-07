@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -7,6 +8,8 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { IMaskInput } from 'react-imask';
 import Button from '@mui/material/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import { setContactInfo } from 'slices/userSlice';
 
 const PhoneNumber = React.forwardRef(function TextMaskCustom(props, ref) {
   const { onChange, ...other } = props;
@@ -25,14 +28,26 @@ const PhoneNumber = React.forwardRef(function TextMaskCustom(props, ref) {
 });
 
 export default function ContactForm() {
+  const dispatch = useDispatch();
   const [values, setValues] = React.useState({
-    cellphone: "",
-    workphone: ""
+    cell_phone: "",
+    work_phone: "",
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: "",
+    vehicle_maker: "",
+    vehicle_model: "",
+    vehicle_color: ""
   });
 
-  const [contactList, setContactList] = React.useState([{
-    contact: "",
-  }])
+  const [contactList, setContactList] = React.useState([{}])
+
+  useEffect(() => {
+    dispatch(setContactInfo({val: {...values}, list: [...contactList]}))
+  })
 
   const handleChange = (event) => {
     setValues({
@@ -55,7 +70,7 @@ export default function ContactForm() {
   };
 
   const handleContactAdd = () => {
-    setContactList([...contactList, { contact: "" }]);
+    setContactList([...contactList, {}]);
   };
 
   return (
@@ -78,24 +93,24 @@ export default function ContactForm() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormControl variant="standard" fullWidth>
-            <InputLabel htmlFor="cellPhone" required>Cell Phone</InputLabel>
+            <InputLabel htmlFor="cell_phone" required>Cell Phone</InputLabel>
             <Input
-              value={values.cellPhone}
+              value={values.cell_phone}
               onChange={handleChange}
-              name="cellPhone"
-              id="cellPhone"
+              name="cell_phone"
+              id="cell_phone"
               inputComponent={PhoneNumber}
             />
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormControl variant="standard" fullWidth>
-            <InputLabel htmlFor="workPhone">Work Phone</InputLabel>
+            <InputLabel htmlFor="work_phone">Work Phone</InputLabel>
             <Input
-              value={values.workPhone}
+              value={values.work_phone}
               onChange={handleChange}
-              name="workPhone"
-              id="workPhone"
+              name="work_phone"
+              id="work_phone"
               inputComponent={PhoneNumber}
             />
           </FormControl>
@@ -184,8 +199,10 @@ export default function ContactForm() {
                     <Grid item xs={12} sm={4}>
                       <TextField
                         required
-                        id="em_first_name"
-                        name="em_first_name"
+                        onChange={(event) => handleContactChange(event, index)}
+                        fullWidth
+                        id="em_firstname"
+                        name="em_firstname"
                         label="First Name"
                         variant="standard"
                       />
@@ -193,8 +210,10 @@ export default function ContactForm() {
                     <Grid item xs={12} sm={4}>
                       <TextField
                         required
-                        id="em_middle_name"
-                        name="em_middle_name"
+                        onChange={(event) => handleContactChange(event, index)}
+                        fullWidth
+                        id="em_middlename"
+                        name="em_middlename"
                         label="Middle Name"
                         variant="standard"
                       />
@@ -202,8 +221,10 @@ export default function ContactForm() {
                     <Grid item xs={12} sm={4}>
                       <TextField
                         required
-                        id="em_last_name"
-                        name="em_last_name"
+                        onChange={(event) => handleContactChange(event, index)}
+                        fullWidth
+                        id="em_lastname"
+                        name="em_lastname"
                         label="Last Name"
                         variant="standard"
                       />
@@ -212,8 +233,8 @@ export default function ContactForm() {
                       <FormControl variant="standard" fullWidth>
                         <InputLabel htmlFor="Phone" required>Phone</InputLabel>
                         <Input
-                          value={values.Phone}
-                          onChange={handleContactChange}
+                          value={contactList[index].em_phone}
+                          onChange={(event) => handleContactChange(event, index)}
                           name="em_phone"
                           id="em_phone"
                           inputComponent={PhoneNumber}
@@ -223,6 +244,7 @@ export default function ContactForm() {
                     <Grid item xs={12} sm={6}>
                       <TextField
                         required
+                        onChange={(event) => handleContactChange(event, index)}
                         id="em_email"
                         name="em_email"
                         label="Email"
@@ -233,12 +255,12 @@ export default function ContactForm() {
                     <Grid item xs={12} sm={12}>
                       <TextField
                         required
+                        onChange={(event) => handleContactChange(event, index)}
                         id="relationship"
                         name="relationship"
                         label="Relationship"
                         fullWidth
                         variant="standard"
-                        onChange={handleChange}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -284,8 +306,8 @@ export default function ContactForm() {
       <Grid container spacing={3} mb={3}>
         <Grid item xs={12} sm={6}>
           <TextField
-            id="vehicleMaker"
-            name="vehicleMaker"
+            id="vehicle_maker"
+            name="vehicle_maker"
             label="Vehicle Maker"
             fullWidth
             autoComplete="vehicle-maker"
@@ -295,8 +317,8 @@ export default function ContactForm() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            id="vehicleModel"
-            name="vehicleModel"
+            id="vehicle_model"
+            name="vehicle_model"
             label="Vehicle Model"
             fullWidth
             autoComplete="vehicle-model"
@@ -306,19 +328,8 @@ export default function ContactForm() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            id="vehicleType"
-            name="vehicleType"
-            label="Vehicle Type"
-            fullWidth
-            autoComplete="vehicle-type"
-            variant="standard"
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <TextField
-            id="vehicleColor"
-            name="vehicleColor"
+            id="vehicle_color"
+            name="vehicle_color"
             label="Vehicle Color"
             fullWidth
             autoComplete="vehicle-color"

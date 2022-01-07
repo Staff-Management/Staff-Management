@@ -47,7 +47,7 @@ const routes = [
     type: "collapse",
     name: "Personal Information",
     key: "dashboard",
-    icon: <Icon fontSize="small">Personal Info</Icon>,
+    icon: <Icon fontSize="small">account_circle</Icon>,
     route: "/dashboard",
     component: <PersonalInfo />,
   },

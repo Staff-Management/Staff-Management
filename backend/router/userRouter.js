@@ -10,6 +10,7 @@ router.post('/login', userController.login);
 router.post('/onBoarding', userController.onBoarding);
 router.post('/setavatar', userController.setAvatar);
 router.post('/getavatar', userController.getAvatar);
+router.post('/uploadfile', userController.uploadFile);
 router.post('/updateDriv', userController.updateDriv);
 router.post('/updateWork', userController.updateWorkAuth);
 router.post('/updateRef', userController.updateRef);

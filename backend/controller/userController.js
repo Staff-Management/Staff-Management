@@ -124,6 +124,33 @@ module.exports.setAvatar = async (req, resp) => {
   }
 }
 
+module.exports.uploadFile = async (req, resp) => {
+  const { email, file_data, extension, field_name } = req.body;
+  const file_name = `${uuidv4()}.${extension}`
+  const buffer = Buffer.from(file_data.replace(/.+;base64,/, ''), 'base64');
+  try {
+    const params = {
+      Bucket: 'staff-management',
+      Key: `${field_name}/${file_name}`,
+      Body: buffer,
+    }
+    const stored = await s3.upload(params).promise();
+    console.log(stored);
+    try {
+      const data = await user.findOneAndUpdate({ email }, { [field_name]: `${field_name}/${file_name}` });
+      resp.status(200).json({user: data});
+    }
+    catch(e) {
+      console.log(e);
+      resp.status(400).send('Error')
+    }
+  }
+  catch(e) {
+    console.log(e);
+    resp.status(400).send('Error')
+  }
+}
+
 module.exports.getAvatar = async (req, resp) => {
   const { email } = req.body;
   try {

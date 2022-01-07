@@ -16,7 +16,8 @@ import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { selectEmail } from 'slices/userSlice';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setPersonalInfo } from 'slices/userSlice';
 
 const PhoneNumber = React.forwardRef(function TextMaskCustom(props, ref) {
   const { onChange, ...other } = props;
@@ -52,6 +53,7 @@ const SSN = React.forwardRef(function TextMaskCustom(props, ref) {
 
 export default function PersonalForm() {
   const email = useSelector(selectEmail);
+  const dispatch = useDispatch();
   const [values, setValues] = React.useState({
     firstName: "",
     middleName: "",
@@ -60,88 +62,91 @@ export default function PersonalForm() {
     birthday: "",
     gender: "",
     ssn: "",
-    perm_citizen: null,
-    greenCard: false,
-    citizen: false,
-    work_auth: "",
-    cellPhone: "",
-    Phone: "",
-    workPhone: "",
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zip: "",
-    country: "",
-    vehicleMaker: "",
-    vehicleModel: "",
-    vehicleType: "",
-    vehicleColor: "",
     avatar_file: null,
-    avatar_image: "",
+    avatar_data: "",
     avatar_src: "",
-    refer_phone: ""
+    driverlicense: null,
+    driverLicense_num: "",
+    driverLicense_exp: "",
+    driverLicense_file: "",
+    driverLicense_data: "",
+    perm_citizen: null,
+    green_card_citizen: "",
+    workAuth: "",
+    other_work_auth: "",
+    workAuth_start: "",
+    workAuth_exp: "",
+    workAuth_file: "",
+    workAuth_data: "",
+    ref_firstname: "",
+    ref_middlename: "",
+    ref_lastname: "",
+    ref_phone: "",
+    ref_email: "",
+    ref_address1: "",
+    ref_city: "",
+    ref_state: "",
+    ref_zip: "",
+    ref_country: "",
+    relationship: ""
   });
 
   useEffect(() => {
-    if (values.avatar_image.includes('data:image/jpeg'))
-    {
-      uploadImage();
-    }
-  }, [values.avatar_image])
+    if (values['avatar_data'].includes('data:image'))
+      uploadFile('avatar');
+  }, [values['avatar_data']])
 
-  const [contactList, setContactList] = React.useState([{
-    contact: "",
-  }])
+  useEffect(() => {
+    dispatch(setPersonalInfo({...values, avatar_file: "", driverLicense_file: "", workAuth_file: ""}))
+  })
 
   const handleChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value
     });
-    console.log(values);
   };
 
-  const handleCheckbox = (event) => {
+  const handleFileChange = (event) => {
     setValues({
       ...values,
-      [event.target.name]: event.target.checked
-    });
-    console.log(values);
-  };
-
-  const handleAvatarChange = (event) => {
-    setValues({
-      ...values,
-      avatar_file: event.target.files[0]
+      [`${event.target.name}_file`]: event.target.files[0]
     });
   };
 
-  const uploadImage = async () => {
-    const image_data = values.avatar_image;
+  const handleFile = async (event, field_name) => {
+    event.preventDefault();
+    if (values[`${field_name}_file`])
+    {
+      let reader = new FileReader()
+      reader.onload = (e) => {
+        setValues({
+          ...values,
+          [`${field_name}_data`]: e.target.result
+        });
+      }
+      reader.readAsDataURL(values[`${field_name}_file`]);
+    }
+  };
+
+  const uploadFile = async (field_name) => {
+    const file_data = values[`${field_name}_data`];
+    const extension = values[`${field_name}_file`].name.split('.').pop();
     try {
-      const res = await fetch('http://localhost:4000/setavatar', {
+      const res = await fetch('http://localhost:4000/uploadfile', {
         method: 'POST',
-        body: JSON.stringify({ email, image_data }),
+        body: JSON.stringify({ email, file_data, extension, field_name }),
         headers: {'Content-Type': 'application/json'}
       })
       const response = await res.json();
-      showAvatar();
+      console.log(response);
+      if (field_name === 'avatar')
+      {
+        showAvatar();
+      }
     } catch(err){
       console.log(err)
     }
-  };
-
-  const handleAvatar = async (event) => {
-    event.preventDefault();
-    let reader = new FileReader()
-    reader.onload = (e) => {
-      setValues({
-        ...values,
-        avatar_image: e.target.result
-      });
-    }
-    reader.readAsDataURL(values.avatar_file);
   };
 
   const showAvatar = async () => {
@@ -154,7 +159,7 @@ export default function PersonalForm() {
       const response = await res.json();
       setValues({
         ...values,
-        avatar_src: `data:image/jpeg;base64,${response.src}`
+        avatar_src: `data:${values.avatar_file.type};base64,${response.src}`
       });
     } catch(err){
       console.log(err)
@@ -171,14 +176,14 @@ export default function PersonalForm() {
   )
 
   const visa_status = (
-    values.work_auth === '' ?
+    values.workAuth === '' ?
       <></>
       :
       <React.Fragment>
         <Grid item xs={12} sm={6}>
           <TextField
-            id="visa_start"
-            name="visa_start"
+            id="workAuth_start"
+            name="workAuth_start"
             label="Start Date"
             InputLabelProps={{ shrink: true }}
             fullWidth
@@ -189,8 +194,8 @@ export default function PersonalForm() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            id="visa_exp"
-            name="visa_exp"
+            id="workAuth_exp"
+            name="workAuth_exp"
             label="Expiration Date"
             InputLabelProps={{ shrink: true }}
             fullWidth
@@ -199,11 +204,30 @@ export default function PersonalForm() {
             onChange={handleChange}
           />
         </Grid>
+        <Grid item xs={12} sm={12}>
+          <Box component="form" onSubmit={(event) => handleFile(event, 'workAuth')} noValidate sx={{ mt: 1 }}>
+            <TextField
+              accept="image/*, application/pdf"
+              id="workAuth"
+              name="workAuth"
+              type="file"
+              onChange={handleFileChange}
+              fullWidth
+            />
+            <Button
+              type='submit'
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Upload
+            </Button>
+          </Box>
+        </Grid>
       </React.Fragment>
   )
 
   const other_work_auth = (
-    values.work_auth === 'other' ?
+    values.workAuth === 'other' ?
       <Grid item xs={12} sm={12}>
         <TextField
           id='other_work_auth'
@@ -223,7 +247,7 @@ export default function PersonalForm() {
       <></>
       :
       (
-        values.perm_citizen ?
+        values.perm_citizen === "true" ?
           <Grid item xs={12} sm={12}>
             <FormControl component="fieldset" fullWidth>
               <FormLabel component="legend">Please specify:</FormLabel>  
@@ -247,13 +271,13 @@ export default function PersonalForm() {
           <React.Fragment>
             <Grid item xs={12} sm={12}>
               <FormControl variant="standard" fullWidth>
-                <InputLabel id="work_auth">Work Authorization</InputLabel>
+                <InputLabel id="workAuth">Work Authorization</InputLabel>
                 <Select
-                  labelId="work_auth"
-                  id="work_auth"
-                  name="work_auth"
+                  labelId="workAuth"
+                  id="workAuth"
+                  name="workAuth"
                   label="Work Authorization"
-                  value={values.work_auth}
+                  value={values.workAuth}
                   onChange={handleChange}
                 >
                   <MenuItem value={'h1b'}>H1-B</MenuItem>
@@ -275,24 +299,26 @@ export default function PersonalForm() {
   );
 
   const driver_license = (
-    values.license === null ?
+    values.driverLicense === null ?
       <></>
       :
       (
-        values.license ?
+        values.driverLicense === "yes" ?
           <Grid container>
             <Grid item xs={12} sm={6}>
               <TextField
-                id='dl_num'
-                name='dl_num'
+                fullWidth
+                id='driverLicense_num'
+                name='driverLicense_num'
                 variant="standard"
                 label="Driver License Number"
+                onChange={handleChange}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                id="dl_exp_date"
-                name="dl_exp_date"
+                id="driverLicense_exp"
+                name="driverLicense_exp"
                 label="Expiration Date"
                 InputLabelProps={{ shrink: true }}
                 fullWidth
@@ -302,13 +328,13 @@ export default function PersonalForm() {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Box component="form" onSubmit={(event) => handleAvatar(event)} noValidate sx={{ mt: 1 }}>
+              <Box component="form" onSubmit={(event) => handleFile(event, 'driverLicense')} noValidate sx={{ mt: 1 }}>
                 <TextField
-                  accept="image/*"
-                  id="dl_img"
-                  name="dl_img"
+                  accept="image/*, application/pdf"
+                  id="driverLicense"
+                  name="driverLicense"
                   type="file"
-                  onChange={handleAvatarChange}
+                  onChange={handleFileChange}
                   fullWidth
                 />
                 <Button
@@ -380,6 +406,7 @@ export default function PersonalForm() {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
+            required
             id="birthday"
             name="birthday"
             label="Date of Birth"
@@ -392,7 +419,7 @@ export default function PersonalForm() {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl variant="standard" fullWidth>
+          <FormControl variant="standard" required fullWidth>
             <InputLabel id="gender">Gender</InputLabel>
             <Select
               labelId="gender"
@@ -408,8 +435,8 @@ export default function PersonalForm() {
           </FormControl>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <FormControl variant="standard" fullWidth>
-            <InputLabel htmlFor="ssn" required>SSN</InputLabel>
+          <FormControl variant="standard" required fullWidth>
+            <InputLabel htmlFor="ssn">SSN</InputLabel>
             <Input
               value={values.ssn}
               onChange={handleChange}
@@ -420,13 +447,13 @@ export default function PersonalForm() {
           </FormControl>
         </Grid>
         <Grid item xs={12} s={6}>
-          <Box component="form" onSubmit={(event) => handleAvatar(event)} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={(event) => handleFile(event, 'avatar')} noValidate sx={{ mt: 1 }}>
             <TextField
               accept="image/*"
               id="avatar"
               name="avatar"
               type="file"
-              onChange={handleAvatarChange}
+              onChange={handleFileChange}
               fullWidth
             />
             <Button
@@ -443,13 +470,13 @@ export default function PersonalForm() {
           <FormControl component="fieldset">
             <FormLabel component="legend">Do you have a driver license?</FormLabel>
             <RadioGroup
-              aria-label="license"
-              id='license'
-              name="license"
+              aria-label="driverLicense"
+              id='driverLicense'
+              name="driverLicense"
               onChange={handleChange}
             >
-              <FormControlLabel value='yes' control={<Radio />} label="Yes" />
-              <FormControlLabel value='' control={<Radio />} label="No" />
+              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+              <FormControlLabel value="" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
           {driver_license}
@@ -468,8 +495,8 @@ export default function PersonalForm() {
               name="perm_citizen"
               onChange={handleChange}
             >
-              <FormControlLabel value='yes' control={<Radio />} label="Yes" />
-              <FormControlLabel value='' control={<Radio />} label="No" />
+              <FormControlLabel value={true} control={<Radio />} label="Yes" />
+              <FormControlLabel value={false} control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
         </Grid>
@@ -483,16 +510,20 @@ export default function PersonalForm() {
         <Grid item xs={12} sm={4}>
           <TextField
             required
-            id="firstname"
-            name="firstname"
+            fullWidth
+            onChange={handleChange}
+            id="ref_firstname"
+            name="ref_firstname"
             label="First Name"
             variant="standard"
           />
         </Grid>
         <Grid item xs={12} sm={4}>
           <TextField
-            id="middlename"
-            name="middlename"
+            fullWidth
+            onChange={handleChange}
+            id="ref_middlename"
+            name="ref_middlename"
             label="Middle Name"
             variant="standard"
           />
@@ -500,20 +531,22 @@ export default function PersonalForm() {
         <Grid item xs={12} sm={4}>
           <TextField
             required
-            id="lastname"
-            name="lastname"
+            fullWidth
+            onChange={handleChange}
+            id="ref_lastname"
+            name="ref_lastname"
             label="Last Name"
             variant="standard"
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormControl variant="standard" fullWidth>
-            <InputLabel htmlFor="refer_phone" required>Phone</InputLabel>
+            <InputLabel htmlFor="ref_phone" required>Phone</InputLabel>
             <Input
-              value={values.refer_phone}
+              value={values.ref_phone}
               onChange={handleChange}
-              name="refer_phone"
-              id="refer_phone"
+              name="ref_phone"
+              id="ref_phone"
               inputComponent={PhoneNumber}
             />
           </FormControl>
@@ -521,51 +554,63 @@ export default function PersonalForm() {
         <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="refer_email"
-            name="refer_email"
+            onChange={handleChange}onChange={handleChange}
+            id="ref_email"
+            name="ref_email"
             label="Email"
             fullWidth
             variant="standard"
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={12}>
           <TextField
             required
-            id="refer_address1"
-            name="refer_address1"
+            id="ref_address1"
+            name="ref_address1"
             label="Address line 1"
             fullWidth
             variant="standard"
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="refer_city"
-            name="refer_city"
+            id="ref_city"
+            name="ref_city"
             label="City"
             fullWidth
             variant="standard"
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6}>
           <TextField
-            id="refer_state"
-            name="refer_state"
+            id="ref_state"
+            name="ref_state"
             label="State/Province/Region"
             fullWidth
             variant="standard"
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6}>
           <TextField
             required
-            id="refer_zip"
-            name="refer_zip"
+            id="ref_zip"
+            name="ref_zip"
             label="Zip / Postal code"
+            fullWidth
+            variant="standard"
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            required
+            id="ref_country"
+            name="ref_country"
+            label="Country"
             fullWidth
             variant="standard"
             onChange={handleChange}

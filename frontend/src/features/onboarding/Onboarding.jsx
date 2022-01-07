@@ -14,6 +14,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PersonalForm from './PersonalForm';
 import ContactForm from './ContactForm';
 import Review from './Review';
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 const steps = ['Personal Info', 'Contact Info', 'Review your Application'];
 
@@ -44,67 +46,55 @@ export default function Onboarding() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <AppBar
-        position="absolute"
-        color="default"
-        elevation={0}
-        sx={{
-          position: 'relative',
-          borderBottom: (t) => `1px solid ${t.palette.divider}`,
-        }}
-      >
-        <Toolbar>
-          <Typography variant="h6" color="inherit" noWrap>
-            BeaconFire
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-        <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-          <Typography component="h1" variant="h4" align="center">
-            Registration
-          </Typography>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-            {steps.map((label) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          <React.Fragment>
-            {activeStep === steps.length ? (
-              <React.Fragment>
-                <Typography variant="h5" gutterBottom>
-                  Profile Completed!
-                </Typography>
-                <Typography variant="subtitle1">
-                </Typography>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                      Back
-                    </Button>
-                  )}
+    <DashboardLayout>
+      <DashboardNavbar />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+          <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+            <Typography component="h1" variant="h4" align="center">
+              Registration
+            </Typography>
+            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+            <React.Fragment>
+              {activeStep === steps.length ? (
+                <React.Fragment>
+                  <Typography variant="h5" gutterBottom>
+                    Profile Completed!
+                  </Typography>
+                  <Typography variant="subtitle1">
+                  </Typography>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  {getStepContent(activeStep)}
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    {activeStep !== 0 && (
+                      <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                        Back
+                      </Button>
+                    )}
 
-                  <Button
-                    variant="contained"
-                    onClick={handleNext}
-                    sx={{ mt: 3, ml: 1 }}
-                  >
-                    {activeStep === steps.length - 1 ? 'Confirm' : 'Next'}
-                  </Button>
-                </Box>
-              </React.Fragment>
-            )}
-          </React.Fragment>
-        </Paper>
-      </Container>
-    </ThemeProvider>
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      sx={{ mt: 3, ml: 1 }}
+                    >
+                      {activeStep === steps.length - 1 ? 'Confirm' : 'Next'}
+                    </Button>
+                  </Box>
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          </Paper>
+        </Container>
+      </ThemeProvider>
+    </DashboardLayout>
   );
 }
