@@ -216,7 +216,7 @@ export default function Review(props) {
               <Typography gutterBottom>Relationship:</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography gutterBottom>{ personal_info.relationship }</Typography>
+              <Typography gutterBottom>{ personal_info.ref_relationship }</Typography>
             </Grid>
           </Grid>
           <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
@@ -343,7 +343,7 @@ export default function Review(props) {
                   <Typography gutterBottom>Relationship:</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                  <Typography gutterBottom>{ contact.relationship }</Typography>
+                  <Typography gutterBottom>{ contact.em_relationship }</Typography>
                 </Grid>
               </Grid>
             </React.Fragment>

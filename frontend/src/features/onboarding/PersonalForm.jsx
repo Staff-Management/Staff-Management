@@ -106,6 +106,8 @@ export default function PersonalForm(props) {
   }
 
   const handleChange = (event) => {
+    console.log(event.target.name);
+    console.log(event.target.value);
     setValues({
       ...values,
       [event.target.name]: event.target.value
@@ -255,7 +257,7 @@ export default function PersonalForm(props) {
       <></>
       :
       (
-        values.perm_citizen === "true" ?
+        values.perm_citizen === "yes" ?
           <Grid item xs={12} sm={12}>
             <FormControl component="fieldset" fullWidth>
               <FormLabel component="legend">Please specify:</FormLabel>  
@@ -487,7 +489,7 @@ export default function PersonalForm(props) {
             <FormLabel component="legend">Do you have a driver license?</FormLabel>
             <RadioGroup
               aria-label="driverLicense"
-              id='driverLicense'
+              id="driverLicense"
               name="driverLicense"
               defaultValue={personal_info.driverLicense}
               onChange={handleChange}
@@ -513,8 +515,8 @@ export default function PersonalForm(props) {
               defaultValue={personal_info.perm_citizen}
               onChange={handleChange}
             >
-              <FormControlLabel value={true} control={<Radio />} label="Yes" />
-              <FormControlLabel value={false} control={<Radio />} label="No" />
+              <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+              <FormControlLabel value="" control={<Radio />} label="No" />
             </RadioGroup>
           </FormControl>
         </Grid>
@@ -646,12 +648,12 @@ export default function PersonalForm(props) {
         <Grid item xs={12}>
           <TextField
             required
-            id="relationship"
-            name="relationship"
+            id="ref_relationship"
+            name="ref_relationship"
             label="Relationship"
             fullWidth
             variant="standard"
-            defaultValue={personal_info.relationship}
+            defaultValue={personal_info.ref_relationship}
             onChange={handleChange}
           />
         </Grid>

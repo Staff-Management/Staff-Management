@@ -22,7 +22,7 @@ export const slice = createSlice({
       avatar_file: null,
       avatar_data: "",
       avatar_src: "",
-      driverlicense: null,
+      driverLicense: null,
       driverLicense_num: "",
       driverLicense_exp: "",
       driverLicense_file: "",
@@ -45,7 +45,7 @@ export const slice = createSlice({
       ref_state: "",
       ref_zip: "",
       ref_country: "",
-      relationship: ""
+      ref_relationship: ""
     },
     contact_info: {
       cell_phone: "",
@@ -60,7 +60,14 @@ export const slice = createSlice({
       vehicle_model: "",
       vehicle_color: ""
     },
-    emergency_contact: []
+    emergency_contact: [{
+      em_firstname: "",
+      em_middlename: "",
+      em_lastname: "",
+      em_phone: "",
+      em_email: "",
+      em_relationship: ""
+    }]
   },
   reducers: {
     setLogin: (state, action) => {

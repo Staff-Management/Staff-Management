@@ -50,7 +50,7 @@ export default function ContactForm(props) {
 
   useEffect(() => {
     setValues(contact_info);
-    // setContactList(emergency_contact);
+    setContactList(JSON.parse(JSON.stringify(emergency_contact)));
   }, []);
 
   const handleSave = (action) => {
@@ -278,9 +278,9 @@ export default function ContactForm(props) {
                       <TextField
                         required
                         onChange={(event) => handleContactChange(event, index)}
-                        defaultValue={emergency_contact[index] ? emergency_contact[index].relationship : ""}
-                        id="relationship"
-                        name="relationship"
+                        defaultValue={emergency_contact[index] ? emergency_contact[index].em_relationship : ""}
+                        id="em_relationship"
+                        name="em_relationship"
                         label="Relationship"
                         fullWidth
                         variant="standard"
