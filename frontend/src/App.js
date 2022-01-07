@@ -9,6 +9,7 @@ import SignUp from './features/signup/SignUp';
 import Login from './features/login/Login'
 import Token from './features/token/Token'
 import PersonalInfo from './layouts/personalinfo'
+import Visa from './features/visaStatus/visa'
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -149,23 +150,31 @@ function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes)}
+      {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/dashboard" />} />
         <Route path="/Login" element={<Login />}/>
         <Route 
           path="/"
           element={
-            <GuardedRoute>
+            // <GuardedRoute>
               <PersonalInfo />
-            </GuardedRoute>
+            // </GuardedRoute>
           }
         />
         <Route 
           path="/onboarding"
           element={
-          <GuardedRoute>
+          //<GuardedRoute>
             <Onboarding />
-          </GuardedRoute>
+          //</GuardedRoute>
+          }
+        />
+        <Route 
+          path="/visa"
+          element={
+          //<GuardedRoute>
+            <Visa />
+          //</GuardedRoute>
           }
         />
         <Route 
