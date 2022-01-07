@@ -151,7 +151,7 @@ function App() {
       <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/dashboard" />} />
-        <Route path="/Login" element={<Login />}/>
+        <Route path="/login" element={<Login />}/>
         <Route 
           path="/"
           element={
@@ -174,14 +174,14 @@ function App() {
             <SignUp />
           }
         />
-        <Route 
+        {/* <Route 
           path="/token"
           element={
           <HRRoute>
             <Token />
           </HRRoute>
           }
-        />
+        /> */}
       </Routes>
     </ThemeProvider>
   );

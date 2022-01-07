@@ -39,6 +39,9 @@ Coded by www.creative-tim.com
 import PersonalInfo from "layouts/personalinfo";
 import Tables from "layouts/tables";
 import Onboarding from "features/onboarding/Onboarding";
+import Token from "features/token/Token";
+import Login from "features/login/Login";
+import SignUp from "features/signup/SignUp";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -68,6 +71,38 @@ const routes = [
     route: "/onboarding",
     component: <Onboarding />,
   },
+  {
+    type: "collapse",
+    name: "Applications",
+    key: "applications",
+    icon: <Icon fontSize="small">approval</Icon>,
+    route: "/applications",
+    component: <Onboarding />,
+  },
+  {
+    type: "collapse",
+    name: "Token",
+    key: "token",
+    icon: <Icon fontSize="small">key</Icon>,
+    route: "/token",
+    component: <Token />,
+  },
+  {
+    type: "collapse",
+    name: "Login",
+    key: "login",
+    icon: <Icon fontSize="small">login</Icon>,
+    route: "/login",
+    component: <Login />,
+  },
+  {
+    type: "collapse",
+    name: "Sign Up",
+    key: "signup",
+    icon: <Icon fontSize="small">person_add</Icon>,
+    route: "/signup",
+    component: <SignUp />,
+  }
 ];
 
 export default routes;
