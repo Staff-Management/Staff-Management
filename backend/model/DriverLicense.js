@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const driverLicenseSchema = new Schema({
     driverLicense_num: String,
-    driverLicense_exp: String
+    driverLicense_exp: String,
     // photo: {
     //     type: String,
     // }

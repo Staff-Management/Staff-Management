@@ -8,7 +8,7 @@ router.post('/register', userController.register);
 //login part
 router.post('/login', userController.login);
 router.post('/onboarding', userController.onBoarding);
-router.post('/setavatar', userController.setAvatar);
+// router.post('/setavatar', userController.setAvatar);
 router.post('/getavatar', userController.getAvatar);
 router.post('/uploadfile', userController.uploadFile);
 router.post('/updateDriv', userController.updateDriv);

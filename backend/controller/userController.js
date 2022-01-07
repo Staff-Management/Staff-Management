@@ -96,6 +96,7 @@ module.exports.onBoarding = async (req, resp) => {
 		vehicle_model,
 		vehicle_color,
 		driverLicense,
+    driverLicense_own,
 		driverLicense_num,
 		driverLicense_exp,
 		ref_firstname,
@@ -110,6 +111,7 @@ module.exports.onBoarding = async (req, resp) => {
 		ref_zip,
 		ref_country,
 		work_auth,
+    workAuth,
 		perm_citizen,
 		green_card_citizen,
 		other_work_auth,
@@ -122,15 +124,14 @@ module.exports.onBoarding = async (req, resp) => {
     const address_info = await Address.create({  address1, address2, city, state, zip, country });
     const dl_info = await DriverLicense.create({  driverLicense_num, driverLicense_exp });
     const ref_info = await Reference.create({  ref_firstname, ref_middlename, ref_lastname, ref_address1, ref_city, ref_state, ref_country, ref_zip, ref_phone, ref_email, ref_relationship });
-    const work_auth_info = await WorkAuth.create({  work_auth, other_work_auth, workAuth_start, workAuth_exp  });
+    const work_auth_info = await WorkAuth.create({  work_auth, other_work_auth, workAuth_start, workAuth_exp });
     for (const contact of em_contact)
     {
       const emergency = await EmergencyContact.create(contact);
-      emergency_id.push(emergency._id)
+      emergency_id.push(emergency._id);
     }
     try {
-      console.log(emergency_id);
-      const data = await user.findOneAndUpdate({ email }, { firstName, lastName, preferredName, middleName, cell_phone, work_phone, ssn, birthday, gender, green_card_citizen, perm_citizen, driverLicense, car_info : car_info._id,
+      const data = await user.findOneAndUpdate({ email }, { firstName, lastName, preferredName, middleName, cell_phone, work_phone, ssn, birthday, gender, green_card_citizen, perm_citizen, driverLicense_own, driverLicense, workAuth, car_info : car_info._id,
         dl_info: dl_info._id, ref_info: ref_info._id, work_auth_info: work_auth_info._id, address_info: address_info._id, $push: { emergency_contact_info: { $each: emergency_id } }}  )
       resp.status(200).json({user: data});
     }catch(e){
@@ -143,31 +144,31 @@ module.exports.onBoarding = async (req, resp) => {
   }
 }
 
-module.exports.setAvatar = async (req, resp) => {
-  const { email, image_data } = req.body;
-  const file_name = `${uuidv4()}.jpg`
-  const buffer = Buffer.from(image_data.replace(/^data:image\/\w+;base64,/, ''), 'base64');
-  try {
-    const params = {
-      Bucket: 'staff-management',
-      Key: `avatar/${file_name}`,
-      Body: buffer,
-    }
-    const stored = await s3.upload(params).promise();
-    try {
-      const data = await user.findOneAndUpdate({ email }, { avatar: `avatar/${file_name}` });
-      resp.status(200).json({user: data});
-    }
-    catch(e) {
-      console.log(e);
-      resp.status(400).send('Error')
-    }
-  }
-  catch(e) {
-    console.log(e);
-    resp.status(400).send('Error')
-  }
-}
+// module.exports.setAvatar = async (req, resp) => {
+//   const { email, image_data } = req.body;
+//   const file_name = `${uuidv4()}.jpg`
+//   const buffer = Buffer.from(image_data.replace(/^data:image\/\w+;base64,/, ''), 'base64');
+//   try {
+//     const params = {
+//       Bucket: 'staff-management',
+//       Key: `avatar/${file_name}`,
+//       Body: buffer,
+//     }
+//     const stored = await s3.upload(params).promise();
+//     try {
+//       const data = await user.findOneAndUpdate({ email }, { avatar: `avatar/${file_name}` });
+//       resp.status(200).json({user: data});
+//     }
+//     catch(e) {
+//       console.log(e);
+//       resp.status(400).send('Error')
+//     }
+//   }
+//   catch(e) {
+//     console.log(e);
+//     resp.status(400).send('Error')
+//   }
+// }
 
 module.exports.uploadFile = async (req, resp) => {
   const { email, file_data, extension, field_name } = req.body;
@@ -183,7 +184,7 @@ module.exports.uploadFile = async (req, resp) => {
     console.log(stored);
     try {
       const data = await user.findOneAndUpdate({ email }, { [field_name]: `${field_name}/${file_name}` });
-      resp.status(200).json({user: data});
+      resp.status(200).json({path: `${field_name}/${file_name}`});
     }
     catch(e) {
       console.log(e);

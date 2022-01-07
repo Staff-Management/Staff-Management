@@ -25,7 +25,7 @@ export default function Review(props) {
   // console.log(Object.keys(all_info).length);
 
   const dl = (
-    personal_info.driverLicense === 'yes' ?
+    personal_info.driverLicense_own === 'yes' ?
       <React.Fragment>
         <Grid item xs={6}>
           <Typography gutterBottom>Own Driver License:</Typography>
@@ -85,7 +85,7 @@ export default function Review(props) {
           <Typography gutterBottom>Work Authrization:</Typography>
         </Grid>
         <Grid item xs={6}>
-          <Typography gutterBottom>{personal_info.workAuth === 'other' ? personal_info.other_work_auth : personal_info.workAuth}</Typography>
+          <Typography gutterBottom>{personal_info.work_auth === 'other' ? personal_info.other_work_auth : personal_info.work_auth}</Typography>
         </Grid>
         <Grid item xs={6}>
           <Typography gutterBottom>Work Auth Start Date:</Typography>

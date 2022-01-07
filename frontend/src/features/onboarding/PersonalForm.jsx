@@ -65,7 +65,8 @@ export default function PersonalForm(props) {
     avatar_file: null,
     avatar_data: "",
     avatar_src: "",
-    driverlicense: null,
+    driverLicense: "",
+    driverlicense_own: null,
     driverLicense_num: "",
     driverLicense_exp: "",
     driverLicense_file: "",
@@ -74,6 +75,7 @@ export default function PersonalForm(props) {
     green_card_citizen: "",
     work_auth: "",
     other_work_auth: "",
+    workAuth: "",
     workAuth_start: "",
     workAuth_exp: "",
     workAuth_file: null,
@@ -95,6 +97,16 @@ export default function PersonalForm(props) {
     if (values['avatar_data'].includes('data:image'))
       uploadFile('avatar');
   }, [values['avatar_data']])
+
+  useEffect(() => {
+    if (values['driverLicense_data'])
+      uploadFile('driverLicense');
+  }, [values['driverLicense_data']])
+
+  useEffect(() => {
+    if (values['workAuth_data'])
+      uploadFile('workAuth');
+  }, [values['workAuth_data']])
 
   useEffect(() => {
     setValues(personal_info);
@@ -144,7 +156,10 @@ export default function PersonalForm(props) {
         headers: {'Content-Type': 'application/json'}
       })
       const response = await res.json();
-      console.log(response);
+      setValues({
+        ...values,
+        [field_name]: response.path
+      });
       if (field_name === 'avatar')
       {
         showAvatar();
@@ -308,11 +323,11 @@ export default function PersonalForm(props) {
   );
 
   const driver_license = (
-    values.driverLicense === null ?
+    values.driverLicense_own === null ?
       <></>
       :
       (
-        values.driverLicense === "yes" ?
+        values.driverLicense_own === "yes" ?
           <Grid container>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -486,10 +501,10 @@ export default function PersonalForm(props) {
           <FormControl component="fieldset">
             <FormLabel component="legend">Do you have a driver license?</FormLabel>
             <RadioGroup
-              aria-label="driverLicense"
-              id="driverLicense"
-              name="driverLicense"
-              defaultValue={personal_info.driverLicense}
+              aria-label="driverLicense_own"
+              id="driverLicense_own"
+              name="driverLicense_own"
+              defaultValue={personal_info.driverLicense_own}
               onChange={handleChange}
             >
               <FormControlLabel value="yes" control={<Radio />} label="Yes" />

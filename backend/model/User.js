@@ -63,13 +63,19 @@ const userSchema = new Schema({
   gender: {
     type: String,
   },
-  driverLicense: {
+  driverLicense_own: {
     type: String
   },
   perm_citizen: {
     type: String
   },
   green_card_citizen: {
+    type: String
+  },
+  driverLicense: {
+    type: String
+  },
+  workAuth: {
     type: String
   },
   ref_info: {
