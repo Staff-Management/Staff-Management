@@ -1,5 +1,6 @@
 // @mui material components
 import Grid from "@mui/material/Grid";
+import Typography from '@mui/material/Typography';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -18,25 +19,31 @@ function Employment() {
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
                     <MDBox mb={3}>
-                    <ProfileInfoCard
-                        title="Employment"
-                        info={{
-                        workAuthorization: "US Citizen",
-                        authorizedStart: "03 March 2020",
-                        authorizedEnd: "05 May 2022",
-                        employmentStart: "05 March 2020",
-                        employmentEnd: "10 May 2022",
-                        jobTitle: "Data Analyst",
-                        }}
-                        social={[
-                        {
-                          link: "https://github.com/Staff-Management",
-                          icon: <GitHubIcon />,
-                          color: "github",
-                        },
-                        ]}
-                        action={{ route: "", tooltip: "Edit Profile" }}
-                    />
+
+                            <Typography variant="h6" gutterBottom sx={{ marginTop: '50px', borderRadius: '10px', backgroundColor: '#6667AB', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
+                                Employment Section
+                            </Typography>
+
+                            <ProfileInfoCard
+                                title="Employment Information"
+                                info={{
+                                workAuthorization: "US Citizen",
+                                authorizedStart: "03 March 2020",
+                                authorizedEnd: "05 May 2022",
+                                employmentStart: "05 March 2020",
+                                employmentEnd: "10 May 2022",
+                                jobTitle: "Data Analyst",
+                                }}
+                                social={[
+                                {
+                                link: "https://github.com/Staff-Management",
+                                icon: <GitHubIcon />,
+                                color: "github",
+                                },
+                                ]}
+                                action={{ route: "", tooltip: "Edit Profile" }}
+                            />
+
                     </MDBox>
                 </Grid>
             </Grid>

@@ -35,27 +35,26 @@ function Tables() {
   const { columns, rows } = visaTableData();
 
   return (
+
     <DashboardLayout>
+
       <DashboardNavbar />
+
       <MDBox pt={6} pb={3}>
+
         <Grid container spacing={6}>
-          <Grid item xs={8}>
+
+          <Grid item xs={8} md={12} lg={12}>
+
             <Card>
+
               {/* title for visa status management table  */}
-              <MDBox
-                mx={2}
-                mt={-3}
-                py={3}
-                px={2}
-                variant="gradient"
-                bgColor="success"
-                borderRadius="lg"
-                coloredShadow="success"
-              >
-                <MDTypography variant="h6" color="white">
-                  Visa Status Management
+              <MDBox mx={2} mt={-5} py={3} px={2}>
+                <MDTypography variant="h6" color="white" backgroundColor="#6667AB" textAlign="center" borderRadius="10px" padding="5px">
+                  Visa Status Management Section
                 </MDTypography>
               </MDBox>
+
               <MDBox pt={3}>
                 <CollapsibleTable
                   table={{ columns, rows }}
@@ -65,12 +64,19 @@ function Tables() {
                   noEndBorder
                 />
               </MDBox>
+
             </Card>
+
           </Grid>
+
         </Grid>
+
       </MDBox>
+
       <Footer />
+
     </DashboardLayout>
+
   );
 }
 

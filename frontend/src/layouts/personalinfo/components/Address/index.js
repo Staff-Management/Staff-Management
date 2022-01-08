@@ -19,6 +19,7 @@ import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
+import Typography from '@mui/material/Typography';
 
 // @mui icons
 import LocationOnIcon from '@mui/icons-material/LocationOn';
@@ -28,10 +29,15 @@ function Address() {
   return (
 
     <MDBox>
+
+      <Typography variant="h6" gutterBottom sx={{ marginTop: 'auto', borderRadius: '10px', backgroundColor: '#6667AB', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
+        Address Section
+      </Typography>
+
       <Grid container spacing={3}>
         <Grid item xs={12} lg={6}>
           <ProfileInfoCard
-            title="Primary Address"
+            title="Primary Address Information"
             info={{
               addressLine1: "1111 Street Name",
               addressLine2: "Apt #123",
@@ -49,9 +55,10 @@ function Address() {
             action={{ route: "", tooltip: "Edit Profile" }}
           />
         </Grid>
+
         <Grid item xs={12} lg={6}>
           <ProfileInfoCard
-            title="Secondary Address"
+            title="Secondary Address Information"
             info={{
               addressLine1: "1111 Street Name",
               addressLine2: "Apt #123",
@@ -69,8 +76,11 @@ function Address() {
             action={{ route: "", tooltip: "Edit Profile" }}
           />
         </Grid>
+
       </Grid>
+
     </MDBox>
+
   );
 }
 

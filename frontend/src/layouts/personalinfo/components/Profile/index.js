@@ -19,6 +19,7 @@ import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
+import Typography from '@mui/material/Typography';
 
 // @mui icons
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -31,16 +32,19 @@ function Address() {
 
     <MDBox>
       <Grid container spacing={3}>
-        <Grid item xs={12} lg={12}>
+        <Grid item xs={12} md={12} lg={12}>
+        <Typography variant="h6" gutterBottom sx={{ backgroundColor: '#6667AB', borderRadius: '10px', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
+          User Profile Section
+        </Typography>
           <ProfileInfoCard
-            title="User Profile"
+            title="User Profile Information"
             info={{
-              fullName: "Natasha Lee",
-              preferredName: "Natasha",
+              fullName: "Natasha M. Lee",
+              preferredName: "Tasha",
               birthDate: "05 June 1996",
               age: "26",
               gender: "Female",
-              SSN: "***-***-1234",
+              SSN: "123-123-1234", // this should be encrypted 
             }}
             social={[
               {
@@ -59,29 +63,9 @@ function Address() {
                 color: "instagram",
               },
             ]}
-            action={{ route: "", tooltip: "Edit Profile" }}
+            action={{ route: "/Editor", tooltip: "Edit Profile" }}
           />
         </Grid>
-        {/* <Grid item xs={12} lg={6}>
-          <ProfileInfoCard
-            title="Secondary Address"
-            info={{
-              addressLine1: "1111 Street Name",
-              addressLine2: "Apt #123",
-              city: "East Windsor",
-              state: "NJ",
-              zip: "08123",
-            }}
-            social={[
-              {
-                link: "https://www.google.com/maps",
-                icon: <LocationOnIcon />,
-                color: "github",
-              },
-            ]}
-            action={{ route: "", tooltip: "Edit Profile" }}
-          />
-        </Grid> */}
       </Grid>
     </MDBox>
   );
