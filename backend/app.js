@@ -8,6 +8,7 @@ const publicPath = path.join(__dirname, "/public");
 require("./db");
 const userRoutes = require('./router/userRouter');
 const tokenRoutes = require('./router/tokenRouter')
+const houseRouter = require('./router/houseRouter')
 const fs = require('fs')
 
 // app.set('view engine', 'pug');
@@ -36,5 +37,6 @@ app.use(
 app.use(express.static(publicPath));
 app.use(userRoutes);
 app.use(tokenRoutes);
+app.use(houseRouter);
 
 module.exports = app;
