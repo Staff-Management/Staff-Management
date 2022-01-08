@@ -17,22 +17,6 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-import { DataGrid } from '@mui/x-data-grid';
-import {
-  randomCreatedDate,
-  randomEmail,
-  randomTraderName,
-  randomUpdatedDate,
-} from '@mui/x-data-grid-generator';
-
-export default function BasicEditingGrid() {
-  return (
-    <div style={{ height: 300, width: '100%' }}>
-      <DataGrid rows={rows1} />
-    </div>
-  );
-}
-
 function createZackData(name, workAuth, expDate, dayLeft, actionRequired) {
   return {
     name,
