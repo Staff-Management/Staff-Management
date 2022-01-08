@@ -12,6 +12,9 @@ const notificationSchema = new Schema({
   },
   message: {
     type: String
+  },
+  date: {
+    type: String
   }
 });
 

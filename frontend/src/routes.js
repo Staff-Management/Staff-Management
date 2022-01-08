@@ -38,10 +38,11 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React layouts
 import PersonalInfo from "layouts/personalinfo";
 import Tables from "layouts/tables";
-import Onboarding from "features/onboarding/Onboarding";
-import Token from "features/token/Token";
-import Login from "features/login/Login";
-import SignUp from "features/signup/SignUp";
+import Onboarding from "layouts/onboarding/Onboarding";
+import Token from "layouts/token/Token";
+import Notifications from "layouts/notifications"
+import SignIn from "layouts/authentication/sign-in";
+import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -78,10 +79,7 @@ const routes = [
     key: "applications",
     icon: <Icon fontSize="small">approval</Icon>,
     route: "/applications",
-    component:
-    <GuardedRoute>
-      <Onboarding />
-    </GuardedRoute>,
+    component: <Onboarding />
   },
   {
     type: "collapse",
@@ -93,18 +91,26 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Login",
-    key: "login",
+    name: "Notifications",
+    key: "notifications",
+    icon: <Icon fontSize="small">notifications</Icon>,
+    route: "/notifications",
+    component: <Notifications />,
+  },
+  {
+    type: "collapse",
+    name: "Sign In",
+    key: "signin",
     icon: <Icon fontSize="small">login</Icon>,
-    route: "/login",
-    component: <Login />,
+    route: "/authentication/signin",
+    component: <SignIn />,
   },
   {
     type: "collapse",
     name: "Sign Up",
     key: "signup",
     icon: <Icon fontSize="small">person_add</Icon>,
-    route: "/signup",
+    route: "/authentication/signup",
     component: <SignUp />,
   }
 ];

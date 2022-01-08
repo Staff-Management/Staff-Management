@@ -28,20 +28,31 @@ import MDBox from "components/MDBox";
 import MDAlertRoot from "components/MDAlert/MDAlertRoot";
 import MDAlertCloseIcon from "components/MDAlert/MDAlertCloseIcon";
 
-function MDAlert({ color, dismissible, children, ...rest }) {
+// MUI
+import Icon from "@mui/material/Icon";
+
+function MDAlert({ color, dismissible, children, onClose, ...rest }) {
   const [alertStatus, setAlertStatus] = useState("mount");
 
+  const handleClose = (mount, onClose) => {
+    if (mount)
+      handleAlertStatus();
+    if (onClose)
+      onClose();
+  }
   const handleAlertStatus = () => setAlertStatus("fadeOut");
 
   // The base template for the alert
   const alertTemplate = (mount = true) => (
     <Fade in={mount} timeout={300}>
       <MDAlertRoot ownerState={{ color }} {...rest}>
-        <MDBox display="flex" alignItems="center" color="white">
+        <MDBox display="block" alignItems="center" color="white">
           {children}
         </MDBox>
         {dismissible ? (
-          <MDAlertCloseIcon onClick={mount ? handleAlertStatus : null}>&times;</MDAlertCloseIcon>
+          <MDAlertCloseIcon onClick={() => handleClose(mount, onClose)}>
+            <Icon fontSize="small">delete</Icon>
+          </MDAlertCloseIcon>
         ) : null}
       </MDAlertRoot>
     </Fade>

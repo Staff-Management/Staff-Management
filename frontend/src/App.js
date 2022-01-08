@@ -4,10 +4,9 @@ import { useDispatch } from 'react-redux';
 import { setLogin } from './slices/userSlice';
 import GuardedRoute from './guardedroute/GuardedRoute';
 import HRRoute from './guardedroute/HRRoute';
-import Onboarding from './features/onboarding/Onboarding';
-import SignUp from './features/signup/SignUp';
-import Login from './features/login/Login'
-import Token from './features/token/Token'
+import Onboarding from './layouts/onboarding/Onboarding';
+import SignUp from './layouts/signup/SignUp';
+import Token from './layouts/token/Token'
 import PersonalInfo from './layouts/personalinfo'
 
 // @mui material components
@@ -147,41 +146,9 @@ function App() {
           {configsButton}
         </>
       )}
-      {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/dashboard" />} />
-        <Route path="/login" element={<Login />}/>
-        <Route 
-          path="/"
-          element={
-            <GuardedRoute>
-              <PersonalInfo />
-            </GuardedRoute>
-          }
-        />
-        <Route 
-          path="/onboarding"
-          element={
-          <GuardedRoute>
-            <Onboarding />
-          </GuardedRoute>
-          }
-        />
-        <Route 
-          path="/signup"
-          element={
-            <SignUp />
-          }
-        />
-        {/* <Route 
-          path="/token"
-          element={
-          <HRRoute>
-            <Token />
-          </HRRoute>
-          }
-        /> */}
       </Routes>
     </ThemeProvider>
   );

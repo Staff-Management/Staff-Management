@@ -309,7 +309,7 @@ module.exports.sendNotification = async (req, resp) => {
   const { from_email, to_email, message } = req.body;
   try
   {
-    const data = await Notification.create({ from_email, to_email, message });
+    const data = await Notification.create({ from_email, to_email, message, date: Date.now().toString() });
     resp.status(200).json({ notification: data })
   }
   catch(e)

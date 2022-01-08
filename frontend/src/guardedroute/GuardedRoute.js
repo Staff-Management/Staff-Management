@@ -11,6 +11,6 @@ export default function GuardedRoute({ children }){
   }
   const loggedin = useSelector(selectLogin);
   return (
-    local_user || loggedin ? children : <Navigate replace to="/Login" />
+    local_user || loggedin ? children : <Navigate replace to="/authenticate/signin" />
   )
 }
