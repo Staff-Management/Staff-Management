@@ -63,30 +63,9 @@ function Address() {
                 color: "instagram",
               },
             ]}
-            action={{ route: "", tooltip: "Edit Profile" }}
+            action={{ route: "/Editor", tooltip: "Edit Profile" }}
           />
         </Grid>
-
-        {/* <Grid item xs={12} lg={6}>
-          <ProfileInfoCard
-            title="Secondary Address"
-            info={{
-              addressLine1: "1111 Street Name",
-              addressLine2: "Apt #123",
-              city: "East Windsor",
-              state: "NJ",
-              zip: "08123",
-            }}
-            social={[
-              {
-                link: "https://www.google.com/maps",
-                icon: <LocationOnIcon />,
-                color: "github",
-              },
-            ]}
-            action={{ route: "", tooltip: "Edit Profile" }}
-          />
-        </Grid> */}
       </Grid>
     </MDBox>
   );

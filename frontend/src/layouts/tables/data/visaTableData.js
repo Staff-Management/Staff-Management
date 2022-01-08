@@ -1,6 +1,8 @@
 
 import * as React from 'react';
 import PropTypes from 'prop-types';
+
+// mui materials
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -14,6 +16,22 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+
+import { DataGrid } from '@mui/x-data-grid';
+import {
+  randomCreatedDate,
+  randomEmail,
+  randomTraderName,
+  randomUpdatedDate,
+} from '@mui/x-data-grid-generator';
+
+export default function BasicEditingGrid() {
+  return (
+    <div style={{ height: 300, width: '100%' }}>
+      <DataGrid rows={rows1} />
+    </div>
+  );
+}
 
 function createZackData(name, workAuth, expDate, dayLeft, actionRequired) {
   return {
@@ -35,7 +53,8 @@ function createZackData(name, workAuth, expDate, dayLeft, actionRequired) {
           '(ICON) OPT EAD_11/20/2019 '
         ],
         nextStep: 'OPT STEM EAD',
-        actionReq: 'Send Notification'
+        actionReq: 'Send Notification',
+        editable: true,
       },
     ],
   };
@@ -113,7 +132,7 @@ function createSteveData(name, workAuth, expDate, dayLeft, actionRequired) {
           '(ICON) OPT EAD_11/20/2019 '
         ],
         nextStep: 'OPT STEM EAD',
-        actionReq: 'Send Notification'
+        actionReq: 'Send Notification',
       },
     ],
   };
@@ -223,6 +242,7 @@ Row.propTypes = {
     workAuth: PropTypes.string.isRequired,
     dayLeft: PropTypes.number.isRequired,
     expDate: PropTypes.number.isRequired,
+    editable: true,
     history: PropTypes.arrayOf(
       PropTypes.shape({
         visa: PropTypes.string.isRequired,
@@ -231,6 +251,7 @@ Row.propTypes = {
         documentReceived: PropTypes.string.isRequired,
         nextStep: PropTypes.string.isRequired,
         actionReq: PropTypes.string.isRequired,
+        editable: true,
       }),
     ).isRequired,
     name: PropTypes.string.isRequired,
