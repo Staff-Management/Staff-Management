@@ -160,26 +160,8 @@ function createKevinData(name, email, workAuth, expDate, dayLeft, actionRequired
 function Row(props) {
   const email = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com';
 
-  const { row } = props;
+  const { row, openSuccessSB } = props;
   const [open, setOpen] = React.useState(false);
-  const [successSB, setSuccessSB] = useState(false);
-
-  const openSuccessSB = () => setSuccessSB(true);
-  const closeSuccessSB = () => setSuccessSB(false);
-
-  const renderSuccessSB = (
-    <MDSnackbar
-      color="success"
-      icon="check"
-      title="Notification Sent"
-      content="Notification is successfully sent!"
-      dateTime="Just Now"
-      open={successSB}
-      onClose={closeSuccessSB}
-      close={closeSuccessSB}
-      bgWhite
-    />
-  );
 
   const sendNotification = async (to_email) => {
     const message = `Your next step is: {placeholder}`
@@ -305,7 +287,6 @@ function Row(props) {
           </Collapse>
         </TableCell>
       </TableRow>
-      {renderSuccessSB}
     </React.Fragment>
   );
 }
@@ -339,46 +320,68 @@ const rows1 = [
 ];
 
 export default function CollapsibleTable() {
+  const [successSB, setSuccessSB] = useState(false);
+
+  const openSuccessSB = () => setSuccessSB(true);
+  const closeSuccessSB = () => setSuccessSB(false);
+
+  const renderSuccessSB = (
+    <MDSnackbar
+      color="success"
+      icon="check"
+      title="Notification Sent"
+      content="Notification is successfully sent!"
+      dateTime="Just Now"
+      open={successSB}
+      onClose={closeSuccessSB}
+      close={closeSuccessSB}
+      bgWhite
+    />
+  );
+
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        {/* <TableHead> */}
-        <TableBody>
-          <TableRow>
-            <TableCell>
-              <Typography variant='h6' align='center'>
-                Name (Legal Name)
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant='h6' align='center'>
-                Work Authorization
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant='h6' align='center'>
-                Expiration Date
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant='h6' align='center'>
-                Day Left
-              </Typography>
-            </TableCell>
-            <TableCell>
-              <Typography variant='h6' align='center'>
-                Action Required
-              </Typography>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-        {/* </TableHead> */}
-        <TableBody>
-          {rows1.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <React.Fragment>
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          {/* <TableHead> */}
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <Typography variant='h6' align='center'>
+                  Name (Legal Name)
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant='h6' align='center'>
+                  Work Authorization
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant='h6' align='center'>
+                  Expiration Date
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant='h6' align='center'>
+                  Day Left
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant='h6' align='center'>
+                  Action Required
+                </Typography>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+          {/* </TableHead> */}
+          <TableBody>
+            {rows1.map((row) => (
+              <Row key={row.name} row={row} openSuccessSB={openSuccessSB} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {renderSuccessSB}
+    </React.Fragment>
   );
 }
