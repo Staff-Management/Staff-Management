@@ -6,7 +6,7 @@ const Tenants = require('../model/Tenants');
 module.exports.addHouse = async (req, resp) => {
     const {
         landLord,
-        email,
+        landlordEmail,
         landLordPhone,
         address1,
         address2,
@@ -17,21 +17,25 @@ module.exports.addHouse = async (req, resp) => {
         numBeds,
         numMattress, 
         numTables,
-        preferredName, 
-        firstName,
-        tenantsPhone,
+        tenantsList
     } = req.body;
-    console.log(req.body);
+    console.log( tenantsList);
     try {
-        const createTenants = await Tenants.create({ preferredName, firstName, tenantsPhone });
+        let tenants_id = [];
+        for (const tenants of tenantsList)
+        {
+            const createTenants = await Tenants.create(tenants);
+            tenants_id.push(createTenants._id);
+        }
         const createFacility = await Facility.create({ numBeds, numMattress, numTables });
-        const createHouse = await House.create({ landLord, email, landLordPhone, address1, address2, city, numEmployees, state, zip, facilityInfo:  createFacility._id })
-        const updateHouse = await House.findOneAndUpdate({ landLord }, { $push: { list_employee: createTenants._id} })
+        const createHouse = await House.create({ landLord, landlordEmail, landLordPhone, address1, address2, city, numEmployees, state, zip, facilityInfo:  createFacility._id })
+        const updateHouse = await House.findOneAndUpdate({ landLord }, { $push: { list_employee: { $each: tenants_id } } } )
         resp.status(200).json({house: createHouse});
     }catch(e){
         console.log(e);
         resp.status(200).send('error')
     }
+    resp.end();
 }
 
 module.exports.addTenants = async (req, resp) => {
