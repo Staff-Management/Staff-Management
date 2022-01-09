@@ -20,13 +20,18 @@ import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import CardActions from '@mui/material/CardActions';
 
 // @mui icons
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
+
+// @mui material components
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import { Button, CardActionArea, CardActions } from '@mui/material';
+
 
 function Address() {
 
@@ -38,8 +43,55 @@ function Address() {
         <Typography variant="h6" gutterBottom sx={{ backgroundColor: '#6667AB', borderRadius: '10px', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
           User Profile Section
         </Typography>
-          <ProfileInfoCard
+
+        <Card sx={{ maxWidth: 500 }}>
+          <CardActionArea>
+            <CardContent>
+
+              Name:
+              <Typography gutterBottom variant="h5" component="div">
+                Natasha M. Lee
+              </Typography>
+
+              Preferred Name:
+              <Typography gutterBottom variant="h5" component="div">
+                Tasha
+              </Typography>
+
+              Date of Birth:
+              <Typography gutterBottom variant="h5" component="div">
+                05 June 1996
+              </Typography>
+
+              Age:
+              <Typography gutterBottom variant="h5" component="div">
+                26
+              </Typography>
+
+              Gender:
+              <Typography gutterBottom variant="h5" component="div">
+                Female
+              </Typography>
+
+              Social Security Number:
+              <Typography gutterBottom variant="h5" component="div">
+                111-111-1111
+              </Typography>
+              
+            </CardContent>
+          </CardActionArea>
+
+          <CardActions>
+            <Button size="small" color="secondary">
+              Edit
+            </Button>
+          </CardActions>
+
+        </Card>
+
+          {/* <ProfileInfoCard
             title="User Profile Information"
+            description=""
             info={{
               fullName: "Natasha M. Lee",
               preferredName: "Tasha",
@@ -68,7 +120,8 @@ function Address() {
             action={{ 
               route: "/Editor", tooltip: "Edit Profile" 
             }}
-          />
+          /> */}
+
         </Grid>
       </Grid>
     </MDBox>
