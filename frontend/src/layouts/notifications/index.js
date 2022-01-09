@@ -43,7 +43,7 @@ import { selectEmail } from "slices/userSlice"
 
 function Notifications() {
   // TODO const email = useSelector(selectEmail);
-  const email = JSON.parse(localStorage.getItem('user')).email;
+  const email = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com';
 
   const [notifications, setNotifications] = useState([]);
   const [successSB, setSuccessSB] = useState(false);
@@ -79,38 +79,33 @@ function Notifications() {
   );
 
   const fetchNotifications = async () => {
-    try
-    {
+    try {
       const res = await fetch('http://localhost:4000/getnotification', {
         method: 'POST',
         body: JSON.stringify({ email }),
-        headers: {'Content-Type': 'application/json'}
+        headers: { 'Content-Type': 'application/json' }
       })
       const data = await res.json();
       setNotifications(data.notification);
     }
-    catch (e)
-    {
+    catch (e) {
       alert("Error, refer to the console for details");
       console.log(e);
     }
   }
 
   const handleDelete = async (id) => {
-    try
-    {
+    try {
       const res = await fetch('http://localhost:4000/deletenotification', {
         method: 'POST',
         body: JSON.stringify({ id }),
-        headers: {'Content-Type': 'application/json'}
+        headers: { 'Content-Type': 'application/json' }
       })
-      if (res.status === 200)
-      {
+      if (res.status === 200) {
         openSuccessSB();
       }
     }
-    catch (e)
-    {
+    catch (e) {
       alert("Error, refer to the console for details");
       console.log(e);
     }
@@ -169,7 +164,7 @@ function Notifications() {
             <Card>
               <MDBox display="flex" alignItems="center" pt={2} pl={2} pr={2}>
                 <MDTypography variant="h5" textTransform="capitalize" mr={2}>
-                 Notifications
+                  Notifications
                 </MDTypography>
                 <MDTypography variant="body2" color="secondary">
                   <Tooltip title={'refresh'} placement="top">
