@@ -20,6 +20,8 @@ import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import CardActions from '@mui/material/CardActions';
 
 // @mui icons
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -63,7 +65,9 @@ function Address() {
                 color: "instagram",
               },
             ]}
-            action={{ route: "/Editor", tooltip: "Edit Profile" }}
+            action={{ 
+              route: "/Editor", tooltip: "Edit Profile" 
+            }}
           />
         </Grid>
       </Grid>

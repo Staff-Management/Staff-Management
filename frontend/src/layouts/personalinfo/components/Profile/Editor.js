@@ -1,168 +1,78 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+/**
+=========================================================
+* Material Dashboard 2 React - v2.0.0
+=========================================================
 
-export default function FormPropsTextFields() {
+* Product Page: https://www.creative-tim.com/product/material-dashboard-react
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+
+Coded by www.creative-tim.com
+
+ =========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+*/
+
+// Material Dashboard 2 React components
+import MDBox from "components/MDBox";
+import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
+
+// @mui material components
+import Grid from "@mui/material/Grid";
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import CardActions from '@mui/material/CardActions';
+
+// @mui icons
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import InstagramIcon from '@mui/icons-material/Instagram';
+
+function Address() {
+
   return (
-    <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <div>
-        <TextField
-          required
-          id="outlined-required"
-          label="Required"
-          defaultValue="Hello World"
-        />
-        <TextField
-          disabled
-          id="outlined-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-        />
-        <TextField
-          id="outlined-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-        />
-        <TextField
-          id="outlined-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          id="outlined-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField id="outlined-search" label="Search field" type="search" />
-        <TextField
-          id="outlined-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-        />
-      </div>
-      <div>
-        <TextField
-          required
-          id="filled-required"
-          label="Required"
-          defaultValue="Hello World"
-          variant="filled"
-        />
-        <TextField
-          disabled
-          id="filled-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-          variant="filled"
-        />
-        <TextField
-          id="filled-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          variant="filled"
-        />
-        <TextField
-          id="filled-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="filled"
-        />
-        <TextField
-          id="filled-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="filled"
-        />
-        <TextField
-          id="filled-search"
-          label="Search field"
-          type="search"
-          variant="filled"
-        />
-        <TextField
-          id="filled-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-          variant="filled"
-        />
-      </div>
-      <div>
-        <TextField
-          required
-          id="standard-required"
-          label="Required"
-          defaultValue="Hello World"
-          variant="standard"
-        />
-        <TextField
-          disabled
-          id="standard-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-          variant="standard"
-        />
-        <TextField
-          id="standard-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          variant="standard"
-        />
-        <TextField
-          id="standard-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="standard"
-        />
-        <TextField
-          id="standard-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="standard"
-        />
-        <TextField
-          id="standard-search"
-          label="Search field"
-          type="search"
-          variant="standard"
-        />
-        <TextField
-          id="standard-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-          variant="standard"
-        />
-      </div>
-    </Box>
+
+    <MDBox>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={12} lg={12}>
+        <Typography variant="h6" gutterBottom sx={{ backgroundColor: '#6667AB', borderRadius: '10px', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
+          User Profile Section
+        </Typography>
+          <ProfileInfoCard
+            title="User Profile Information"
+            info={{
+              fullName: "",
+              preferredName: "",
+              birthDate: "",
+              age: "",
+              gender: "",
+              SSN: "", // this should be encrypted 
+            }}
+            social={[
+              {
+                link: "https://www.facebook.com",
+                icon: <FacebookIcon />,
+                color: "facebook",
+              },
+              {
+                link: "https://www.twitter.com",
+                icon: <TwitterIcon />,
+                color: "twitter",
+              },
+              {
+                link: "https://www.instagram.com",
+                icon: <InstagramIcon />,
+                color: "instagram",
+              },
+            ]}
+            action={{ 
+              route: "/Editor", tooltip: "Edit Profile" 
+            }}
+          />
+        </Grid>
+      </Grid>
+    </MDBox>
   );
 }
+
+export default Address;

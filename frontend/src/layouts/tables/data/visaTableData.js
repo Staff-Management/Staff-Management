@@ -10,12 +10,12 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { fontWeight } from '@mui/system';
 
 function createZackData(name, workAuth, expDate, dayLeft, actionRequired) {
   return {
@@ -157,15 +157,12 @@ function Row(props) {
 
     <React.Fragment>
 
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-
-        <TableCell align="left">{row.workAuth}</TableCell>
-        <TableCell align="left">{row.expDate}</TableCell>
-        <TableCell align="left">{row.dayLeft}</TableCell>
-        <TableCell align="left">{row.actionRequired}</TableCell>
+      <TableRow>
+        <TableCell>{row.name}</TableCell>
+        <TableCell>{row.workAuth}</TableCell>
+        <TableCell>{row.expDate}</TableCell>
+        <TableCell>{row.dayLeft}</TableCell>
+        <TableCell>{row.actionRequired}</TableCell>
 
         <TableCell>
           <IconButton
@@ -176,6 +173,7 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>  
+
       </TableRow>
 
       <TableRow>
@@ -186,32 +184,34 @@ function Row(props) {
                 Details
               </Typography>
               <Table size="small" aria-label="purchases">
-                <TableHead>
+                {/* <TableHead> */}
+                <TableBody> 
                   <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Visa</TableCell>
-                    <TableCell align="left">Start Date</TableCell>
-                    <TableCell align="left">End Date</TableCell>
-                    <TableCell align="left">Document Received</TableCell>
-                    <TableCell align="left">Next Step</TableCell>
-                    <TableCell align="left">Action Required</TableCell>
+                    <TableCell style={{ fontWeight: 500 }}>Name</TableCell>
+                    <TableCell style={{ fontWeight: 500 }}>Visa</TableCell>
+                    <TableCell style={{ fontWeight: 500 }}>Start Date</TableCell>
+                    <TableCell style={{ fontWeight: 500 }}>End Date</TableCell>
+                    <TableCell style={{ fontWeight: 500 }}>Document Received</TableCell>
+                    <TableCell style={{ fontWeight: 500 }}>Next Step</TableCell>
+                    <TableCell style={{ fontWeight: 500 }}>Action Required</TableCell>
                   </TableRow>
-                  <TableBody>
+                </TableBody>
+                {/* </TableHead> */}
+                <TableBody>
                     {row.details.map((detailRow) => (
-                      <TableRow key={detailRow.date}>
-                        <TableCell component="th" scope="row">
+                      <TableRow key={detailRow}>
+                        <TableCell>
                           {detailRow.name}
                         </TableCell>
                         <TableCell>{detailRow.visa}</TableCell>
-                        <TableCell align="left">{detailRow.startDate}</TableCell>
-                        <TableCell align="left">{detailRow.endDate}</TableCell>
-                        <TableCell align="left">{detailRow.documentReceived}</TableCell>
-                        <TableCell align="left">{detailRow.nextStep}</TableCell>
-                        <TableCell align="left">{detailRow.actionReq}</TableCell>
+                        <TableCell>{detailRow.startDate}</TableCell>
+                        <TableCell>{detailRow.endDate}</TableCell>
+                        <TableCell>{detailRow.documentReceived}</TableCell>
+                        <TableCell>{detailRow.nextStep}</TableCell>
+                        <TableCell>{detailRow.actionReq}</TableCell>
                       </TableRow>
                     ))}
-                  </TableBody>
-                </TableHead>
+                </TableBody>
               </Table>
             </Box>
           </Collapse>
@@ -225,8 +225,7 @@ Row.propTypes = {
   row: PropTypes.shape({
     workAuth: PropTypes.string.isRequired,
     dayLeft: PropTypes.number.isRequired,
-    expDate: PropTypes.number.isRequired,
-    editable: true,
+    expDate: PropTypes.string.isRequired,
     history: PropTypes.arrayOf(
       PropTypes.shape({
         visa: PropTypes.string.isRequired,
@@ -235,64 +234,44 @@ Row.propTypes = {
         documentReceived: PropTypes.string.isRequired,
         nextStep: PropTypes.string.isRequired,
         actionReq: PropTypes.string.isRequired,
-        editable: true,
       }),
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    actionRequired: PropTypes.string.isRequired,
+    ),
   }).isRequired,
 };
 
 const rows1 = [
-  createZackData('Zack', 'F1/OPT', '3/25/2020', '10', 'Send Notification')
-];
-
-const rows2 = [
-  createKikiData('Kiki', 'F1/OPT', '5/25/2020', '61', 'Send Notification')
-];
-
-const rows3 = [
-  createAnthonyData('Anthony', 'F1/OPT', '6/21/2020', '41', 'Send Notification')
-];
-
-const rows4 = [
-  createSteveData('Steve', 'F1/OPT', '6/16/2020', '66', 'Send Notification')
-];
-
-const rows5 = [
-  createKevinData('Kevin', 'F1/OPT', '8/18/2020', '88', 'Send Notification')
+  createZackData('Zack', 'F1/OPT', '3/25/2020', 10, 'Send Notification'),
+  createKikiData('Kiki', 'F1/OPT', '5/25/2020', 61, 'Send Notification'),
+  createAnthonyData('Anthony', 'F1/OPT', '6/21/2020', 41, 'Send Notification'),
+  createSteveData('Steve', 'F1/OPT', '6/16/2020', 66, 'Send Notification'),
+  createKevinData('Kevin', 'F1/OPT', '8/18/2020', 88, 'Send Notification'),
 ];
 
 export default function CollapsibleTable() {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
-        <TableHead>
+        {/* <TableHead> */}
+        <TableBody>
           <TableRow>
-            <TableCell>Name (Legal Name)</TableCell>
-            <TableCell align="left">Work Authorization</TableCell>
-            <TableCell align="left">Expiration Date</TableCell>
-            <TableCell align="left">Day Left</TableCell>
-            <TableCell align="left">Action Required</TableCell>
+            <TableCell style={{ fontWeight: 500 }}>Name (Legal Name)</TableCell>
+            <TableCell style={{ fontWeight: 500 }}>Work Authorization</TableCell>
+            <TableCell style={{ fontWeight: 500 }}>Expiration Date</TableCell>
+            <TableCell style={{ fontWeight: 500 }}>Day Left</TableCell>
+            <TableCell style={{ fontWeight: 500 }}>Action Required</TableCell>
           </TableRow>
-          <TableBody>
+        </TableBody>
+        {/* </TableHead> */}
+        <TableBody>
             {rows1.map((row) => (
-              <Row key={row.name} row={row} />
+              <Row key={row.name} row={row}>
+                <TableCell>{row.workAuth}</TableCell>
+                <TableCell>{row.expDate}</TableCell>
+                <TableCell>{row.dayLeft}</TableCell>
+                <TableCell>{row.actionRequired}</TableCell>
+              </Row>
             ))}
-            {rows2.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-            {rows3.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-            {rows4.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-            {rows5.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-          </TableBody>
-        </TableHead>
+        </TableBody>
       </Table>
     </TableContainer>
   );
