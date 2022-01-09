@@ -18,11 +18,11 @@ const steps = ['Personal Info', 'Contact Info', 'Review your Application'];
 function getStepContent(step, handleNext, handleBack) {
   switch (step) {
     case 0:
-      return <PersonalForm handleNext={handleNext}/>;
+      return <PersonalForm handleNext={handleNext} />;
     case 1:
-      return <ContactForm handleNext={handleNext} handleBack={handleBack}/>;
+      return <ContactForm handleNext={handleNext} handleBack={handleBack} />;
     case 2:
-      return <Review handleNext={handleNext} handleBack={handleBack}/>;
+      return <Review handleNext={handleNext} handleBack={handleBack} />;
     default:
       throw new Error('Unknown step');
   }

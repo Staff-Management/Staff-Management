@@ -1,25 +1,30 @@
 
 import * as React from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
+
+import MDSnackbar from "components/MDSnackbar";
 
 // mui materials
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
+import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton';
+import SendIcon from '@mui/icons-material/Send';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-function createZackData(name, workAuth, expDate, dayLeft, actionRequired) {
+function createZackData(name, email, workAuth, expDate, dayLeft, actionRequired) {
   return {
     name,
+    email,
     workAuth,
     expDate,
     dayLeft,
@@ -31,9 +36,9 @@ function createZackData(name, workAuth, expDate, dayLeft, actionRequired) {
         startDate: '3/24/2019',
         endDate: '3/25/2020',
         documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020, ',
-          '(ICON) I-20_2/1/2020, ',
-          '(ICON) I-983_1/25/2020, ',
+          '(ICON) OPT STEM Receipt_3/20/2020',
+          '(ICON) I-20_2/1/2020',
+          '(ICON) I-983_1/25/2020',
           '(ICON) OPT EAD_11/20/2019 '
         ],
         nextStep: 'OPT STEM EAD',
@@ -44,9 +49,10 @@ function createZackData(name, workAuth, expDate, dayLeft, actionRequired) {
   };
 }
 
-function createKikiData(name, workAuth, expDate, dayLeft, actionRequired) {
+function createKikiData(name, email, workAuth, expDate, dayLeft, actionRequired) {
   return {
     name,
+    email,
     workAuth,
     expDate,
     dayLeft,
@@ -58,10 +64,10 @@ function createKikiData(name, workAuth, expDate, dayLeft, actionRequired) {
         startDate: '3/24/2020',
         endDate: '3/25/2021',
         documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020, ',
-          '(ICON) I-20_2/1/2020, ',
-          '(ICON) I-983_1/25/2020, ',
-          '(ICON) OPT EAD_11/20/2019 '
+          '(ICON) OPT STEM Receipt_3/20/2020',
+          '(ICON) I-20_2/1/2020',
+          '(ICON) I-983_1/25/2020',
+          '(ICON) OPT EAD_11/20/2019'
         ],
         nextStep: 'OPT STEM EAD',
         actionReq: 'Send Notification'
@@ -70,9 +76,10 @@ function createKikiData(name, workAuth, expDate, dayLeft, actionRequired) {
   };
 }
 
-function createAnthonyData(name, workAuth, expDate, dayLeft, actionRequired) {
+function createAnthonyData(name, email, workAuth, expDate, dayLeft, actionRequired) {
   return {
     name,
+    email,
     workAuth,
     expDate,
     dayLeft,
@@ -84,9 +91,9 @@ function createAnthonyData(name, workAuth, expDate, dayLeft, actionRequired) {
         startDate: '6/24/2020',
         endDate: '8/25/2021',
         documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020, ',
-          '(ICON) I-20_2/1/2020, ',
-          '(ICON) I-983_1/25/2020, ',
+          '(ICON) OPT STEM Receipt_3/20/2020',
+          '(ICON) I-20_2/1/2020',
+          '(ICON) I-983_1/25/2020',
           '(ICON) OPT EAD_11/20/2019 '
         ],
         nextStep: 'OPT STEM EAD',
@@ -96,9 +103,10 @@ function createAnthonyData(name, workAuth, expDate, dayLeft, actionRequired) {
   };
 }
 
-function createSteveData(name, workAuth, expDate, dayLeft, actionRequired) {
+function createSteveData(name, email, workAuth, expDate, dayLeft, actionRequired) {
   return {
     name,
+    email,
     workAuth,
     expDate,
     dayLeft,
@@ -110,9 +118,9 @@ function createSteveData(name, workAuth, expDate, dayLeft, actionRequired) {
         startDate: '1/4/2020',
         endDate: '5/5/2021',
         documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020, ',
-          '(ICON) I-20_2/1/2020, ',
-          '(ICON) I-983_1/25/2020, ',
+          '(ICON) OPT STEM Receipt_3/20/2020',
+          '(ICON) I-20_2/1/2020',
+          '(ICON) I-983_1/25/2020',
           '(ICON) OPT EAD_11/20/2019 '
         ],
         nextStep: 'OPT STEM EAD',
@@ -122,9 +130,10 @@ function createSteveData(name, workAuth, expDate, dayLeft, actionRequired) {
   };
 }
 
-function createKevinData(name, workAuth, expDate, dayLeft, actionRequired) {
+function createKevinData(name, email, workAuth, expDate, dayLeft, actionRequired) {
   return {
     name,
+    email,
     workAuth,
     expDate,
     dayLeft,
@@ -136,9 +145,9 @@ function createKevinData(name, workAuth, expDate, dayLeft, actionRequired) {
         startDate: '12/4/2020',
         endDate: '1/20/2021',
         documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020, ',
-          '(ICON) I-20_2/1/2020, ',
-          '(ICON) I-983_1/25/2020, ',
+          '(ICON) OPT STEM Receipt_3/20/2020',
+          '(ICON) I-20_2/1/2020',
+          '(ICON) I-983_1/25/2020',
           '(ICON) OPT EAD_11/20/2019 '
         ],
         nextStep: 'OPT STEM EAD',
@@ -149,23 +158,62 @@ function createKevinData(name, workAuth, expDate, dayLeft, actionRequired) {
 }
 
 function Row(props) {
-  
+  const email = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com';
+
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const [successSB, setSuccessSB] = useState(false);
+
+  const openSuccessSB = () => setSuccessSB(true);
+  const closeSuccessSB = () => setSuccessSB(false);
+
+  const renderSuccessSB = (
+    <MDSnackbar
+      color="success"
+      icon="check"
+      title="Notification Sent"
+      content="Notification is successfully sent!"
+      dateTime="Just Now"
+      open={successSB}
+      onClose={closeSuccessSB}
+      close={closeSuccessSB}
+      bgWhite
+    />
+  );
+
+  const sendNotification = async (to_email) => {
+    const message = `Your next step is: {placeholder}`
+    try {
+      const res = await fetch('http://localhost:4000/sendnotification', {
+        method: 'POST',
+        body: JSON.stringify({ from_email: email, to_email, message }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      if (res.status === 200) {
+        openSuccessSB();
+      }
+    }
+    catch (e) {
+      alert("Error, refer to the console for details");
+      console.log(e);
+    }
+  }
 
   return (
 
     <React.Fragment>
 
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
+      <TableRow>
 
-        <TableCell align="left">{row.workAuth}</TableCell>
-        <TableCell align="left">{row.expDate}</TableCell>
-        <TableCell align="left">{row.dayLeft}</TableCell>
-        <TableCell align="left">{row.actionRequired}</TableCell>
+        <TableCell align='center'>{row.name}</TableCell>
+        <TableCell align='center'>{row.workAuth}</TableCell>
+        <TableCell align='center'>{row.expDate}</TableCell>
+        <TableCell align='center'>{row.dayLeft}</TableCell>
+        <TableCell align='center'>
+          <Button variant='outlined' disabled={!row.actionRequired} endIcon={<SendIcon />} onClick={() => sendNotification(row.email)}>
+            Send Notification
+          </Button>
+        </TableCell>
 
         <TableCell>
           <IconButton
@@ -175,7 +223,8 @@ function Row(props) {
           >
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
-        </TableCell>  
+        </TableCell>
+
       </TableRow>
 
       <TableRow>
@@ -186,47 +235,88 @@ function Row(props) {
                 Details
               </Typography>
               <Table size="small" aria-label="purchases">
-                <TableHead>
+                <TableBody>
                   <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Visa</TableCell>
-                    <TableCell align="left">Start Date</TableCell>
-                    <TableCell align="left">End Date</TableCell>
-                    <TableCell align="left">Document Received</TableCell>
-                    <TableCell align="left">Next Step</TableCell>
-                    <TableCell align="left">Action Required</TableCell>
+                    <TableCell>
+                      <Typography variant='h6' align='center'>
+                        Name
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant='h6' align='center'>
+                        Visa
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant='h6' align='center'>
+                        Start Date
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant='h6' align='center'>
+                        End Date
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant='h6' align='center'>
+                        Documents Received
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant='h6' align='center'>
+                        Next Step
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant='h6' align='center'>
+                        Action Required
+                      </Typography>
+                    </TableCell>
                   </TableRow>
-                  <TableBody>
-                    {row.details.map((detailRow) => (
-                      <TableRow key={detailRow.date}>
-                        <TableCell component="th" scope="row">
-                          {detailRow.name}
-                        </TableCell>
-                        <TableCell>{detailRow.visa}</TableCell>
-                        <TableCell align="left">{detailRow.startDate}</TableCell>
-                        <TableCell align="left">{detailRow.endDate}</TableCell>
-                        <TableCell align="left">{detailRow.documentReceived}</TableCell>
-                        <TableCell align="left">{detailRow.nextStep}</TableCell>
-                        <TableCell align="left">{detailRow.actionReq}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </TableHead>
+                </TableBody>
+                <TableBody>
+                  {row.details.map((detailRow) => (
+                    <TableRow key={detailRow}>
+                      <TableCell align='center'>
+                        {detailRow.name}
+                      </TableCell>
+                      <TableCell align='center'>{detailRow.visa}</TableCell>
+                      <TableCell align='center'>{detailRow.startDate}</TableCell>
+                      <TableCell align='center'>{detailRow.endDate}</TableCell>
+                      <TableCell align='center'>
+                        {detailRow.documentReceived.map((doc, index) => (
+                          <React.Fragment key={index}>
+                            {doc}
+                            <br />
+                          </React.Fragment>
+                        ))}
+                      </TableCell>
+                      <TableCell align='center'>{detailRow.nextStep}</TableCell>
+                      <TableCell align='center'>
+                        <Button variant='outlined' disabled={!detailRow.actionReq} endIcon={<SendIcon />} onClick={() => sendNotification(row.email)}>
+                          Send Notification
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
               </Table>
             </Box>
           </Collapse>
         </TableCell>
       </TableRow>
+      {renderSuccessSB}
     </React.Fragment>
   );
 }
 
 Row.propTypes = {
   row: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     workAuth: PropTypes.string.isRequired,
     dayLeft: PropTypes.number.isRequired,
-    expDate: PropTypes.number.isRequired,
-    editable: true,
+    expDate: PropTypes.string.isRequired,
     history: PropTypes.arrayOf(
       PropTypes.shape({
         visa: PropTypes.string.isRequired,
@@ -235,64 +325,59 @@ Row.propTypes = {
         documentReceived: PropTypes.string.isRequired,
         nextStep: PropTypes.string.isRequired,
         actionReq: PropTypes.string.isRequired,
-        editable: true,
       }),
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    actionRequired: PropTypes.string.isRequired,
+    ),
   }).isRequired,
 };
 
 const rows1 = [
-  createZackData('Zack', 'F1/OPT', '3/25/2020', '10', 'Send Notification')
-];
-
-const rows2 = [
-  createKikiData('Kiki', 'F1/OPT', '5/25/2020', '61', 'Send Notification')
-];
-
-const rows3 = [
-  createAnthonyData('Anthony', 'F1/OPT', '6/21/2020', '41', 'Send Notification')
-];
-
-const rows4 = [
-  createSteveData('Steve', 'F1/OPT', '6/16/2020', '66', 'Send Notification')
-];
-
-const rows5 = [
-  createKevinData('Kevin', 'F1/OPT', '8/18/2020', '88', 'Send Notification')
+  createZackData('Zack', 'a@a.com', 'F1/OPT', '3/25/2020', 10, 'Send Notification'),
+  createKikiData('Kiki', 'a@a.com', 'F1/OPT', '5/25/2020', 61, 'Send Notification'),
+  createAnthonyData('Anthony', 'b@b.com', 'F1/OPT', '6/21/2020', 41, 'Send Notification'),
+  createSteveData('Steve', 'b@b.com', 'F1/OPT', '6/16/2020', 66, 'Send Notification'),
+  createKevinData('Kevin', 'c@c.com', 'F1/OPT', '8/18/2020', 88, 'Send Notification'),
 ];
 
 export default function CollapsibleTable() {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
-        <TableHead>
+        {/* <TableHead> */}
+        <TableBody>
           <TableRow>
-            <TableCell>Name (Legal Name)</TableCell>
-            <TableCell align="left">Work Authorization</TableCell>
-            <TableCell align="left">Expiration Date</TableCell>
-            <TableCell align="left">Day Left</TableCell>
-            <TableCell align="left">Action Required</TableCell>
+            <TableCell>
+              <Typography variant='h6' align='center'>
+                Name (Legal Name)
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant='h6' align='center'>
+                Work Authorization
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant='h6' align='center'>
+                Expiration Date
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant='h6' align='center'>
+                Day Left
+              </Typography>
+            </TableCell>
+            <TableCell>
+              <Typography variant='h6' align='center'>
+                Action Required
+              </Typography>
+            </TableCell>
           </TableRow>
-          <TableBody>
-            {rows1.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-            {rows2.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-            {rows3.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-            {rows4.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-            {rows5.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
-          </TableBody>
-        </TableHead>
+        </TableBody>
+        {/* </TableHead> */}
+        <TableBody>
+          {rows1.map((row) => (
+            <Row key={row.name} row={row} />
+          ))}
+        </TableBody>
       </Table>
     </TableContainer>
   );

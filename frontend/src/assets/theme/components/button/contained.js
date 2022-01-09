@@ -27,7 +27,7 @@ export default {
   base: {
     backgroundColor: white.main,
     minHeight: pxToRem(37),
-    color: text.main,
+    color: white.main,
     padding: `${pxToRem(9)} ${pxToRem(24)}`,
 
     "&:hover": {

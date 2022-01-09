@@ -26,13 +26,14 @@ const { size } = typography;
 export default {
   base: {
     minHeight: pxToRem(39),
-    color: light.main,
-    borderColor: light.main,
+    color: info.main,
+    borderColor: info.main,
     padding: `${pxToRem(9)} ${pxToRem(24)}`,
 
     "&:hover": {
       opacity: 0.75,
       backgroundColor: transparent.main,
+      borderColor: info.main,
     },
 
     "& .material-icon, .material-icons-round, svg": {
