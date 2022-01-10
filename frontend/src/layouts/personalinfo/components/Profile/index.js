@@ -81,7 +81,7 @@ function Profile() {
     ssn: ""
   });
 
-  // controlls the mode 
+  // controlls the mode   
   const [editingMode, setEditingMode] = useState(false);
 
   const handleEditChange = (e) => {
