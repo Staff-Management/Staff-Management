@@ -153,16 +153,16 @@ module.exports.getUser = async (req, resp) => {
   }
 }
 
-// module.exports.updateProfile = async (req, resp) => {
-//   const { email, firstName, lastName, preName, midName, cellPhone, workPhone, SSN, DOB, gender } = req.body;
-//   try {
-//       const data = await User.findOneAndUpdate({email}, { firstName, lastName, preName, midName, cellPhone, workPhone, SSN, DOB, gender } )
-//       resp.status(200).json({ data })
-//   }catch(e) {
-//       console.log(e);
-//       resp.status(400).send('Error in the outer try')
-//   }
-// }
+module.exports.updateProfile = async (req, resp) => {
+  const { email, firstName, lastName, preferredName, birthday, gender, ssn } = req.body;
+  try {
+    const data = await User.findOneAndUpdate({ email }, { firstName, lastName, preferredName, birthday, gender, ssn })
+    resp.status(200).json({ data })
+  } catch (e) {
+    console.log(e);
+    resp.status(400).send('Error in the outer try')
+  }
+}
 
 // module.exports.updateDriv = async (req, resp) => {
 //   const { email, number, expDate, photo} = req.body;
