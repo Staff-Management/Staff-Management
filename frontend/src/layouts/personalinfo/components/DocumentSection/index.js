@@ -47,12 +47,12 @@ function DocumentSection() {
         <MDBox>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
-                    <Typography variant="h6" gutterBottom sx={{ marginTop: 'auto', borderRadius: '10px', backgroundColor: '#6667AB', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
+                    <Typography variant="h6" gutterBottom sx={{ marginTop: 'auto', borderRadius: '0px', backgroundColor: '#546E7A', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
                         Document Section
                     </Typography>
                     <MDBox mb={1.5}>
 
-                        <Card className={classes.root} variant="outlined" sx={{ maxWidth: 1000 }}>
+                        <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1000 }}>
                                 <CardActionArea>
                                     <CardContent>
                                     {updating ? (
@@ -101,10 +101,6 @@ function DocumentSection() {
                                         </div>
                                     ) : (
                                     <div>
-                                        <Typography gutterBottom variant="h5" component="div">
-                                            Document Information
-                                        </Typography>
-
                                             Upload File 1:
                                             <label htmlFor="icon-button-file">
                                                 <Input accept="image/*" id="icon-button-file" type="file" />
@@ -125,7 +121,7 @@ function DocumentSection() {
                                                     label="Uploaded Date"
                                                     type="date"
                                                     variant="standard"
-                                                    defaultValue="yyyy-mm-dd"
+                                                    defaultValue="yyyy-MM-dd"
                                                     sx={{ width: 220 }}
                                                     InputLabelProps={{
                                                     shrink: true,
@@ -164,7 +160,7 @@ function DocumentSection() {
                                                     label="Uploaded Date"
                                                     type="date"
                                                     variant="standard"
-                                                    defaultValue="yyyy-mm-dd"
+                                                    defaultValue="yyyy-MM-dd"
                                                     sx={{ width: 220 }}
                                                     InputLabelProps={{
                                                     shrink: true,
@@ -203,7 +199,7 @@ function DocumentSection() {
                                                     label="Uploaded Date"
                                                     type="date"
                                                     variant="standard"
-                                                    defaultValue="yyyy-mm-dd"
+                                                    defaultValue="yyyy-MM-dd"
                                                     sx={{ width: 220 }}
                                                     InputLabelProps={{
                                                     shrink: true,
@@ -217,10 +213,10 @@ function DocumentSection() {
 
                                 <CardActions>
                                     <Button size="small" onClick={() => setUpdating(true)} color="secondary">
-                                        Update
+                                        Edit
                                     </Button>
                                     <Button size="small" onClick={() => setUpdating(false)} color="secondary">
-                                        Back
+                                        Update
                                     </Button>
                                 </CardActions>
                         </Card>

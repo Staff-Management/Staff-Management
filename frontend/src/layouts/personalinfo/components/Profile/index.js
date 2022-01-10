@@ -26,6 +26,9 @@ import CardContent from '@mui/material/CardContent'
 import TextField from '@mui/material/TextField';
 import { Button, CardActionArea, CardActions, CardHeader } from '@mui/material';
 import { makeStyles } from "@material-ui/core/styles";
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setUserInfo, selectUserInfo } from 'slices/userSlice';
 
 
 const useStyles = makeStyles({
@@ -48,109 +51,145 @@ const useStyles = makeStyles({
 function Profile() {
 
   const classes = useStyles();
-  const [updating, setUpdating] = useState(false);
+  const dispatch = useDispatch();
+  const [editing, setEditing] = useState({
+    update_name: "",
+    preferred_name: "",
+    dob: "",
+    age: "",
+    gender: "",
+    ssn: ""  
+  });
+
+  // const [update, setUpdate] = useState({
+  //   update_name: "",
+  //   preferred_name: "",
+  //   dob: "",
+  //   age: "",
+  //   gender: "",
+  //   ssn: "" 
+  // })
+
+  const handleEditChange = (e) => {
+    setEditing({
+      ...editing,
+      [e.target.update_name]: e.target.value
+    })
+  }
 
   return (
 
     <MDBox>
       <Grid container spacing={3}>
         <Grid item xs={12} md={12} lg={12}>
-        <Typography variant="h6" gutterBottom sx={{ backgroundColor: '#6667AB', borderRadius: '10px', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
+        <Typography variant="h6" gutterBottom sx={{ backgroundColor: '#546E7A', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
           User Profile Section
         </Typography>
 
-        <Card className={classes.root} variant="outlined" sx={{ maxWidth: 1000 }}>
+        <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1000 }}>
           <CardActionArea>
             <CardContent>
-            {updating ? (
+            {editing ? (
               <div>
                 <div>
                   <TextField
                     label="Update Name"
-                    id="outlined-size-small"
+                    id="update_name"
+                    name="update_name"
                     defaultValue="Name"
                     size="small"
+                    onChange={handleEditChange}
                   />
                 </div>
                 <br />
                 <div>
                   <TextField
                     label="Update Preferred Name"
-                    id="outlined-size-small"
+                    id="preferred_name"
+                    name="preferred_name"
                     defaultValue="Preferred Name"
                     size="small"
+                    onChange={handleEditChange}
                   />
                 </div>
                 <br />
                 <div>
                 <TextField
-                  id="date"
+                  id="dob"
+                  name="dob"
                   label="Date of Birth"
                   type="date"
-                  defaultValue="2017-05-24"
+                  defaultValue=""
                   sx={{ width: 160 }}
                   InputLabelProps={{
                     shrink: true,
                   }}
+                  onChange={handleEditChange}
                 />
                 </div>
                 <br />
                 <div>
                   <TextField
                     label="Update Age"
-                    id="outlined-size-small"
+                    id="age"
+                    name="age"
                     defaultValue="Age"
                     size="small"
+                    onChange={handleEditChange}
                   />
                 </div>
                 <br />
                 <div>
                   <TextField
                     label="Update Gender"
-                    id="outlined-size-small"
+                    id="gender"
+                    name="name"
                     defaultValue="Gender"
                     size="small"
+                    onChange={handleEditChange}
                   />
                 </div>
                 <br />
                 <div>
                   <TextField
                     label="Update Social Security Number"
-                    id="outlined-size-small"
+                    id="ssn"
+                    name="ssn"
                     defaultValue="Social Security Number"
                     size="small"
+                    onChange={handleEditChange}
                   />
                 </div>
               </div>                
             ) : (
               <div>
                 Name:
-                <Typography gutterBottom variant="h6" component="div">
+                <Typography id="update_name" name="update_name" gutterBottom variant="h6" component="div">
                   Natasha M. Lee
                 </Typography>
 
                 Preferred Name:
-                <Typography gutterBottom variant="h6" component="div">
+                <Typography id="preferred_name" name="preferred_name" gutterBottom variant="h6" component="div">
                   Tasha
                 </Typography>
 
                 Date of Birth:
-                <Typography gutterBottom variant="h6" component="div">
+                <Typography id="dob" name="dob" gutterBottom variant="h6" component="div">
                   05 June 1996
                 </Typography>
 
                 Age:
-                <Typography gutterBottom variant="h6" component="div">
+                <Typography id="age" name="age" gutterBottom variant="h6" component="div">
                   26
                 </Typography>
 
                 Gender:
-                <Typography gutterBottom variant="h6" component="div">
+                <Typography id="gender" name="gender" gutterBottom variant="h6" component="div">
                   Female
                 </Typography>
 
                 Social Security Number:
-                <Typography gutterBottom variant="h6" component="div">
+                <Typography id="ssn" name="ssn" gutterBottom variant="h6" component="div">
                   111-111-1111
                 </Typography>
               </div>
@@ -160,11 +199,11 @@ function Profile() {
           </CardActionArea>
 
           <CardActions>
-              <Button size="small" onClick={() => setUpdating(true)} color="secondary">
-                Update
+              <Button size="small" onClick={() => setEditing(true)} color="secondary">
+                Edit
               </Button>
-              <Button size="small" onClick={() => setUpdating(false)} color="secondary">
-                Back
+              <Button size="small" onClick={() => setEditing(false)} color="secondary">
+                Update
               </Button>
           </CardActions>
 

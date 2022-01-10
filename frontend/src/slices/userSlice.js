@@ -70,7 +70,15 @@ export const slice = createSlice({
       em_phone: "",
       em_email: "",
       em_relationship: ""
-    }]
+    }],
+    user_info: {
+      update_name: "",
+      preferred_name: "",
+      dob: "",
+      age: "",
+      gender: "",
+      ssn: "" 
+    },
   },
   reducers: {
     setLogin: (state, action) => {
@@ -101,7 +109,7 @@ export const slice = createSlice({
       const { val, list } = action.payload;
       state.contact_info = val;
       state.emergency_contact = JSON.parse(JSON.stringify(list));
-    }
+    },
   },
 });
 
