@@ -43,7 +43,7 @@ import Token from "layouts/token/Token";
 import Notifications from "layouts/notifications"
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
-import Housing from "features/housing/housing"
+import Housing from "layouts/housing/housing"
 
 // @mui icons
 import Icon from "@mui/material/Icon";
