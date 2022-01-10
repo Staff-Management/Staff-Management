@@ -41,11 +41,11 @@ function Employment() {
                 <Grid item xs={12} md={12} lg={12}>
                     <MDBox mb={3}>
 
-                            <Typography variant="h6" gutterBottom sx={{ marginTop: '50px', borderRadius: '10px', backgroundColor: '#6667AB', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
+                            <Typography variant="h6" gutterBottom sx={{ marginTop: '50px', backgroundColor: '#546E7A', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
                                 Employment Section
                             </Typography>
 
-                            <Card className={classes.root} variant="outlined" sx={{ maxWidth: 1000 }}>
+                            <Card className={classes.root} variant="outlined" sx={{ borderRadius:'0px', maxWidth: 1000 }}>
                                 <CardActionArea>
                                     <CardContent>
                                     {updating ? (
@@ -64,7 +64,7 @@ function Employment() {
                                                 id="date"
                                                 label="Update Work Authorization Start Date"
                                                 type="date"
-                                                defaultValue="yyyy-mm-dd"
+                                                defaultValue="yyyy-MM-dd"
                                                 sx={{ width: 250 }}
                                                 InputLabelProps={{
                                                     shrink: true,
@@ -77,7 +77,7 @@ function Employment() {
                                                 id="date"
                                                 label="Update Work Authorization End Date"
                                                 type="date"
-                                                defaultValue="yyyy-mm-dd"
+                                                defaultValue="yyyy-MM-dd"
                                                 sx={{ width: 250 }}
                                                 InputLabelProps={{
                                                     shrink: true,
@@ -90,7 +90,7 @@ function Employment() {
                                                 id="date"
                                                 label="Update Employment Start Date"
                                                 type="date"
-                                                defaultValue="yyyy-mm-dd"
+                                                defaultValue="yyyy-MM-dd"
                                                 sx={{ width: 250 }}
                                                 InputLabelProps={{
                                                     shrink: true,
@@ -103,7 +103,7 @@ function Employment() {
                                                 id="date"
                                                 label="Update Employment End Date"
                                                 type="date"
-                                                defaultValue="yyyy-mm-dd"
+                                                defaultValue="yyyy-MM-dd"
                                                 sx={{ width: 250 }}
                                                 InputLabelProps={{
                                                     shrink: true,
@@ -122,10 +122,7 @@ function Employment() {
                                         </div>                
                                     ) : (
                                         <div>
-                                             <Typography gutterBottom variant="h5" component="div">
-                                                Employment Information
-                                            </Typography>
-
+                                
                                             Work Authorization:
                                             <Typography gutterBottom variant="h6" component="div">
                                                 US Citizen
@@ -162,10 +159,10 @@ function Employment() {
 
                                 <CardActions>
                                     <Button size="small" onClick={() => setUpdating(true)} color="secondary">
-                                        Update
+                                        Edit
                                     </Button>
                                     <Button size="small" onClick={() => setUpdating(false)} color="secondary">
-                                        Back
+                                        Update
                                     </Button>
                                 </CardActions>
 

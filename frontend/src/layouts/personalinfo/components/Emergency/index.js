@@ -42,13 +42,13 @@ function Emergency() {
 
                 <Grid item xs={12} md={12} lg={12}>
                     
-                    <Typography variant="h6" gutterBottom sx={{ marginTop: 'auto', borderRadius: '10px', backgroundColor: '#6667AB', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
+                    <Typography variant="h6" gutterBottom sx={{ marginTop: 'auto', borderRadius: '0px', backgroundColor: '#546E7A', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
                         Emergency Contact Section
                     </Typography>
 
                     <MDBox mb={1.5}>
                         
-                        <Card className={classes.root} variant="outlined" sx={{ maxWidth: 1000 }}>
+                        <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1000 }}>
                                 <CardActionArea>
                                     <CardContent>
                                     {updating ? (
@@ -82,10 +82,6 @@ function Emergency() {
                                         </div>                
                                     ) : (
                                     <div>
-                                    <Typography gutterBottom variant="h5" component="div">
-                                        Emergency Contact Information
-                                    </Typography>
-
                                     Full Name:
                                     <Typography gutterBottom variant="h6" component="div">
                                         John Doe
@@ -107,10 +103,10 @@ function Emergency() {
 
                                 <CardActions>
                                     <Button size="small" onClick={() => setUpdating(true)} color="secondary">
-                                        Update
+                                        Edit
                                     </Button>
                                     <Button size="small" onClick={() => setUpdating(false)} color="secondary">
-                                        Back
+                                        Update
                                     </Button>
                                 </CardActions>
                         </Card>
