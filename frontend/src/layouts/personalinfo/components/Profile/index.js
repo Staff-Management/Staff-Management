@@ -53,7 +53,6 @@ function Profile() {
     update_name: "",
     preferred_name: "",
     dob: "",
-    age: "",
     gender: "",
     ssn: ""  
   });
@@ -104,10 +103,10 @@ function Profile() {
               <div>
                 <div>
                   <TextField
-                    label="Update Name"
-                    id="update_name"
-                    name="update_name"
-                    defaultValue="Name"
+                    label="firstName"
+                    id="firstName"
+                    name="firstName"
+                    defaultValue="First Name"
                     size="small"
                     onChange={handleEditChange}
                   />
@@ -138,7 +137,7 @@ function Profile() {
                   onChange={handleEditChange}
                 />
                 </div>
-                <br />
+                {/* <br />
                 <div>
                   <TextField
                     label="Update Age"
@@ -148,7 +147,7 @@ function Profile() {
                     size="small"
                     onChange={handleEditChange}
                   />
-                </div>
+                </div> */}
                 <br />
                 <div>
                   <TextField

@@ -70,15 +70,7 @@ export const slice = createSlice({
       em_phone: "",
       em_email: "",
       em_relationship: ""
-    }],
-    user_info: {
-      update_name: "",
-      preferred_name: "",
-      dob: "",
-      age: "",
-      gender: "",
-      ssn: "" 
-    },
+    }]
   },
   reducers: {
     setLogin: (state, action) => {
