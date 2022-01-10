@@ -6,8 +6,6 @@ const router = express.Router();
 router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.post('/onboarding', userController.onBoarding);
-router.post('/getavatar', userController.getAvatar);
-router.post('/uploadfile', userController.uploadFile);
 router.post('/sendnotification', userController.sendNotification);
 router.post('/getnotification', userController.getNotification);
 router.post('/deletenotification', userController.deleteNotification);

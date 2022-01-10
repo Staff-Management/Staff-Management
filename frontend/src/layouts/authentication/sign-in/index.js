@@ -74,7 +74,7 @@ function Basic() {
         headers: { 'Content-Type': 'application/json' }
       })
       const response = await res.json();
-      if (response.user){
+      if (response.user) {
         localStorage.clear();
         if (rememberMe)
           localStorage.setItem('user', JSON.stringify(response.user));
@@ -85,8 +85,7 @@ function Basic() {
         navigate('/dashboard');
       }
     }
-    catch(err)
-    {
+    catch (err) {
       alert("Wrong Username or Password");
       console.log(err)
     }
@@ -113,10 +112,10 @@ function Basic() {
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form">
             <MDBox mb={2}>
-              <MDInput type="text" name="account" label="Email or Username" fullWidth onChange={handleChange}/>
+              <MDInput type="text" name="account" label="Email or Username" fullWidth onChange={handleChange} />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" name="password" label="Password" fullWidth onChange={handleChange}/>
+              <MDInput type="password" name="password" label="Password" fullWidth onChange={handleChange} />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />

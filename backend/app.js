@@ -9,10 +9,8 @@ require("./db");
 const userRoutes = require('./router/userRouter');
 const tokenRoutes = require('./router/tokenRouter')
 const houseRouter = require('./router/houseRouter')
-const fs = require('fs')
+const fileRouter = require('./router/fileRouter');
 
-// app.set('view engine', 'pug');
-// app.set('views','./public/views');
 const oneDay = 1000 * 60 * 60 * 24;
 app.use(express.json({ limit: '50mb' }));
 app.use((req, res, next) => {
@@ -38,5 +36,6 @@ app.use(express.static(publicPath));
 app.use(userRoutes);
 app.use(tokenRoutes);
 app.use(houseRouter);
+app.use(fileRouter);
 
 module.exports = app;

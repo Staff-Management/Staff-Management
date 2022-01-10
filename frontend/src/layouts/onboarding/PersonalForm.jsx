@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
+import Link from '@mui/material/Link';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import FormControl from '@mui/material/FormControl';
 import { IMaskInput } from 'react-imask';
 import MenuItem from '@mui/material/MenuItem';
@@ -15,6 +17,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import Avatar from '@mui/material/Avatar';
 import { selectEmail, setPersonalInfo, selectPersonalInfo } from 'slices/userSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -45,7 +48,8 @@ const SSN = React.forwardRef(function TextMaskCustom(props, ref) {
 });
 
 export default function PersonalForm(props) {
-  const email = useSelector(selectEmail);
+  let email = useSelector(selectEmail)
+  email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
   const personal_info = useSelector(selectPersonalInfo);
   const dispatch = useDispatch();
   const [values, setValues] = React.useState({
@@ -57,23 +61,22 @@ export default function PersonalForm(props) {
     gender: "",
     ssn: personal_info.ssn,
     avatar_file: null,
-    avatar_data: "",
     avatar_src: "",
-    driverLicense: "",
-    driverlicense_own: null,
+    driverLicense_src: "",
+    driverlicense_own: "",
     driverLicense_num: "",
     driverLicense_exp: "",
-    driverLicense_file: "",
-    driverLicense_data: "",
+    driverLicense_file: null,
+    driverLicense_filename: "",
     perm_citizen: "",
     green_card_citizen: "",
     work_auth: "",
     other_work_auth: "",
-    workAuth: "",
+    workAuth_src: "",
     workAuth_start: "",
     workAuth_exp: "",
     workAuth_file: null,
-    workAuth_data: "",
+    workAuth_filename: "",
     ref_firstname: "",
     ref_middlename: "",
     ref_lastname: "",
@@ -88,26 +91,11 @@ export default function PersonalForm(props) {
   });
 
   useEffect(() => {
-    if (values['avatar_data'].includes('data:image'))
-      uploadFile('avatar');
-  }, [values['avatar_data']])
-
-  useEffect(() => {
-    if (values['driverLicense_data'] && values['driverLicense_file'])
-      uploadFile('driverLicense');
-  }, [values['driverLicense_data']])
-
-  useEffect(() => {
-    if (values['workAuth_data'] && values['workAuth_file'])
-      uploadFile('workAuth');
-  }, [values['workAuth_data']])
-
-  useEffect(() => {
     setValues(personal_info);
   }, []);
 
   const handleSave = () => {
-    dispatch(setPersonalInfo({...values, avatar_file: "", driverLicense_file: "", workAuth_file: ""}));
+    dispatch(setPersonalInfo({ ...values, avatar_file: "", driverLicense_file: "", workAuth_file: "" }));
     props.handleNext();
   }
 
@@ -121,73 +109,50 @@ export default function PersonalForm(props) {
   const handleFileChange = (event) => {
     setValues({
       ...values,
-      [`${event.target.name}_file`]: event.target.files[0]
+      [`${event.target.name}_file`]: event.target.files[0],
+      [`${event.target.name}_filename`]: event.target.files[0].name
     });
   };
 
-  const handleFile = async (event, field_name) => {
+  const handleFileUpload = async (event, field_name) => {
     event.preventDefault();
-    if (values[`${field_name}_file`])
-    {
-      let reader = new FileReader()
-      reader.onload = (e) => {
-        setValues({
-          ...values,
-          [`${field_name}_data`]: e.target.result
-        });
-      }
-      reader.readAsDataURL(values[`${field_name}_file`]);
-    }
-  };
-
-  const uploadFile = async (field_name) => {
-    const file_data = values[`${field_name}_data`];
-    const extension = values[`${field_name}_file`].name.split('.').pop();
     try {
+      const file = values[`${field_name}_file`];
+      const data = new FormData();
+      data.append('email', email);
+      data.append('field_name', field_name);
+      data.append('file', file, file.name);
       const res = await fetch('http://localhost:4000/uploadfile', {
         method: 'POST',
-        body: JSON.stringify({ email, file_data, extension, field_name }),
-        headers: {'Content-Type': 'application/json'}
+        body: data,
       })
       const response = await res.json();
       setValues({
         ...values,
         [field_name]: response.path
       });
-      if (field_name === 'avatar')
-      {
-        showAvatar();
-      }
-    } catch(err){
+      setFileSrc(field_name);
+    } catch (err) {
       console.log(err)
     }
   };
 
-  const showAvatar = async () => {
+  const setFileSrc = async (field_name) => {
     try {
-      const res = await fetch('http://localhost:4000/getavatar', {
+      const res = await fetch('http://localhost:4000/getfile', {
         method: 'POST',
-        body: JSON.stringify({ email }),
-        headers: {'Content-Type': 'application/json'}
+        body: JSON.stringify({ email, field_name }),
+        headers: { 'Content-Type': 'application/json' }
       })
       const response = await res.json();
       setValues({
         ...values,
-        avatar_src: `data:${values.avatar_file.type};base64,${response.src}`
+        [`${field_name}_src`]: response.data
       });
-    } catch(err){
+    } catch (err) {
       console.log(err)
     }
   };
-
-  const displayAvatar = (
-    values.avatar_src === "" ?
-    <></>
-    :
-    <div>
-      <img src={values.avatar_src} style={{borderRadius:'50%', objwectFit: 'cover', width: 100, height: 100}}></img>
-    </div>
-  )
 
   const visa_status = (
     values.workAuth === '' ?
@@ -220,24 +185,41 @@ export default function PersonalForm(props) {
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={12}>
-          <Box component="form" onSubmit={(event) => handleFile(event, 'workAuth')} noValidate sx={{ mt: 1 }}>
-            <TextField
-              accept="image/*, application/pdf"
-              id="workAuth"
-              name="workAuth"
-              type="file"
-              onChange={handleFileChange}
-              fullWidth
-            />
-            <Button
-              type='submit'
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Upload
-            </Button>
-          </Box>
+        <Grid item xs={12} sm={6}>
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Upload a copy of your Work Authorization</FormLabel>
+            <Box sx={{ p: 2, m: 2, border: '1px dashed grey' }}>
+              {values.workAuth_src === "" ?
+                <Typography>
+                  No file uploaded
+                </Typography>
+                :
+                <Link href={values.workAuth_src} download={values.workAuth_filename} underline="hover" >
+                  <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+                    {values.workAuth_filename}
+                    <FileDownloadIcon color='primary' />
+                  </Typography>
+                </Link>
+              }
+            </Box>
+            <Box component="form" onSubmit={(event) => handleFileUpload(event, 'workAuth')} noValidate sx={{ mt: 1 }}>
+              <Input
+                inputProps={{ accept: 'image/*, application/pdf' }}
+                id="workAuth"
+                name="workAuth"
+                type="file"
+                onChange={handleFileChange}
+                fullWidth
+              />
+              <Button
+                type='submit'
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Upload
+              </Button>
+            </Box>
+          </FormControl>
         </Grid>
       </React.Fragment>
   )
@@ -259,7 +241,7 @@ export default function PersonalForm(props) {
       <></>
   )
 
-  const Greencard_citizen = (
+  const greencard_citizen = (
     values.perm_citizen === null ?
       <></>
       :
@@ -267,7 +249,7 @@ export default function PersonalForm(props) {
         values.perm_citizen === "yes" ?
           <Grid item xs={12} sm={12}>
             <FormControl component="fieldset" fullWidth>
-              <FormLabel component="legend">Please specify:</FormLabel>  
+              <FormLabel component="legend">Please specify:</FormLabel>
               <RadioGroup
                 aria-label="green_card_citizen"
                 id='green_card_citizen'
@@ -280,7 +262,7 @@ export default function PersonalForm(props) {
                   <FormControlLabel value='green_card' control={<Radio />} label="Green Card" />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                < FormControlLabel value='citizen' control={<Radio />} label="Citizen" />
+                  < FormControlLabel value='citizen' control={<Radio />} label="Citizen" />
                 </Grid>
               </RadioGroup>
             </FormControl>
@@ -308,8 +290,8 @@ export default function PersonalForm(props) {
             </Grid>
             <Grid item xs={12} sm={12}>
               <Grid container spacing={3}>
-                { other_work_auth }
-                { visa_status }
+                {other_work_auth}
+                {visa_status}
               </Grid>
             </Grid>
           </React.Fragment>
@@ -322,7 +304,7 @@ export default function PersonalForm(props) {
       :
       (
         values.driverLicense_own === "yes" ?
-          <Grid container>
+          <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
@@ -336,11 +318,11 @@ export default function PersonalForm(props) {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                fullWidth
                 id="driverLicense_exp"
                 name="driverLicense_exp"
                 label="Expiration Date"
                 InputLabelProps={{ shrink: true }}
-                fullWidth
                 type="date"
                 variant="standard"
                 defaultValue={personal_info.driverLicense_exp}
@@ -348,23 +330,44 @@ export default function PersonalForm(props) {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <Box component="form" onSubmit={(event) => handleFile(event, 'driverLicense')} noValidate sx={{ mt: 1 }}>
-                <TextField
-                  accept="image/*, application/pdf"
-                  id="driverLicense"
-                  name="driverLicense"
-                  type="file"
-                  onChange={handleFileChange}
-                  fullWidth
-                />
-                <Button
-                  type='submit'
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Upload
-                </Button>
-              </Box>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Upload a copy of your Driver License</FormLabel>
+                <Box sx={{ p: 2, m: 2, border: '1px dashed grey' }}>
+                  {values.driverLicense_src === "" ?
+                    <Typography>
+                      No file uploaded
+                    </Typography>
+                    :
+                    <Link href={values.driverLicense_src} download={values.driverLicense_filename} underline="hover" >
+                      <Typography sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+                        {values.driverLicense_filename}
+                        <FileDownloadIcon color='primary' />
+                      </Typography>
+                    </Link>
+                  }
+                </Box>
+                <Grid container>
+                  <Grid item xs={12} sm={6}>
+                    <Box component="form" onSubmit={(event) => handleFileUpload(event, 'driverLicense')} noValidate sx={{ mt: 1 }}>
+                      <Input
+                        inputProps={{ accept: 'image/*, application/pdf' }}
+                        id="driverLicense"
+                        name="driverLicense"
+                        type="file"
+                        onChange={handleFileChange}
+                        fullWidth
+                      />
+                      <Button
+                        type='submit'
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                      >
+                        Upload
+                      </Button>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </FormControl>
             </Grid>
           </Grid>
           :
@@ -472,24 +475,36 @@ export default function PersonalForm(props) {
           </FormControl>
         </Grid>
         <Grid item xs={12} s={6}>
-          <Box component="form" onSubmit={(event) => handleFile(event, 'avatar')} noValidate sx={{ mt: 1 }}>
-            <TextField
-              accept="image/*"
-              id="avatar"
-              name="avatar"
-              type="file"
-              onChange={handleFileChange}
-              fullWidth
-            />
-            <Button
-              type='submit'
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Upload
-            </Button>
-          </Box>
-          { displayAvatar }
+          <FormControl component="fieldset">
+            <FormLabel component="legend">Upload your avatar</FormLabel>
+            <Box m={2}>
+              <Avatar
+                src={values.avatar_src}
+                sx={{
+                  width: 75,
+                  height: 75
+                }}
+              >
+              </Avatar>
+            </Box>
+            <Box component="form" onSubmit={(event) => handleFileUpload(event, 'avatar')} noValidate sx={{ mt: 1 }}>
+              <Input
+                inputProps={{ accept: 'image/*' }}
+                id="avatar"
+                name="avatar"
+                type="file"
+                onChange={handleFileChange}
+                fullWidth
+              />
+              <Button
+                type='submit'
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Upload
+              </Button>
+            </Box>
+          </FormControl>
         </Grid>
         <Grid item xs={12} sm={12}>
           <FormControl component="fieldset">
@@ -527,7 +542,7 @@ export default function PersonalForm(props) {
             </RadioGroup>
           </FormControl>
         </Grid>
-        {Greencard_citizen}
+        {greencard_citizen}
       </Grid>
 
       <Typography variant="h6" gutterBottom sx={{ backgroundColor: '#546E7A', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>

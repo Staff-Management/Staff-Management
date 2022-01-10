@@ -1,7 +1,6 @@
 require('dotenv').config();
-const { v4: uuidv4 } = require('uuid');
-const user = require("../model/User");
 const jwt = require('jsonwebtoken');
+const User = require("../model/User");
 const Car = require("../model/Car");
 const EmergencyContact = require("../model/EmergencyContact");
 const DriverLicense = require("../model/DriverLicense");
@@ -9,25 +8,21 @@ const Reference = require("../model/Reference");
 const WorkAuth = require("../model/WorkAuth");
 const Address = require('../model/Address');
 const Notification = require('../model/Notification');
-const AWS = require('aws-sdk');
-AWS.config.loadFromPath('./aws_config.json');
-
-const s3 = new AWS.S3({apiVersion: '2006-03-01'});
 
 //generates JWT Token
 const maxAge = 1 * 24 * 60 * 60;
 const createToken = (id) => {
-  return jwt.sign({id}, process.env.JWT_SECRET_KEY, {
+  return jwt.sign({ id }, process.env.JWT_SECRET_KEY, {
     expiresIn: maxAge
   });
 }
 //handling errors 
-const handleErrors = (err) =>{
+const handleErrors = (err) => {
   console.log(err);
-  let errors = { email: '', password: '', loginErr: ''};
-    
+  let errors = { email: '', password: '', loginErr: '' };
+
   //duplicate email
-  if (err.code === 11000){
+  if (err.code === 11000) {
     errors.email = 'Email or Username already exists';
     return errors;
   }
@@ -39,7 +34,7 @@ const handleErrors = (err) =>{
   }
 
   //validation errors
-  if (err.message.includes('User validation failed')){
+  if (err.message.includes('User validation failed')) {
     Object.values(err.errors).forEach(error => {
       errors[error['properties'].path] = error['properties'].message
     })
@@ -48,14 +43,14 @@ const handleErrors = (err) =>{
 }
 
 module.exports.register = async (req, resp) => {
-  const { username, email, password} = req.body; 
+  const { username, email, password } = req.body;
   try {
-    const data = await user.create({ username, email, password});
+    const data = await User.create({ username, email, password });
     const token = createToken(data._id);
-    resp.cookie('JWT', token, {httpOnly: true, maxAge: maxAge * 1000})
-    resp.status(201).json({user: data._id})
+    resp.cookie('JWT', token, { httpOnly: true, maxAge: maxAge * 1000 })
+    resp.status(201).json({ user: data._id })
   }
-  catch(err) {
+  catch (err) {
     const errors = handleErrors(err);
     resp.status(400).json({ errors })
   }
@@ -64,12 +59,12 @@ module.exports.register = async (req, resp) => {
 module.exports.login = async (req, resp) => {
   const { account, password } = req.body;
   try {
-    const data = await user.login(account, password);
+    const data = await User.login(account, password);
     const token = createToken(data._id);
     //changes the JWT token to expire after 1 day.
-    resp.cookie('JWT', token, {httpOnly: true, maxAge: maxAge * 1000})
+    resp.cookie('JWT', token, { httpOnly: true, maxAge: maxAge * 1000 })
     resp.status(200).json({ user: data });
-  }catch (err) {
+  } catch (err) {
     const errors = handleErrors(err);
     resp.status(400).json({ errors })
   }
@@ -77,131 +72,79 @@ module.exports.login = async (req, resp) => {
 
 module.exports.onBoarding = async (req, resp) => {
   const { email, all_info, em_contact } = req.body;
-  const { 
+  const {
     firstName,
     lastName,
     preferredName,
-		middleName,
-		address1,
-		address2,
-		city,
-		state,
-		zip,
-		country,
-		cell_phone,
-		work_phone,
-		ssn,
-		birthday,
-		gender,
-		vehicle_maker,
-		vehicle_model,
-		vehicle_color,
-		driverLicense,
+    middleName,
+    address1,
+    address2,
+    city,
+    state,
+    zip,
+    country,
+    cell_phone,
+    work_phone,
+    ssn,
+    birthday,
+    gender,
+    vehicle_maker,
+    vehicle_model,
+    vehicle_color,
+    driverLicense,
     driverLicense_own,
-		driverLicense_num,
-		driverLicense_exp,
-		ref_firstname,
-		ref_lastname,
-		ref_middlename,
-		ref_email,
-		ref_phone,
-		ref_relationship,
+    driverLicense_num,
+    driverLicense_exp,
+    ref_firstname,
+    ref_lastname,
+    ref_middlename,
+    ref_email,
+    ref_phone,
+    ref_relationship,
     ref_address1,
-		ref_city,
-		ref_state,
-		ref_zip,
-		ref_country,
-		work_auth,
+    ref_city,
+    ref_state,
+    ref_zip,
+    ref_country,
+    work_auth,
     workAuth,
-		perm_citizen,
-		green_card_citizen,
-		other_work_auth,
-		workAuth_start,
-		workAuth_exp 
+    perm_citizen,
+    green_card_citizen,
+    other_work_auth,
+    workAuth_start,
+    workAuth_exp
   } = all_info
   try {
     let emergency_id = [];
-    const car_info = await Car.create({  vehicle_maker, vehicle_model, vehicle_color });
-    const address_info = await Address.create({  address1, address2, city, state, zip, country });
-    const dl_info = await DriverLicense.create({  driverLicense_num, driverLicense_exp });
-    const ref_info = await Reference.create({  ref_firstname, ref_middlename, ref_lastname, ref_address1, ref_city, ref_state, ref_country, ref_zip, ref_phone, ref_email, ref_relationship });
-    const work_auth_info = await WorkAuth.create({  work_auth, other_work_auth, workAuth_start, workAuth_exp });
-    for (const contact of em_contact)
-    {
+    const car_info = await Car.create({ vehicle_maker, vehicle_model, vehicle_color });
+    const address_info = await Address.create({ address1, address2, city, state, zip, country });
+    const dl_info = await DriverLicense.create({ driverLicense_num, driverLicense_exp });
+    const ref_info = await Reference.create({ ref_firstname, ref_middlename, ref_lastname, ref_address1, ref_city, ref_state, ref_country, ref_zip, ref_phone, ref_email, ref_relationship });
+    const work_auth_info = await WorkAuth.create({ work_auth, other_work_auth, workAuth_start, workAuth_exp });
+    for (const contact of em_contact) {
       const emergency = await EmergencyContact.create(contact);
       emergency_id.push(emergency._id);
     }
     try {
-      const data = await user.findOneAndUpdate({ email }, { firstName, lastName, preferredName, middleName, cell_phone, work_phone, ssn, birthday, gender, green_card_citizen, perm_citizen, driverLicense_own, driverLicense, workAuth, car_info : car_info._id,
-        dl_info: dl_info._id, ref_info: ref_info._id, work_auth_info: work_auth_info._id, address_info: address_info._id, $push: { emergency_contact_info: { $each: emergency_id } }}  )
-      resp.status(200).json({user: data});
-    }catch(e){
+      const data = await User.findOneAndUpdate({ email }, {
+        firstName, lastName, preferredName, middleName, cell_phone, work_phone, ssn, birthday, gender, green_card_citizen, perm_citizen, driverLicense_own, driverLicense, workAuth, car_info: car_info._id,
+        dl_info: dl_info._id, ref_info: ref_info._id, work_auth_info: work_auth_info._id, address_info: address_info._id, $push: { emergency_contact_info: { $each: emergency_id } }
+      })
+      resp.status(200).json({ user: data });
+    } catch (e) {
       console.log(e);
       resp.status(400).send('Error in the inner try')
     }
-  }catch(e) {
+  } catch (e) {
     console.log(e);
     resp.status(400).send('Error in the outer try')
   }
 }
 
-module.exports.uploadFile = async (req, resp) => {
-  const { email, file_data, extension, field_name } = req.body;
-  const file_name = `${uuidv4()}.${extension}`
-  const buffer = Buffer.from(file_data.replace(/.+;base64,/, ''), 'base64');
-  try {
-    const params = {
-      Bucket: 'staff-management',
-      Key: `${field_name}/${file_name}`,
-      Body: buffer,
-    }
-    const stored = await s3.upload(params).promise();
-    console.log(stored);
-    try {
-      const data = await user.findOneAndUpdate({ email }, { [field_name]: `${field_name}/${file_name}` });
-      resp.status(200).json({path: `${field_name}/${file_name}`});
-    }
-    catch(e) {
-      console.log(e);
-      resp.status(400).send('Error')
-    }
-  }
-  catch(e) {
-    console.log(e);
-    resp.status(400).send('Error')
-  }
-}
-
-module.exports.getAvatar = async (req, resp) => {
-  const { email } = req.body;
-  try {
-    const data = await user.findOne({ email });
-    const file_path = data.avatar;
-    const params = {
-      Bucket: 'staff-management',
-      Key: file_path,
-    }
-    try {
-      const img = await s3.getObject(params).promise();
-      const base64_str = img.Body.toString('base64');
-      resp.status(200).json({ src: base64_str });
-    }
-    catch(e) {
-      console.log(e);
-      resp.status(400).send('Error')
-    }
-  }
-  catch(e) {
-    console.log(e);
-    resp.status(400).send('Error')
-  }
-
-}
-
 // module.exports.updateProfile = async (req, resp) => {
 //   const { email, firstName, lastName, preName, midName, cellPhone, workPhone, SSN, DOB, gender } = req.body;
 //   try {
-//       const data = await user.findOneAndUpdate({email}, { firstName, lastName, preName, midName, cellPhone, workPhone, SSN, DOB, gender } )
+//       const data = await User.findOneAndUpdate({email}, { firstName, lastName, preName, midName, cellPhone, workPhone, SSN, DOB, gender } )
 //       resp.status(200).json({ data })
 //   }catch(e) {
 //       console.log(e);
@@ -212,7 +155,7 @@ module.exports.getAvatar = async (req, resp) => {
 // module.exports.updateDriv = async (req, resp) => {
 //   const { email, number, expDate, photo} = req.body;
 //   try {
-//       const data = await user.findOne({email})
+//       const data = await User.findOne({email})
 //       const dataId = data.driverLicense;
 //       try {
 //           const dl = await License.findByIdAndUpdate(dataId, { number, expDate, photo })
@@ -230,7 +173,7 @@ module.exports.getAvatar = async (req, resp) => {
 // module.exports.updateAddress = async (req, resp) => {
 //   const { email, address1, address2, city, state, zipCode } = req.body;
 //   try {
-//       const data = await user.findOne({email})
+//       const data = await User.findOne({email})
 //       const dataId = data.address;
 //       try {
 //           const dl = await EmAddress.findByIdAndUpdate(dataId, { address1, address2, city, state, zipCode })
@@ -248,7 +191,7 @@ module.exports.getAvatar = async (req, resp) => {
 // module.exports.updateRef = async (req, resp) => {
 //   const { email, refFirstName, refSecondName, refMidName, refEmail, refRelationship} = req.body;
 //   try {
-//       const data = await user.findOne({email})
+//       const data = await User.findOne({email})
 //       const dataId = data.reference;
 //       try {
 //           const dl = await Reference.findByIdAndUpdate(dataId, { refFirstName, refSecondName, refMidName, refEmail, refRelationship })
@@ -266,7 +209,7 @@ module.exports.getAvatar = async (req, resp) => {
 // module.exports.updateWorkAuth = async (req, resp) => {
 //   const { email, visa, workPhoto, startDate, endDate} = req.body;
 //   try {
-//       const data = await user.findOne({email})
+//       const data = await User.findOne({email})
 //       const dataId = data.workAuth;
 //       try {
 //           const dl = await WorkAuth.findByIdAndUpdate(dataId, { visa, workPhoto, startDate, endDate })
@@ -285,7 +228,7 @@ module.exports.getAvatar = async (req, resp) => {
 //   const { email, make, model, color } = req.body;
 //   try {
 //       const addCar = await Car.create({ make, model, color });
-//       const data = await user.findOneAndUpdate({email}, { $push: {carInfo: addCar._id} } )
+//       const data = await User.findOneAndUpdate({email}, { $push: {carInfo: addCar._id} } )
 //       resp.status(200).json({ data })
 //   }catch(e) {
 //       console.log(e);
@@ -297,7 +240,7 @@ module.exports.getAvatar = async (req, resp) => {
 //   const { email, emFirstName, emSecondName, emMidName, emEmail, emRelationship } = req.body;
 //   try {
 //       const addContact = await EmContact.create({ emFirstName, emSecondName, emMidName, emEmail, emRelationship });
-//       const data = await user.findOneAndUpdate({email}, { $push: {EmergencyContact: addContact._id} } )
+//       const data = await User.findOneAndUpdate({email}, { $push: {EmergencyContact: addContact._id} } )
 //       resp.status(200).json({ data })
 //   }catch(e) {
 //       console.log(e);
@@ -307,13 +250,11 @@ module.exports.getAvatar = async (req, resp) => {
 
 module.exports.sendNotification = async (req, resp) => {
   const { from_email, to_email, message } = req.body;
-  try
-  {
+  try {
     const data = await Notification.create({ from_email, to_email, message, date: Date.now().toString() });
     resp.status(200).json({ notification: data })
   }
-  catch(e)
-  {
+  catch (e) {
     console.log(e);
     resp.status(400).send('Error')
   }
@@ -321,13 +262,11 @@ module.exports.sendNotification = async (req, resp) => {
 
 module.exports.getNotification = async (req, resp) => {
   const { email } = req.body;
-  try
-  {
+  try {
     const data = await Notification.find({ to_email: email });
     resp.status(200).json({ notification: data })
   }
-  catch(e)
-  {
+  catch (e) {
     console.log(e);
     resp.status(400).send('Error')
   }
@@ -335,13 +274,11 @@ module.exports.getNotification = async (req, resp) => {
 
 module.exports.deleteNotification = async (req, resp) => {
   const { id } = req.body;
-  try
-  {
+  try {
     const data = await Notification.findByIdAndDelete(id);
     resp.status(200).json({ notification: data })
   }
-  catch(e)
-  {
+  catch (e) {
     console.log(e);
     resp.status(400).send('Error')
   }

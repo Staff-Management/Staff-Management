@@ -59,10 +59,10 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Tables",
-    key: "tables",
+    name: "Visa Status",
+    key: "visa-status",
     icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/tables",
+    route: "/visa-status",
     component: <Tables />,
   },
   {
