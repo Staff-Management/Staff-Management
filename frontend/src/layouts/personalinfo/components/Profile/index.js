@@ -13,27 +13,43 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
+import React, { useEffect, useState } from 'react';
+
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Typography from '@mui/material/Typography';
-
-// @mui icons
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-
-// @mui material components
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import CardContent from '@mui/material/CardContent'
+import TextField from '@mui/material/TextField';
+import { Button, CardActionArea, CardActions, CardHeader } from '@mui/material';
+import { makeStyles } from "@material-ui/core/styles";
 
 
-function Address() {
+const useStyles = makeStyles({
+  root: {
+    minWidth: 275
+  },
+  bullet: {
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)"
+  },
+  title: {
+    fontSize: 14
+  },
+  pos: {
+    marginBottom: 12
+  }
+});
+
+function Profile() {
+
+  const classes = useStyles();
+  const [editing, setEditing] = useState(false);
+  const [updating, setUpdating] = useState(false);
 
   return (
 
@@ -44,47 +60,109 @@ function Address() {
           User Profile Section
         </Typography>
 
-        <Card sx={{ maxWidth: 500 }}>
+        <Card className={classes.root} variant="outlined" sx={{ maxWidth: 1000 }}>
           <CardActionArea>
             <CardContent>
+            {editing ? (
+              <div>
+                <div>
+                  <TextField
+                    label="Update Name"
+                    id="outlined-size-small"
+                    defaultValue="Name"
+                    size="small"
+                  />
+                </div>
+                <br />
+                <div>
+                  <TextField
+                    label="Update Preferred Name"
+                    id="outlined-size-small"
+                    defaultValue="Preferred Name"
+                    size="small"
+                  />
+                </div>
+                <br />
+                <div>
+                  <TextField
+                    label="Update Date Of Birth"
+                    id="outlined-size-small"
+                    defaultValue="Date of Birth"
+                    size="small"
+                  />
+                </div>
+                <br />
+                <div>
+                  <TextField
+                    label="Update Age"
+                    id="outlined-size-small"
+                    defaultValue="Age"
+                    size="small"
+                  />
+                </div>
+                <br />
+                <div>
+                  <TextField
+                    label="Update Gender"
+                    id="outlined-size-small"
+                    defaultValue="Gender"
+                    size="small"
+                  />
+                </div>
+                <br />
+                <div>
+                  <TextField
+                    label="Update Social Security Number"
+                    id="outlined-size-small"
+                    defaultValue="Social Security Number"
+                    size="small"
+                  />
+                </div>
+              </div>                
+            ) : (
+              <div>
+                Name:
+                <Typography gutterBottom variant="h6" component="div">
+                  Natasha M. Lee
+                </Typography>
 
-              Name:
-              <Typography gutterBottom variant="h5" component="div">
-                Natasha M. Lee
-              </Typography>
+                Preferred Name:
+                <Typography gutterBottom variant="h6" component="div">
+                  Tasha
+                </Typography>
 
-              Preferred Name:
-              <Typography gutterBottom variant="h5" component="div">
-                Tasha
-              </Typography>
+                Date of Birth:
+                <Typography gutterBottom variant="h6" component="div">
+                  05 June 1996
+                </Typography>
 
-              Date of Birth:
-              <Typography gutterBottom variant="h5" component="div">
-                05 June 1996
-              </Typography>
+                Age:
+                <Typography gutterBottom variant="h6" component="div">
+                  26
+                </Typography>
 
-              Age:
-              <Typography gutterBottom variant="h5" component="div">
-                26
-              </Typography>
+                Gender:
+                <Typography gutterBottom variant="h6" component="div">
+                  Female
+                </Typography>
 
-              Gender:
-              <Typography gutterBottom variant="h5" component="div">
-                Female
-              </Typography>
-
-              Social Security Number:
-              <Typography gutterBottom variant="h5" component="div">
-                111-111-1111
-              </Typography>
-              
+                Social Security Number:
+                <Typography gutterBottom variant="h6" component="div">
+                  111-111-1111
+                </Typography>
+              </div>
+            )}
+                
             </CardContent>
           </CardActionArea>
 
           <CardActions>
-            <Button size="small" color="secondary">
-              Edit
-            </Button>
+              <Button size="small" onClick={() => setEditing(true)} color="secondary">
+                Edit
+              </Button>
+              <Button size="small" onClick={() => setEditing(false)} color="secondary">
+                Update
+              </Button>
           </CardActions>
 
         </Card>
@@ -128,4 +206,4 @@ function Address() {
   );
 }
 
-export default Address;
+export default Profile;

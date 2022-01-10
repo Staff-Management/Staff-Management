@@ -1,15 +1,12 @@
-// @mui material components
-import Grid from "@mui/material/Grid";
-import Typography from '@mui/material/Typography';
-
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 
-// @mui icons
-import GitHubIcon from '@mui/icons-material/GitHub';
-
-// Material Dashboard 2 React components
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
+// @mui material components
+import Grid from "@mui/material/Grid";
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import { Button, CardActionArea, CardActions } from '@mui/material';
 
 
 function Employment() {
@@ -24,7 +21,56 @@ function Employment() {
                                 Employment Section
                             </Typography>
 
-                            <ProfileInfoCard
+                            <Card sx={{ maxWidth: 1000 }}>
+                                <CardActionArea>
+                                    <CardContent>
+
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Employment Information
+                                    </Typography>
+
+                                    Work Authorization:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        US Citizen
+                                    </Typography>
+
+                                    Work Authorization Start:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        02 March 2020
+                                    </Typography>
+
+                                    Work Authorization End:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        05 May 2022
+                                    </Typography>
+
+                                    Employment Start:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        05 March 2020
+                                    </Typography>
+
+                                    Employment End:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        10 May 2022
+                                    </Typography>
+
+                                    Job Title:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        Data Analyst
+                                    </Typography>
+                                    
+                                    </CardContent>
+                                </CardActionArea>
+
+                                <CardActions>
+                                    <Button size="small" color="secondary">
+                                    Edit
+                                    </Button>
+                                </CardActions>
+
+                            </Card>
+
+                            {/* <ProfileInfoCard
                                 title="Employment Information"
                                 info={{
                                 workAuthorization: "US Citizen",
@@ -42,7 +88,7 @@ function Employment() {
                                 },
                                 ]}
                                 action={{ route: "", tooltip: "Edit Profile" }}
-                            />
+                            /> */}
 
                     </MDBox>
                 </Grid>

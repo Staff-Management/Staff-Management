@@ -1,15 +1,12 @@
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import { Button, CardActionArea, CardActions } from '@mui/material';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React components
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
-
-// @mui icons
-import PageviewIcon from '@mui/icons-material/Pageview';
 
 
 function DocumentSection() {
@@ -23,7 +20,42 @@ function DocumentSection() {
                         Document Section
                     </Typography>
                     <MDBox mb={1.5}>
-                        <ProfileInfoCard
+
+                        <Card sx={{ maxWidth: 1000 }}>
+                                <CardActionArea>
+                                    <CardContent>
+
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Document Information
+                                    </Typography>
+
+                                    File Uploaded:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        File Icon Placeholder // File Name Placeholder // Uploaded Date Placeholder
+                                    </Typography>
+
+                                    File Uploaded:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        File Icon Placeholder // File Name Placeholder // Uploaded Date Placeholder
+                                    </Typography>
+
+                                    File Uploaded:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        File Icon Placeholder // File Name Placeholder // Uploaded Date Placeholder
+                                    </Typography>
+                                    
+                                    </CardContent>
+                                </CardActionArea>
+
+                                <CardActions>
+                                    <Button size="small" color="secondary">
+                                        Edit
+                                    </Button>
+                                </CardActions>
+                        </Card>
+
+
+                        {/* <ProfileInfoCard
                             title="Document Information"
                             info={{
                             upload1: "Symbol | File Name1 | 1/5/2017", // placeholder string
@@ -38,7 +70,7 @@ function DocumentSection() {
                                 },
                             ]}
                             action={{ route: "", tooltip: "Edit Profile" }}
-                        />
+                        /> */}
                     </MDBox>
                 </Grid>
             </Grid>

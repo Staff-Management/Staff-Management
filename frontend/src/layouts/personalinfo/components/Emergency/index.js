@@ -1,15 +1,12 @@
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import { Button, CardActionArea, CardActions } from '@mui/material';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React components
-import ProfileInfoCard from "examples/Cards/InfoCards/ProfileInfoCard";
-
-// @mui icons
-import ForumIcon from '@mui/icons-material/Forum';
 
 
 function Emergency() {
@@ -27,7 +24,42 @@ function Emergency() {
                     </Typography>
 
                     <MDBox mb={1.5}>
-                        <ProfileInfoCard
+                        
+                        <Card sx={{ maxWidth: 1000 }}>
+                                <CardActionArea>
+                                    <CardContent>
+
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        Emergency Contact Information
+                                    </Typography>
+
+                                    Full Name:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        John Doe
+                                    </Typography>
+
+                                    Phone:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        (123) 123-1234
+                                    </Typography>
+
+                                    Address:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        1234 Street Name Philadelphia, PA 07012
+                                    </Typography>
+                                    
+                                    </CardContent>
+                                </CardActionArea>
+
+                                <CardActions>
+                                    <Button size="small" color="secondary">
+                                        Edit
+                                    </Button>
+                                </CardActions>
+                        </Card>
+
+
+                        {/* <ProfileInfoCard
                             title="Emergency Contact Information"
                             info={{
                             fullName: "John Doe",
@@ -42,7 +74,7 @@ function Emergency() {
                                 },
                             ]}
                             action={{ route: "", tooltip: "Edit Profile" }}
-                        />
+                        /> */}
                     </MDBox>
 
                 </Grid>
