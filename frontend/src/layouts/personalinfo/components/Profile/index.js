@@ -30,10 +30,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275
+    minWidth: 500
   },
   bullet: {
-    display: "inline-block",
+    display: "flex",
     margin: "0 2px",
     transform: "scale(0.8)"
   },
@@ -48,7 +48,6 @@ const useStyles = makeStyles({
 function Profile() {
 
   const classes = useStyles();
-  const [editing, setEditing] = useState(false);
   const [updating, setUpdating] = useState(false);
 
   return (
@@ -63,7 +62,7 @@ function Profile() {
         <Card className={classes.root} variant="outlined" sx={{ maxWidth: 1000 }}>
           <CardActionArea>
             <CardContent>
-            {editing ? (
+            {updating ? (
               <div>
                 <div>
                   <TextField
@@ -84,12 +83,16 @@ function Profile() {
                 </div>
                 <br />
                 <div>
-                  <TextField
-                    label="Update Date Of Birth"
-                    id="outlined-size-small"
-                    defaultValue="Date of Birth"
-                    size="small"
-                  />
+                <TextField
+                  id="date"
+                  label="Date of Birth"
+                  type="date"
+                  defaultValue="2017-05-24"
+                  sx={{ width: 160 }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
                 </div>
                 <br />
                 <div>
@@ -157,11 +160,11 @@ function Profile() {
           </CardActionArea>
 
           <CardActions>
-              <Button size="small" onClick={() => setEditing(true)} color="secondary">
-                Edit
-              </Button>
-              <Button size="small" onClick={() => setEditing(false)} color="secondary">
+              <Button size="small" onClick={() => setUpdating(true)} color="secondary">
                 Update
+              </Button>
+              <Button size="small" onClick={() => setUpdating(false)} color="secondary">
+                Back
               </Button>
           </CardActions>
 

@@ -1,15 +1,38 @@
-// @mui material components
-import Grid from "@mui/material/Grid";
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 
+// @mui material components
+import Grid from "@mui/material/Grid";
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent'
+import TextField from '@mui/material/TextField';
+import { Button, CardActionArea, CardActions, CardHeader } from '@mui/material';
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+    root: {
+      minWidth: 500
+    },
+    bullet: {
+      display: "flex",
+      margin: "0 2px",
+      transform: "scale(0.8)"
+    },
+    title: {
+      fontSize: 14
+    },
+    pos: {
+      marginBottom: 12
+    }
+}); 
 
 function Emergency() {
+
+    const classes = useStyles();
+    const [updating, setUpdating] = useState(false);
 
     return (
 
@@ -25,10 +48,40 @@ function Emergency() {
 
                     <MDBox mb={1.5}>
                         
-                        <Card sx={{ maxWidth: 1000 }}>
+                        <Card className={classes.root} variant="outlined" sx={{ maxWidth: 1000 }}>
                                 <CardActionArea>
                                     <CardContent>
-
+                                    {updating ? (
+                                        <div>
+                                            <div>
+                                            <TextField
+                                                label="Update Full Name"
+                                                id="outlined-size-small"
+                                                defaultValue="Full Name"
+                                                size="small"
+                                            />
+                                            </div>
+                                            <br />
+                                            <div>
+                                            <TextField
+                                                label="Update Phone"
+                                                id="outlined-size-small"
+                                                defaultValue="Phone"
+                                                size="small"
+                                            />
+                                            </div>
+                                            <br />
+                                            <div>
+                                            <TextField
+                                                label="Update Address"
+                                                id="outlined-size-small"
+                                                defaultValue="Address"
+                                                size="small"
+                                            />
+                                            </div>
+                                        </div>                
+                                    ) : (
+                                    <div>
                                     <Typography gutterBottom variant="h5" component="div">
                                         Emergency Contact Information
                                     </Typography>
@@ -47,13 +100,17 @@ function Emergency() {
                                     <Typography gutterBottom variant="h6" component="div">
                                         1234 Street Name Philadelphia, PA 07012
                                     </Typography>
-                                    
+                                    </div>
+                                    )}
                                     </CardContent>
                                 </CardActionArea>
 
                                 <CardActions>
-                                    <Button size="small" color="secondary">
-                                        Edit
+                                    <Button size="small" onClick={() => setUpdating(true)} color="secondary">
+                                        Update
+                                    </Button>
+                                    <Button size="small" onClick={() => setUpdating(false)} color="secondary">
+                                        Back
                                     </Button>
                                 </CardActions>
                         </Card>
