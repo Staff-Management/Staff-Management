@@ -30,6 +30,7 @@ export const slice = createSlice({
       perm_citizen: null,
       green_card_citizen: "",
       work_auth: "",
+      opt_type: "",
       other_work_auth: "",
       workAuth_start: "",
       workAuth_exp: "",
@@ -68,7 +69,24 @@ export const slice = createSlice({
       em_phone: "",
       em_email: "",
       em_relationship: ""
-    }]
+    }],
+    document_info: {
+      opt_receipt_src: "",
+      opt_receipt_file: "",
+      opt_receipt_filename: "",
+      opt_ead_src: "",
+      opt_ead_file: "",
+      opt_ead_filename: "",
+      i_983_src: "",
+      i_983_file: "",
+      i_983_filename: "",
+      opt_stem_receipt_src: "",
+      opt_stem_receipt_file: "",
+      opt_stem_receipt_filename: "",
+      opt_stem_ead_src: "",
+      opt_stem_ead_file: "",
+      opt_stem_ead_filename: ""
+    }
   },
   reducers: {
     setLogin: (state, action) => {
@@ -99,11 +117,14 @@ export const slice = createSlice({
       const { val, list } = action.payload;
       state.contact_info = val;
       state.emergency_contact = JSON.parse(JSON.stringify(list));
-    }
+    },
+    setDocuments: (state, action) => {
+      state.document_info = action.payload;
+    },
   },
 });
 
-export const { setLogin, setEmail, setRole, setToken, setUsername, setPassword, setRePassword, setPersonalInfo, setContactInfo } = slice.actions;
+export const { setLogin, setEmail, setRole, setToken, setUsername, setPassword, setRePassword, setPersonalInfo, setContactInfo, setDocuments } = slice.actions;
 
 export const selectLogin = state => state.user.loggedin;
 export const selectEmail = state => state.user.email;
@@ -115,5 +136,6 @@ export const selectRePassword = state => state.user.repassword;
 export const selectPersonalInfo = state => state.user.personal_info;
 export const selectContactInfo = state => state.user.contact_info;
 export const selectEmergencyContact = state => state.user.emergency_contact;
+export const selectDocuments = state => state.user.document_info;
 
 export default slice.reducer;

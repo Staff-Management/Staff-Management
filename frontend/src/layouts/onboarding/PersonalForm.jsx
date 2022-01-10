@@ -71,6 +71,7 @@ export default function PersonalForm(props) {
     perm_citizen: "",
     green_card_citizen: "",
     work_auth: "",
+    opt_type: "",
     other_work_auth: "",
     workAuth_src: "",
     workAuth_start: "",
@@ -154,11 +155,38 @@ export default function PersonalForm(props) {
     }
   };
 
+  const opt_receipt = (
+    values.work_auth === 'f1' ?
+      <Grid item xs={12} sm={12}>
+        <FormControl component="fieldset" fullWidth>
+          <FormLabel component="legend">Please specify you OPT type:</FormLabel>
+          <RadioGroup
+            aria-label="opt_type"
+            id='opt_type'
+            name="opt_type"
+            row
+            defaultValue={personal_info.opt_type}
+            onChange={handleChange}
+          >
+            <Grid item xs={12} sm={6}>
+              <FormControlLabel value='opt' control={<Radio />} label="OPT" />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              < FormControlLabel value='opt_stem' control={<Radio />} label="OPT STEM" />
+            </Grid>
+          </RadioGroup>
+        </FormControl>
+      </Grid>
+      :
+      <></>
+  )
+
   const visa_status = (
     values.workAuth === '' ?
       <></>
       :
       <React.Fragment>
+        {opt_receipt}
         <Grid item xs={12} sm={6}>
           <TextField
             id="workAuth_start"
@@ -225,7 +253,7 @@ export default function PersonalForm(props) {
   )
 
   const other_work_auth = (
-    values.workAuth === 'other' ?
+    values.work_auth === 'other' ?
       <Grid item xs={12} sm={12}>
         <TextField
           id='other_work_auth'
@@ -271,7 +299,7 @@ export default function PersonalForm(props) {
           <React.Fragment>
             <Grid item xs={12} sm={12}>
               <FormControl variant="standard" fullWidth>
-                <InputLabel id="workAuth">Work Authorization</InputLabel>
+                <InputLabel id="work_auth">Work Authorization</InputLabel>
                 <Select
                   labelId="work_auth"
                   id="work_auth"

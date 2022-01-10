@@ -91,10 +91,10 @@ module.exports.onBoarding = async (req, resp) => {
     vehicle_maker,
     vehicle_model,
     vehicle_color,
-    driverLicense,
     driverLicense_own,
     driverLicense_num,
     driverLicense_exp,
+    driverLicense_filename,
     ref_firstname,
     ref_lastname,
     ref_middlename,
@@ -107,10 +107,11 @@ module.exports.onBoarding = async (req, resp) => {
     ref_zip,
     ref_country,
     work_auth,
-    workAuth,
+    opt_type,
     perm_citizen,
     green_card_citizen,
     other_work_auth,
+    workAuth_filename,
     workAuth_start,
     workAuth_exp
   } = all_info
@@ -120,14 +121,14 @@ module.exports.onBoarding = async (req, resp) => {
     const address_info = await Address.create({ address1, address2, city, state, zip, country });
     const dl_info = await DriverLicense.create({ driverLicense_num, driverLicense_exp });
     const ref_info = await Reference.create({ ref_firstname, ref_middlename, ref_lastname, ref_address1, ref_city, ref_state, ref_country, ref_zip, ref_phone, ref_email, ref_relationship });
-    const work_auth_info = await WorkAuth.create({ work_auth, other_work_auth, workAuth_start, workAuth_exp });
+    const work_auth_info = await WorkAuth.create({ work_auth, opt_type, other_work_auth, workAuth_start, workAuth_exp });
     for (const contact of em_contact) {
       const emergency = await EmergencyContact.create(contact);
       emergency_id.push(emergency._id);
     }
     try {
       const data = await User.findOneAndUpdate({ email }, {
-        firstName, lastName, preferredName, middleName, cell_phone, work_phone, ssn, birthday, gender, green_card_citizen, perm_citizen, driverLicense_own, driverLicense, workAuth, car_info: car_info._id,
+        firstName, lastName, preferredName, middleName, cell_phone, work_phone, ssn, birthday, gender, green_card_citizen, perm_citizen, driverLicense_own, driverLicense_filename, workAuth_filename, car_info: car_info._id,
         dl_info: dl_info._id, ref_info: ref_info._id, work_auth_info: work_auth_info._id, address_info: address_info._id, $push: { emergency_contact_info: { $each: emergency_id } }
       })
       resp.status(200).json({ user: data });
@@ -138,6 +139,17 @@ module.exports.onBoarding = async (req, resp) => {
   } catch (e) {
     console.log(e);
     resp.status(400).send('Error in the outer try')
+  }
+}
+
+module.exports.getUser = async (req, resp) => {
+  const { email } = req.body;
+  try {
+    const data = await User.findOne({ email }).populate('work_auth_info');
+    resp.status(200).json({ user: data });
+  } catch (err) {
+    const errors = handleErrors(err);
+    resp.status(400).json({ errors })
   }
 }
 

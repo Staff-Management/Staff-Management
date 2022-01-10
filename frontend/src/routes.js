@@ -44,6 +44,7 @@ import Notifications from "layouts/notifications"
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Housing from "layouts/housing/housing"
+import Documents from "layouts/visa_status/Documents";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -65,6 +66,14 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/visa-status",
     component: <Tables />,
+  },
+  {
+    type: "collapse",
+    name: "My Visa Status",
+    key: "my-visa-status",
+    icon: <Icon fontSize="small">article</Icon>,
+    route: "/my-visa-status",
+    component: <Documents />,
   },
   {
     type: "collapse",
@@ -100,6 +109,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "House Management",
+    key: "housemanagement",
+    icon: <Icon fontSize="small">house</Icon>,
+    route: "/housemanagement",
+    component: <Housing />,
+  },
+  {
+    type: "collapse",
     name: "Sign In",
     key: "signin",
     icon: <Icon fontSize="small">login</Icon>,
@@ -113,14 +130,6 @@ const routes = [
     icon: <Icon fontSize="small">person_add</Icon>,
     route: "/authentication/signup",
     component: <SignUp />,
-  },
-  {
-    type: "collapse",
-    name: "House Management",
-    key: "housemanagement",
-    icon: <Icon fontSize="small">house</Icon>,
-    route: "/housemanagement",
-    component: <Housing />,
   }
 ];
 

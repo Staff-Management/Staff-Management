@@ -9,6 +9,7 @@ router.post('/onboarding', userController.onBoarding);
 router.post('/sendnotification', userController.sendNotification);
 router.post('/getnotification', userController.getNotification);
 router.post('/deletenotification', userController.deleteNotification);
+router.post('/getuser', userController.getUser);
 // router.post('/updateDriv', userController.updateDriv);
 // router.post('/updateWork', userController.updateWorkAuth);
 // router.post('/updateRef', userController.updateRef);

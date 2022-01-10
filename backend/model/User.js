@@ -41,7 +41,7 @@ const userSchema = new Schema({
     type: String,
   },
   avatar: {
-    type: String, 
+    type: String,
   },
   cell_phone: {
     type: String,
@@ -74,7 +74,13 @@ const userSchema = new Schema({
   driverLicense: {
     type: String
   },
+  driverLicense_filename: {
+    type: String
+  },
   workAuth: {
+    type: String
+  },
+  workAuth_filename: {
     type: String
   },
   ref_info: {
@@ -108,7 +114,7 @@ userSchema.pre("save", async function (next) {
 
 //Checks to see if password matches.
 userSchema.statics.login = async function (account, password) {
-  const user = await User.findOne().or([ { email: account }, { username: account } ]);
+  const user = await User.findOne().or([{ email: account }, { username: account }]);
   let isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
     throw new Error("Account or password is wrong!");
