@@ -26,9 +26,6 @@ import CardContent from '@mui/material/CardContent'
 import TextField from '@mui/material/TextField';
 import { Button, CardActionArea, CardActions, CardHeader } from '@mui/material';
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector, useDispatch } from 'react-redux';
-
-import { setUserInfo, selectUserInfo } from 'slices/userSlice';
 
 
 const useStyles = makeStyles({
@@ -51,7 +48,7 @@ const useStyles = makeStyles({
 function Profile() {
 
   const classes = useStyles();
-  const dispatch = useDispatch();
+
   const [editing, setEditing] = useState({
     update_name: "",
     preferred_name: "",
@@ -61,21 +58,35 @@ function Profile() {
     ssn: ""  
   });
 
-  // const [update, setUpdate] = useState({
-  //   update_name: "",
-  //   preferred_name: "",
-  //   dob: "",
-  //   age: "",
-  //   gender: "",
-  //   ssn: "" 
-  // })
+  // controlls the mode 
+  const [editingMode, setEditingMode] = useState(false);
 
   const handleEditChange = (e) => {
     setEditing({
       ...editing,
-      [e.target.update_name]: e.target.value
+      [e.target.name]: e.target.value
     })
-  }
+  };
+
+  const updateProfile = async (e) => {
+    try
+    {
+      console.log(editing);
+      // const res = await fetch('http://localhost:4000/dashboard', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ email, all_info, em_contact }),
+      //   headers: {'Content-Type': 'application/json'}
+      // })
+      // const response = await res.json();
+      // props.handleNext();
+    }
+    catch(err)
+    {
+      alert('Error');
+      console.log(err);
+    }
+    setEditingMode(false);
+  };
 
   return (
 
@@ -89,7 +100,7 @@ function Profile() {
         <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1000 }}>
           <CardActionArea>
             <CardContent>
-            {editing ? (
+            {editingMode ? (
               <div>
                 <div>
                   <TextField
@@ -143,7 +154,7 @@ function Profile() {
                   <TextField
                     label="Update Gender"
                     id="gender"
-                    name="name"
+                    name="gender"
                     defaultValue="Gender"
                     size="small"
                     onChange={handleEditChange}
@@ -199,10 +210,10 @@ function Profile() {
           </CardActionArea>
 
           <CardActions>
-              <Button size="small" onClick={() => setEditing(true)} color="secondary">
+              <Button size="small" onClick={() => setEditingMode(true)} color="secondary">
                 Edit
               </Button>
-              <Button size="small" onClick={() => setEditing(false)} color="secondary">
+              <Button size="small" onClick={() => updateProfile()} color="secondary">
                 Update
               </Button>
           </CardActions>
