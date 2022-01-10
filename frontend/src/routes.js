@@ -112,6 +112,14 @@ const routes = [
     icon: <Icon fontSize="small">person_add</Icon>,
     route: "/authentication/signup",
     component: <SignUp />,
+  },
+  {
+    type: "collapse",
+    name: "House Management",
+    key: "housemanagement",
+    icon: <Icon fontSize="small">House Management</Icon>,
+    route: "/housemanagement",
+    component: <Housing />,
   }
 ];
 

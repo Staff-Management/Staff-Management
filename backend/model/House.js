@@ -5,8 +5,8 @@ const FacilityReports = require('./FacilityReports');
 const Schema = mongoose.Schema;
 
 const houseSchema = new Schema({
-    landLord: String, 
-    email: String,
+    landLord: String,
+    landlordEmail: String,
     landLordPhone: String,
     address1: String,
     address2: String,
