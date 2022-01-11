@@ -43,8 +43,8 @@ const useStyles = makeStyles({
 
 function Emergency() {
     
-    let email = useSelector(selectEmail)
-    email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
+    // let email = useSelector(selectEmail)
+    const email = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com';
     const [values, setValues] = useState({
         em_firstname: "",
         em_middlename: "",
@@ -55,7 +55,7 @@ function Emergency() {
     });
     
     useEffect(() => {
-        // fetchEmContact();
+        fetchEmContact();
     }, []);
     
     const fetchEmContact = async () => {
@@ -74,7 +74,14 @@ function Emergency() {
     
     const classes = useStyles();
     
-    const [editing, setEditing] = useState({});
+    const [editing, setEditing] = useState({
+        em_firstname: "",
+        em_middlename: "",
+        em_lastname: "",
+        em_phone: "",
+        em_email: "",
+        em_relationship: ""
+    });
     
     // controlls the mode   
     const [editingMode, setEditingMode] = useState(false);
@@ -223,22 +230,21 @@ function Emergency() {
                                             </TableRow>
                                             </TableBody>
                                             <TableBody>
-                                            {/* {rows.map((row) => (
+                                            {rows.map((row) => (
                                                 <TableRow
                                                 key={row.name}
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                 >
                                                 <TableCell component="th" scope="row">
                                                     {row.name}
                                                 </TableCell>
-                                                <TableCell align="center">abc</TableCell>
-                                                <TableCell align="center">abc</TableCell>
-                                                <TableCell align="center">abc</TableCell>
-                                                <TableCell align="center">abc</TableCell>
-                                                <TableCell align="center">abc</TableCell>
-                                                <TableCell align="center">abc</TableCell>
+                                                <TableCell align="center">{row.em_firstname}</TableCell>
+                                                <TableCell align="center">{row.em_middlename}</TableCell>
+                                                <TableCell align="center">{row.em_lastname}</TableCell>
+                                                <TableCell align="center">{row.em_phone}</TableCell>
+                                                <TableCell align="center">{row.em_email}</TableCell>
+                                                <TableCell align="center">{row.em_relationship}</TableCell>
                                                 </TableRow>
-                                            ))} */}
+                                            ))}
                                             </TableBody>
                                         </Table>
                                     </TableContainer>

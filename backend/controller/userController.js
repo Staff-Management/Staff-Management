@@ -197,16 +197,27 @@ module.exports.getVehicle = async (req, resp) => {
   }
 }
 
-// module.exports.getEmContact = async (req, resp) => {
-//   const { email } = req.body;
-//   try {
-//     const data = await User.findOne({ email }).populate('emergency_contact_info');
-//     resp.status(200).json({ user: data });
-//   } catch (err) {
-//     const errors = handleErrors(err);
-//     resp.status(400).json({ errors })
-//   }
-// }
+module.exports.getRef = async (req, resp) => {
+  const { email } = req.body;
+  try {
+    const data = await User.findOne({ email }).populate('ref_info');
+    resp.status(200).json({ user: data });
+  } catch (err) {
+    const errors = handleErrors(err);
+    resp.status(400).json({ errors })
+  }
+}
+
+module.exports.getEmContact = async (req, resp) => {
+  const { email } = req.body;
+  try {
+    const data = await User.findOne({ email }).populate('emergency_contact_info');
+    resp.status(200).json({ user: data });
+  } catch (err) {
+    const errors = handleErrors(err);
+    resp.status(400).json({ errors })
+  }
+}
 
 module.exports.updateProfile = async (req, resp) => {
   const { email, firstName, lastName, preferredName, birthday, gender, ssn } = req.body;
@@ -266,23 +277,23 @@ module.exports.updateContact = async (req, resp) => {
   }
 }
 
-// module.exports.updateRef = async (req, resp) => {
-//   const { email, refFirstName, refSecondName, refMidName, refEmail, refRelationship} = req.body;
-//   try {
-//       const data = await User.findOne({email})
-//       const dataId = data.reference;
-//       try {
-//           const dl = await Reference.findByIdAndUpdate(dataId, { refFirstName, refSecondName, refMidName, refEmail, refRelationship })
-//           resp.status(200).json({user: data});
-//       }catch(e){
-//           console.log(e);
-//           resp.status(400).send('Error in the inner try')
-//       }
-//   }catch(e) {
-//       console.log(e);
-//       resp.status(400).send('Error in the outer try')
-//   }
-// }
+module.exports.updateRef = async (req, resp) => {
+  const { email, ref_firstname, ref_middlename, ref_lastname, ref_address1, ref_city, ref_state, ref_country, ref_zip, ref_phone, ref_email, ref_relationship } = req.body;
+  try {
+      const data = await User.findOne({email})
+      const dataId = data.ref_info;
+      try {
+          const updateData = await Reference.findByIdAndUpdate(dataId, { ref_firstname, ref_middlename, ref_lastname, ref_address1, ref_city, ref_state, ref_country, ref_zip, ref_phone, ref_email, ref_relationship })
+          resp.status(200).json({user: updateData});
+      }catch(e){
+          console.log(e);
+          resp.status(400).send('Error in the inner try')
+      }
+  }catch(e) {
+      console.log(e);
+      resp.status(400).send('Error in the outer try')
+  }
+}
 
 module.exports.updateWorkAuth = async (req, resp) => {
   const { email, work_auth, opt_type, other_work_auth, workAuth_start, workAuth_exp } = req.body;

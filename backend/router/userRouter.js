@@ -18,9 +18,10 @@ router.post('/updateprofile', userController.updateProfile);
 router.post('/getWork', userController.getWork);
 router.post('/updateWork', userController.updateWorkAuth);
 
-// router.post('/getEmergencyContact', userController.getEmContact);
+router.post('/getEmergencyContact', userController.getEmContact);
 
-// router.post('/updateRef', userController.updateRef);
+router.post('/getRef', userController.getRef);
+router.post('/updateRef', userController.updateRef);
 
 router.post('/getVehicle', userController.getVehicle);
 router.post('/updateCar', userController.updateCar);
