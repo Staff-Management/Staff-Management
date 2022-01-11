@@ -83,6 +83,57 @@ const userSchema = new Schema({
   workAuth_filename: {
     type: String
   },
+  opt_receipt: {
+    type: String
+  },
+  opt_receipt_filename: {
+    type: String
+  },
+  opt_stem_receipt: {
+    type: String
+  },
+  opt_stem_receipt_filename: {
+    type: String
+  },
+  opt_ead: {
+    type: String
+  },
+  opt_ead_filename: {
+    type: String
+  },
+  opt_ead_start: {
+    type: String
+  },
+  opt_ead_exp: {
+    type: String
+  },
+  opt_stem_ead: {
+    type: String
+  },
+  opt_stem_ead_filename: {
+    type: String
+  },
+  opt_stem_ead_start: {
+    type: String
+  },
+  opt_stem_ead_exp: {
+    type: String
+  },
+  i20: {
+    type: String
+  },
+  i20_filename: {
+    type: String
+  },
+  i983: {
+    type: String
+  },
+  i983_filename: {
+    type: String
+  },
+  i983_approved: {
+    type: Boolean
+  },
   ref_info: {
     type: mongoose.Schema.ObjectId,
     ref: Reference,

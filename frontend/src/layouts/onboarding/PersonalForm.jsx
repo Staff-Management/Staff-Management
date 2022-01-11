@@ -71,7 +71,6 @@ export default function PersonalForm(props) {
     perm_citizen: "",
     green_card_citizen: "",
     work_auth: "",
-    opt_type: "",
     other_work_auth: "",
     workAuth_src: "",
     workAuth_start: "",
@@ -155,38 +154,11 @@ export default function PersonalForm(props) {
     }
   };
 
-  const opt_receipt = (
-    values.work_auth === 'f1' ?
-      <Grid item xs={12} sm={12}>
-        <FormControl component="fieldset" fullWidth>
-          <FormLabel component="legend">Please specify you OPT type:</FormLabel>
-          <RadioGroup
-            aria-label="opt_type"
-            id='opt_type'
-            name="opt_type"
-            row
-            defaultValue={personal_info.opt_type}
-            onChange={handleChange}
-          >
-            <Grid item xs={12} sm={6}>
-              <FormControlLabel value='opt' control={<Radio />} label="OPT" />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              < FormControlLabel value='opt_stem' control={<Radio />} label="OPT STEM" />
-            </Grid>
-          </RadioGroup>
-        </FormControl>
-      </Grid>
-      :
-      <></>
-  )
-
   const visa_status = (
     values.workAuth === '' ?
       <></>
       :
       <React.Fragment>
-        {opt_receipt}
         <Grid item xs={12} sm={6}>
           <TextField
             id="workAuth_start"

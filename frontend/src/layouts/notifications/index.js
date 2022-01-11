@@ -168,7 +168,6 @@ function Notifications() {
                 </MDTypography>
                 <MDTypography variant="body2" color="secondary">
                   <Tooltip title={'refresh'} placement="top">
-                    {/* <Icon fontSize="medium" onClick={handleRefresh}>refresh</Icon> */}
                     <IconButton aria-label="refresh" color="info" onClick={handleRefresh}>
                       <RefreshIcon />
                     </IconButton>

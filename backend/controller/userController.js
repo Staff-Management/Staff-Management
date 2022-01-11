@@ -107,7 +107,6 @@ module.exports.onBoarding = async (req, resp) => {
     ref_zip,
     ref_country,
     work_auth,
-    opt_type,
     perm_citizen,
     green_card_citizen,
     other_work_auth,
@@ -121,7 +120,7 @@ module.exports.onBoarding = async (req, resp) => {
     const address_info = await Address.create({ address1, address2, city, state, zip, country });
     const dl_info = await DriverLicense.create({ driverLicense_num, driverLicense_exp });
     const ref_info = await Reference.create({ ref_firstname, ref_middlename, ref_lastname, ref_address1, ref_city, ref_state, ref_country, ref_zip, ref_phone, ref_email, ref_relationship });
-    const work_auth_info = await WorkAuth.create({ work_auth, opt_type, other_work_auth, workAuth_start, workAuth_exp });
+    const work_auth_info = await WorkAuth.create({ work_auth, other_work_auth, workAuth_start, workAuth_exp });
     for (const contact of em_contact) {
       const emergency = await EmergencyContact.create(contact);
       emergency_id.push(emergency._id);

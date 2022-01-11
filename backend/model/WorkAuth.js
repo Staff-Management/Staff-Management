@@ -5,9 +5,6 @@ const workAuthSchema = new Schema({
     work_auth: {
         type: String,
     },
-    opt_type: {
-        type: String,
-    },
     other_work_auth: {
         type: String,
     },

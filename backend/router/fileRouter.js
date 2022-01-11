@@ -28,9 +28,17 @@ const upload = multer({
 })
 
 router.post('/uploadfile', upload.single('file'), async (req, resp) => {
-  const { email, field_name } = req.body;
   try {
-    const data = await User.findOneAndUpdate({ email }, { [field_name]: `${req.file.key}` });
+    const { email, field_name, ...rest } = req.body;
+    if (field_name === "i983") {
+      await User.findOneAndUpdate({ email }, { [field_name]: `${req.file.key}`, [`${field_name}_filename`]: req.file.originalname, [`${field_name}_approved`]: false });
+    }
+    else if (field_name === "opt_ead" || field_name === "opt_stem_ead") {
+      await User.findOneAndUpdate({ email }, { [field_name]: `${req.file.key}`, [`${field_name}_filename`]: req.file.originalname, [`${field_name}_start`]: rest.start, [`${field_name}_exp`]: rest.exp });
+    }
+    else {
+      await User.findOneAndUpdate({ email }, { [field_name]: `${req.file.key}`, [`${field_name}_filename`]: req.file.originalname });
+    }
     resp.status(200).json({ path: req.file.key });
   }
   catch (e) {
