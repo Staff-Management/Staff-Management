@@ -51,10 +51,6 @@ const parseWorkAuth = (work_auth) => {
   }
 };
 
-const decideNextStep = () => {
-  return 'Next Step Placeholder'
-}
-
 const formatUserData = (user) => {
   return {
     name: `${user.firstName} ${user.lastName}`,
@@ -62,6 +58,7 @@ const formatUserData = (user) => {
     workAuth: parseWorkAuth(user.work_auth_info.work_auth),
     expDate: user.work_auth_info.workAuth_exp,
     dayLeft: dateDiff(user.work_auth_info.workAuth_exp),
+    nextStep: decideNextStep(user),
     actionRequired: hasRequiredAction(),
     details: [
       {
@@ -70,7 +67,7 @@ const formatUserData = (user) => {
         startDate: user.work_auth_info.workAuth_start,
         endDate: user.work_auth_info.workAuth_exp,
         documentReceived: formatFiles(user),
-        nextStep: decideNextStep(),
+        nextStep: decideNextStep(user),
         actionReq: true,
         editable: true,
       },
@@ -113,14 +110,44 @@ const fetchFileSrc = async (email, field_name) => {
   }
 };
 
+const decideNextStep = (user) => {
+  if (user.opt_stem_ead) {
+    return "You are all set"
+  }
+  else if (user.opt_stem_receipt) {
+    return 'Upload your OPT STEM EAD'
+  }
+  else if (user.i20) {
+    return 'Upload your OPT STEM RECEIPT'
+  }
+  else if (user.i983) {
+    if (user.i983_approved)
+      return 'Upload your I-20'
+    return 'Wait for HR to approve your I-983'
+  }
+  // Check User's OPT EAD Expiration date < 100
+  // else if (){
+  //   return 'Upload your I-983'
+  // }
+  else if (user.opt_ead) {
+    return 'Upload your I-983'
+  }
+  else if (user.opt_receipt) {
+    return 'Upload your OPT EAD'
+  }
+  else {
+    return 'Upload your OPT RECEIPT or OPT STEM RECEIPT'
+  }
+}
+
 function Row(props) {
   const email = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com';
 
   const { row, openSuccessSB } = props;
   const [open, setOpen] = React.useState(false);
 
-  const sendNotification = async (to_email) => {
-    const message = `Your next step is: {placeholder}`
+  const sendNotification = async (to_email, next_step) => {
+    const message = `Your next step is: ${next_step}`
     try {
       const res = await fetch('http://localhost:4000/sendnotification', {
         method: 'POST',
@@ -149,7 +176,7 @@ function Row(props) {
         <TableCell align='center'>{row.expDate}</TableCell>
         <TableCell align='center'>{row.dayLeft}</TableCell>
         <TableCell align='center'>
-          <Button variant='outlined' disabled={!row.actionRequired} endIcon={<SendIcon />} onClick={() => sendNotification(row.email)}>
+          <Button variant='outlined' disabled={!row.actionRequired} endIcon={<SendIcon />} onClick={() => sendNotification(row.email, row.nextStep)}>
             Send Notification
           </Button>
         </TableCell>
@@ -201,7 +228,7 @@ function Row(props) {
                         Documents Received
                       </Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{ width: 200 }}>
                       <Typography variant='h6' align='center'>
                         Next Step
                       </Typography>
@@ -221,19 +248,21 @@ function Row(props) {
                       <TableCell align='center'>{detailRow.startDate}</TableCell>
                       <TableCell align='center'>{detailRow.endDate}</TableCell>
                       <TableCell align='center'>
-                        {detailRow.documentReceived ?
+                        {detailRow.documentReceived && detailRow.documentReceived.length > 0 ?
                           detailRow.documentReceived.map((component, index) => (
                             <React.Fragment key={index}>
                               {component}
                             </React.Fragment>
                           ))
                           :
-                          <></>
+                          <Typography variant='body' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            N/A
+                          </Typography>
                         }
                       </TableCell>
-                      <TableCell align='center'>{detailRow.nextStep}</TableCell>
+                      <TableCell align='center' sx={{ width: 200 }}>{detailRow.nextStep}</TableCell>
                       <TableCell align='center'>
-                        <Button variant='outlined' disabled={!detailRow.actionReq} endIcon={<SendIcon />} onClick={() => sendNotification(row.email)}>
+                        <Button variant='outlined' disabled={!detailRow.actionReq} endIcon={<SendIcon />} onClick={() => sendNotification(row.email, row.nextStep)}>
                           Send Notification
                         </Button>
                       </TableCell>
