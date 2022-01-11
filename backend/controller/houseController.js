@@ -2,6 +2,8 @@ const House = require('../model/House');
 const facilityReports = require('../model/FacilityReports');
 const Facility = require('../model/Facility');
 const Tenants = require('../model/Tenants');
+const Comment = require("../model/Comments");
+const FacilityReports = require("../model/FacilityReports")
 
 module.exports.addHouse = async (req, resp) => {
     const {
@@ -106,6 +108,18 @@ module.exports.getLandLord = async (req, resp) => {
         const res = await House.findOne({ landLord }).populate("facilityInfo").populate("list_employee")
         resp.status(200).json({ res })
     }catch(e){
+        resp.status(400).send('Error')
+    }
+}
+
+module.exports.FacilityReports = async (req, resp) => {
+    const { title, description, createdBy, month, date, year, email, status } = req.body
+    console.log(req.body)
+    try {
+        const createReport = await FacilityReports.create({ title, description, createdBy, month, date, year, email })
+        resp.status(200).json({ createReport })
+    }catch (e){
+        console.log(e);
         resp.status(400).send('Error')
     }
 }
