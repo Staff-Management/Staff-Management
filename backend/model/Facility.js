@@ -5,6 +5,7 @@ const facilitySchema = new Schema({
     numBeds: String,
     numMattress: String, 
     numTables: String,
+    numChairs: String,
 });
 
 
