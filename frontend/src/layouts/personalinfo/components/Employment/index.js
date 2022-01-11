@@ -11,6 +11,8 @@ import CardContent from '@mui/material/CardContent'
 import TextField from '@mui/material/TextField';
 import { Button, CardActionArea, CardActions, CardHeader } from '@mui/material';
 import { makeStyles } from "@material-ui/core/styles";
+import { selectEmail } from 'slices/userSlice';
+import { useSelector } from 'react-redux';
 
 
 const useStyles = makeStyles({
@@ -32,9 +34,70 @@ const useStyles = makeStyles({
 
 function Employment() {
 
-  const classes = useStyles();
-  const [updating, setUpdating] = useState(false);
-
+    let email = useSelector(selectEmail)
+    email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
+    const [values, setValues] = useState({});
+    
+    useEffect(() => {
+        fetchUser();
+    }, []);
+    
+    const fetchUser = async () => {
+        try {
+          const res = await fetch('http://localhost:4000/updateWork', {
+            method: 'POST',
+            body: JSON.stringify({ email }),
+            headers: { 'Content-Type': 'application/json' }
+          })
+          const response = await res.json();
+          setValues(response.user);
+        } catch (err) {
+          console.log(err)
+        }
+    }
+    
+    const classes = useStyles();
+    
+    const [editing, setEditing] = useState({
+        work_auth: "",
+        workAuth_start: "",
+        workAuth_start: "",
+    });
+    
+    // controlls the mode   
+    const [editingMode, setEditingMode] = useState(false);
+    
+    const handleEditChange = (e) => {
+      setEditing({
+        ...editing,
+        [e.target.name]: e.target.value
+      })
+    };
+    
+    const updateWork = async (e) => {
+      try {
+        console.log(editing);
+        let update_info = editing;
+        for (const key in update_info) {
+          if (update_info[key] === "") {
+            delete update_info[key];
+          }
+        }
+        const res = await fetch('http://localhost:4000/updateWork', {
+          method: 'POST',
+          body: JSON.stringify({ email, ...update_info }),
+          headers: { 'Content-Type': 'application/json' }
+        })
+        const response = await res.json();
+        fetchUser();
+      }
+      catch (err) {
+        alert('Error');
+        console.log(err);
+      }
+      setEditingMode(false);
+    };
+    
     return (
         <MDBox>
             <Grid container spacing={3}>
@@ -48,20 +111,23 @@ function Employment() {
                             <Card className={classes.root} variant="outlined" sx={{ borderRadius:'0px', maxWidth: 1000 }}>
                                 <CardActionArea>
                                     <CardContent>
-                                    {updating ? (
+                                    {editing ? (
                                         <div>
                                             <div>
                                             <TextField
                                                 label="Update Work Authorization"
-                                                id="outlined-size-large"
+                                                id="work_auth"
+                                                name="work_auth"
                                                 defaultValue="Work Authorization"
                                                 sx={{ width: 250 }}
+                                                onChange={handleEditChange}
                                             />
                                             </div>
                                             <br />
                                             <div>
                                             <TextField
-                                                id="date"
+                                                id="workAuth_start"
+                                                name="workAuth_start"
                                                 label="Update Work Authorization Start Date"
                                                 type="date"
                                                 defaultValue="yyyy-MM-dd"
@@ -69,12 +135,14 @@ function Employment() {
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
+                                                onChange={handleEditChange}
                                             />
                                             </div>
                                             <br />
                                             <div>
                                             <TextField
-                                                id="date"
+                                                id="workAuth_exp"
+                                                name='workAuth_exp'
                                                 label="Update Work Authorization End Date"
                                                 type="date"
                                                 defaultValue="yyyy-MM-dd"
@@ -82,41 +150,7 @@ function Employment() {
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
-                                            />
-                                            </div>
-                                            <br />
-                                            <div>
-                                            <TextField
-                                                id="date"
-                                                label="Update Employment Start Date"
-                                                type="date"
-                                                defaultValue="yyyy-MM-dd"
-                                                sx={{ width: 250 }}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                            />
-                                            </div>
-                                            <br />
-                                            <div>
-                                            <TextField
-                                                id="date"
-                                                label="Update Employment End Date"
-                                                type="date"
-                                                defaultValue="yyyy-MM-dd"
-                                                sx={{ width: 250 }}
-                                                InputLabelProps={{
-                                                    shrink: true,
-                                                }}
-                                            />
-                                            </div>
-                                            <br />
-                                            <div>
-                                            <TextField
-                                                label="Update Job Title"
-                                                id="outlined-size-large"
-                                                defaultValue="Job Title"
-                                                sx={{ width: 250 }}
+                                                onChange={handleEditChange}
                                             />
                                             </div>
                                         </div>                
@@ -125,20 +159,20 @@ function Employment() {
                                 
                                             Work Authorization:
                                             <Typography gutterBottom variant="h6" component="div">
-                                                US Citizen
+                                                {values.work_auth}
                                             </Typography>
 
                                             Work Authorization Start:
                                             <Typography gutterBottom variant="h6" component="div">
-                                                02 March 2020
+                                                {values.workAuth_start}
                                             </Typography>
 
                                             Work Authorization End:
                                             <Typography gutterBottom variant="h6" component="div">
-                                                05 May 2022
+                                                {values.workAuth_exp}
                                             </Typography>
 
-                                            Employment Start:
+                                            {/* Employment Start:
                                             <Typography gutterBottom variant="h6" component="div">
                                                 05 March 2020
                                             </Typography>
@@ -151,17 +185,17 @@ function Employment() {
                                             Job Title:
                                             <Typography gutterBottom variant="h6" component="div">
                                                 Data Analyst
-                                            </Typography>
+                                            </Typography> */}
                                         </div>
                                     )}
                                     </CardContent>
                                 </CardActionArea>
 
                                 <CardActions>
-                                    <Button size="small" onClick={() => setUpdating(true)} color="secondary">
+                                    <Button size="small" onClick={() => setEditingMode(true)} color="secondary">
                                         Edit
                                     </Button>
-                                    <Button size="small" onClick={() => setUpdating(false)} color="secondary">
+                                    <Button size="small" onClick={() => updateWork()} color="secondary">
                                         Update
                                     </Button>
                                 </CardActions>

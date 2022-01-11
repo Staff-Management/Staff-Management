@@ -31,6 +31,7 @@ import Contact from "./components/Contact";
 import Employment from "./components/Employment";
 import Emergency from "./components/Emergency";
 import DocumentSection from "./components/DocumentSection";
+import Vehicle from "./components/Vehicle";
 
 
 function PersonalInfo() {
@@ -71,6 +72,11 @@ function PersonalInfo() {
             <Grid item xs={12} md={6} lg={6}>
               <MDBox mb={3}>
                 <DocumentSection />
+              </MDBox>
+            </Grid>
+            <Grid item xs={12} md={6} lg={6}>
+              <MDBox mb={3}>
+                <Vehicle />
               </MDBox>
             </Grid>
           </Grid>

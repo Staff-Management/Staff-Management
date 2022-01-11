@@ -73,12 +73,11 @@ function Profile() {
   const classes = useStyles();
 
   const [editing, setEditing] = useState({
-    firstName: "",
-    lastName: "",
-    preferredName: "",
-    birthday: "",
-    gender: "",
-    ssn: ""
+    ref_address1: "",
+    ref_city: "",
+    ref_state: "",
+    ref_zip: "",
+    ref_country: ""
   });
 
   // controlls the mode   
@@ -132,8 +131,8 @@ function Profile() {
                     <div>
                       <TextField
                         label="First Name"
-                        id="firstName"
-                        name="firstName"
+                        id="ref_address"
+                        name="ref_address"
                         size="small"
                         onChange={handleEditChange}
                       />
@@ -141,9 +140,9 @@ function Profile() {
                     <br />
                     <div>
                       <TextField
-                        label="Laast Name"
-                        id="lastName"
-                        name="lastName"
+                        label="Last Name"
+                        id="ref_city"
+                        name="ref_city"
                         size="small"
                         onChange={handleEditChange}
                       />
@@ -152,8 +151,8 @@ function Profile() {
                     <div>
                       <TextField
                         label="Update Preferred Name"
-                        id="preferredName"
-                        name="preferredName"
+                        id="ref_state"
+                        name="ref_state"
                         defaultValue="Preferred Name"
                         size="small"
                         onChange={handleEditChange}
@@ -162,8 +161,8 @@ function Profile() {
                     <br />
                     <div>
                       <TextField
-                        id="birthday"
-                        name="birthday"
+                        id="ref_zip"
+                        name="ref_zip"
                         label="Date of Birth"
                         type="date"
                         defaultValue=""
@@ -189,20 +188,9 @@ function Profile() {
                     <div>
                       <TextField
                         label="Update Gender"
-                        id="gender"
-                        name="gender"
+                        id="ref_country"
+                        name="ref_country"
                         defaultValue="Gender"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
-                    <br />
-                    <div>
-                      <TextField
-                        label="Update Social Security Number"
-                        id="ssn"
-                        name="ssn"
-                        defaultValue="Social Security Number"
                         size="small"
                         onChange={handleEditChange}
                       />

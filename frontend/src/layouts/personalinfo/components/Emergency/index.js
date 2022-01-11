@@ -11,6 +11,8 @@ import CardContent from '@mui/material/CardContent'
 import TextField from '@mui/material/TextField';
 import { Button, CardActionArea, CardActions, CardHeader } from '@mui/material';
 import { makeStyles } from "@material-ui/core/styles";
+import { selectEmail } from 'slices/userSlice';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles({
     root: {
@@ -31,8 +33,73 @@ const useStyles = makeStyles({
 
 function Emergency() {
 
+    
+    let email = useSelector(selectEmail)
+    email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
+    const [values, setValues] = useState({});
+    
+    useEffect(() => {
+        fetchUser();
+    }, []);
+    
+    const fetchUser = async () => {
+        try {
+          const res = await fetch('http://localhost:4000/updateRef', {
+            method: 'POST',
+            body: JSON.stringify({ email }),
+            headers: { 'Content-Type': 'application/json' }
+          })
+          const response = await res.json();
+          setValues(response.user);
+        } catch (err) {
+          console.log(err)
+        }
+    }
+    
     const classes = useStyles();
-    const [updating, setUpdating] = useState(false);
+    
+    const [editing, setEditing] = useState({
+        em_firstname: "",
+        em_middlename: "",
+        em_lastname: "",
+        em_phone: "",
+        em_email: "",
+        em_relationship: ""
+    });
+    
+    // controlls the mode   
+    const [editingMode, setEditingMode] = useState(false);
+    
+    const handleEditChange = (e) => {
+      setEditing({
+        ...editing,
+        [e.target.name]: e.target.value
+      })
+    };
+    
+    const updateRef = async (e) => {
+      try {
+        console.log(editing);
+        let update_info = editing;
+        for (const key in update_info) {
+          if (update_info[key] === "") {
+            delete update_info[key];
+          }
+        }
+        const res = await fetch('http://localhost:4000/updateRef', {
+          method: 'POST',
+          body: JSON.stringify({ email, ...update_info }),
+          headers: { 'Content-Type': 'application/json' }
+        })
+        const response = await res.json();
+        fetchUser();
+      }
+      catch (err) {
+        alert('Error');
+        console.log(err);
+      }
+      setEditingMode(false);
+    };
 
     return (
 
@@ -51,50 +118,104 @@ function Emergency() {
                         <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1000 }}>
                                 <CardActionArea>
                                     <CardContent>
-                                    {updating ? (
+                                    {editing ? (
                                         <div>
                                             <div>
                                             <TextField
-                                                label="Update Full Name"
-                                                id="outlined-size-small"
-                                                defaultValue="Full Name"
+                                                label="Update First Name"
+                                                id="em_firstname"
+                                                name="em_firstname"
+                                                defaultValue="First Name"
                                                 size="small"
+                                                onChange={handleEditChange}
+                                            />
+                                            </div>
+                                            <br />
+                                            <div>
+                                            <TextField
+                                                label="Update Middle Name"
+                                                id="em_middlename"
+                                                name="em_middlename"
+                                                defaultValue="Middle Name"
+                                                size="small"
+                                                onChange={handleEditChange}
+                                            />
+                                            </div>
+                                            <br />
+                                            <div>
+                                            <TextField
+                                                label="Update Last Name"
+                                                id="em_lastname"
+                                                name="em_lastname"
+                                                defaultValue="Last Name"
+                                                size="small"
+                                                onChange={handleEditChange}
                                             />
                                             </div>
                                             <br />
                                             <div>
                                             <TextField
                                                 label="Update Phone"
-                                                id="outlined-size-small"
+                                                id="em_phone"
+                                                name="em_phone"
                                                 defaultValue="Phone"
                                                 size="small"
+                                                onChange={handleEditChange}
                                             />
                                             </div>
                                             <br />
                                             <div>
                                             <TextField
-                                                label="Update Address"
-                                                id="outlined-size-small"
-                                                defaultValue="Address"
+                                                label="Update Email"
+                                                id="em_email"
+                                                name="em_email"
+                                                defaultValue="Email"
                                                 size="small"
+                                                onChange={handleEditChange}
+                                            />
+                                            </div>
+                                            <br />
+                                            <div>
+                                            <TextField
+                                                label="Update Relationship"
+                                                id="em_relationship"
+                                                name="em_relationship"
+                                                defaultValue="Relationship"
+                                                size="small"
+                                                onChange={handleEditChange}
                                             />
                                             </div>
                                         </div>                
                                     ) : (
                                     <div>
-                                    Full Name:
+                                    First Name:
                                     <Typography gutterBottom variant="h6" component="div">
-                                        John Doe
+                                        {values.em_firstname}
                                     </Typography>
 
+                                    Middle Name:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        {values.em_middlename}
+                                    </Typography>
+
+                                    Last Name:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        {values.em_lastname}
+                                    </Typography>
+                                    
                                     Phone:
                                     <Typography gutterBottom variant="h6" component="div">
-                                        (123) 123-1234
+                                        {values.em_phone}
                                     </Typography>
 
-                                    Address:
+                                    Email:
                                     <Typography gutterBottom variant="h6" component="div">
-                                        1234 Street Name Philadelphia, PA 07012
+                                        {values.em_email}
+                                    </Typography>
+
+                                    Relationship:
+                                    <Typography gutterBottom variant="h6" component="div">
+                                        {values.em_relationship}
                                     </Typography>
                                     </div>
                                     )}
@@ -102,10 +223,10 @@ function Emergency() {
                                 </CardActionArea>
 
                                 <CardActions>
-                                    <Button size="small" onClick={() => setUpdating(true)} color="secondary">
+                                    <Button size="small" onClick={() => setEditingMode(true)} color="secondary">
                                         Edit
                                     </Button>
-                                    <Button size="small" onClick={() => setUpdating(false)} color="secondary">
+                                    <Button size="small" onClick={() => updateRef()} color="secondary">
                                         Update
                                     </Button>
                                 </CardActions>
