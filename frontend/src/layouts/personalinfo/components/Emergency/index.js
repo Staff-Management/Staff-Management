@@ -5,10 +5,20 @@ import MDBox from "components/MDBox";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
-import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent'
+import CardContent from '@mui/material/CardContent';
+
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
 import { Button, CardActionArea, CardActions, CardHeader } from '@mui/material';
 import { makeStyles } from "@material-ui/core/styles";
 import { selectEmail } from 'slices/userSlice';
@@ -32,33 +42,10 @@ const useStyles = makeStyles({
 }); 
 
 function Emergency() {
-
     
     let email = useSelector(selectEmail)
     email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
-    const [values, setValues] = useState({});
-    
-    useEffect(() => {
-        fetchUser();
-    }, []);
-    
-    const fetchUser = async () => {
-        try {
-          const res = await fetch('http://localhost:4000/updateRef', {
-            method: 'POST',
-            body: JSON.stringify({ email }),
-            headers: { 'Content-Type': 'application/json' }
-          })
-          const response = await res.json();
-          setValues(response.user);
-        } catch (err) {
-          console.log(err)
-        }
-    }
-    
-    const classes = useStyles();
-    
-    const [editing, setEditing] = useState({
+    const [values, setValues] = useState({
         em_firstname: "",
         em_middlename: "",
         em_lastname: "",
@@ -66,6 +53,28 @@ function Emergency() {
         em_email: "",
         em_relationship: ""
     });
+    
+    useEffect(() => {
+        // fetchEmContact();
+    }, []);
+    
+    const fetchEmContact = async () => {
+        try {
+          const res = await fetch('http://localhost:4000/getEmergencyContact', {
+            method: 'POST',
+            body: JSON.stringify({ email }),
+            headers: { 'Content-Type': 'application/json' }
+          })
+          const response = await res.json();
+          setValues(response.user.emergency_contact_info);
+        } catch (err) {
+          console.log(err)
+        }
+    }
+    
+    const classes = useStyles();
+    
+    const [editing, setEditing] = useState({});
     
     // controlls the mode   
     const [editingMode, setEditingMode] = useState(false);
@@ -77,7 +86,7 @@ function Emergency() {
       })
     };
     
-    const updateRef = async (e) => {
+    const updateEmergencyContact = async (e) => {
       try {
         console.log(editing);
         let update_info = editing;
@@ -92,7 +101,7 @@ function Emergency() {
           headers: { 'Content-Type': 'application/json' }
         })
         const response = await res.json();
-        fetchUser();
+        fetchEmContact();
       }
       catch (err) {
         alert('Error');
@@ -100,6 +109,19 @@ function Emergency() {
       }
       setEditingMode(false);
     };
+
+    function createData(em_firstname, em_middlename, em_lastname, em_phone, em_email, em_relationship) {
+        return { em_firstname, em_middlename, em_lastname, em_phone, em_email, em_relationship };
+    }
+      
+    const rows = [
+        createData('First Name', ""),
+        createData('Middle Name', ""),
+        createData('Last Name', ""),
+        createData('Phone', ""),
+        createData('Email', ""),
+        createData('Relationship', ""),
+    ];
 
     return (
 
@@ -115,10 +137,10 @@ function Emergency() {
 
                     <MDBox mb={1.5}>
                         
-                        <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1000 }}>
+                        <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1600 }}>
                                 <CardActionArea>
                                     <CardContent>
-                                    {editing ? (
+                                    {editingMode ? (
                                         <div>
                                             <div>
                                             <TextField
@@ -188,6 +210,39 @@ function Emergency() {
                                         </div>                
                                     ) : (
                                     <div>
+                                    <TableContainer component={Paper}>
+                                        <Table sx={{ minWidth: 1000 }} aria-label="simple table">
+                                            <TableBody>
+                                            <TableRow>
+                                                <TableCell name="firstName">First Name</TableCell>
+                                                <TableCell name="middleName" align="right">Middle Name</TableCell>
+                                                <TableCell name="lastName" align="right">Last Name</TableCell>
+                                                <TableCell name="phone" align="right">Phone</TableCell>
+                                                <TableCell name="email" align="right">Email</TableCell>
+                                                <TableCell name="relationship" align="right">Relationship</TableCell>
+                                            </TableRow>
+                                            </TableBody>
+                                            <TableBody>
+                                            {/* {rows.map((row) => (
+                                                <TableRow
+                                                key={row.name}
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                <TableCell component="th" scope="row">
+                                                    {row.name}
+                                                </TableCell>
+                                                <TableCell align="center">abc</TableCell>
+                                                <TableCell align="center">abc</TableCell>
+                                                <TableCell align="center">abc</TableCell>
+                                                <TableCell align="center">abc</TableCell>
+                                                <TableCell align="center">abc</TableCell>
+                                                <TableCell align="center">abc</TableCell>
+                                                </TableRow>
+                                            ))} */}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+{/*                         
                                     First Name:
                                     <Typography gutterBottom variant="h6" component="div">
                                         {values.em_firstname}
@@ -216,7 +271,7 @@ function Emergency() {
                                     Relationship:
                                     <Typography gutterBottom variant="h6" component="div">
                                         {values.em_relationship}
-                                    </Typography>
+                                    </Typography> */}
                                     </div>
                                     )}
                                     </CardContent>
@@ -226,7 +281,7 @@ function Emergency() {
                                     <Button size="small" onClick={() => setEditingMode(true)} color="secondary">
                                         Edit
                                     </Button>
-                                    <Button size="small" onClick={() => updateRef()} color="secondary">
+                                    <Button size="small" onClick={() => updateEmergencyContact()} color="secondary">
                                         Update
                                     </Button>
                                 </CardActions>

@@ -35,15 +35,18 @@ function Contact() {
 
     let email = useSelector(selectEmail)
     email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
-    const [values, setValues] = useState({});
+    const [values, setValues] = useState({
+      cell_phone: "",
+      work_phone: "",
+    });
 
     useEffect(() => {
-        fetchUser();
+      fetchContact();
     }, []);
 
-  const fetchUser = async () => {
+  const fetchContact = async () => {
     try {
-      const res = await fetch('http://localhost:4000/updateContact', {
+      const res = await fetch('http://localhost:4000/getContact', {
         method: 'POST',
         body: JSON.stringify({ email }),
         headers: { 'Content-Type': 'application/json' }
@@ -57,10 +60,11 @@ function Contact() {
 
     const classes = useStyles();
     const [editing, setEditing] = useState({
-        cell_phone: "",
-        work_phone: "",
+      cell_phone: "",
+      work_phone: "",
     });
 
+    // designs the mode 
     const [editingMode, setEditingMode] = useState(false);
 
     const handleEditChange = (e) => {
@@ -71,7 +75,7 @@ function Contact() {
     };
   
     
-    const updateAddress = async (e) => {
+    const updateContact = async (e) => {
       try {
         console.log(editing);
         let update_info = editing;
@@ -86,7 +90,7 @@ function Contact() {
           headers: { 'Content-Type': 'application/json' }
         })
         const response = await res.json();
-        fetchUser();
+        fetchContact();
       }
       catch (err) {
         alert('Error');
@@ -107,7 +111,7 @@ function Contact() {
                         <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1000 }}>
                                 <CardActionArea>
                                     <CardContent>
-                                        {editing ? (
+                                        {editingMode ? (
                                             <div>
                                                 <div>
                                                 <TextField
@@ -116,6 +120,7 @@ function Contact() {
                                                     name="cell_phone"
                                                     defaultValue="Cell Phone"
                                                     size="small"
+                                                    onChange={handleEditChange}
                                                 />
                                                 </div>
                                                 <br />
@@ -126,6 +131,7 @@ function Contact() {
                                                     name='work_phone'
                                                     defaultValue="Work Phone"
                                                     size="small"
+                                                    onChange={handleEditChange}
                                                 />
                                                 </div>
                                             </div>                
@@ -149,8 +155,8 @@ function Contact() {
                                     <Button size="small" onClick={() => setEditingMode(true)} color="secondary">
                                         Edit
                                     </Button>
-                                    <Button size="small" onClick={() => updateAddress()} color="secondary">
-                                        Update
+                                    <Button size="small" onClick={() => updateContact()} color="secondary">
+                                      Update
                                     </Button>
                                 </CardActions>
                         </Card>

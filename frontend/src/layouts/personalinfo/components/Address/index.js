@@ -50,21 +50,30 @@ function Address() {
 
   let email = useSelector(selectEmail)
   email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState({
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: ""
+  });
 
   useEffect(() => {
-    fetchUser();
+
+    fetchAddress();
+
   }, []);
 
-  const fetchUser = async () => {
+  const fetchAddress = async () => {
     try {
-      const res = await fetch('http://localhost:4000/updateAddress', {
+      const res = await fetch('http://localhost:4000/getAddress', {
         method: 'POST',
         body: JSON.stringify({ email }),
         headers: { 'Content-Type': 'application/json' }
       })
       const response = await res.json();
-      setValues(response.user);
+      setValues(response.user.address_info);
     } catch (err) {
       console.log(err)
     }
@@ -72,11 +81,12 @@ function Address() {
   
   const classes = useStyles();
   const [editing, setEditing] = useState({
-    ref_address1: "",
-    ref_city: "",
-    ref_state: "",
-    ref_zip: "",
-    ref_country: ""
+    address1: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: ""
   });
 
   const [editingMode, setEditingMode] = useState(false);
@@ -104,7 +114,7 @@ function Address() {
         headers: { 'Content-Type': 'application/json' }
       })
       const response = await res.json();
-      fetchUser();
+      fetchAddress();
     }
     catch (err) {
       alert('Error');
@@ -127,45 +137,71 @@ function Address() {
           <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1000 }}>
             <CardActionArea>
               <CardContent>
-              {editing ? (
+              {editingMode ? (
                 <div>
                   <div>
                     <TextField
                       label="Update Address Line 1"
-                      id="ref_address1"
-                      name="ref_address1"
+                      id="address1"
+                      name="address1"
                       defaultValue="Address Line 1"
                       size="small"
+                      onChange={handleEditChange}
+                    />
+                  </div>
+                  <br />
+                  <div>
+                    <TextField
+                      label="Update Address Line 2"
+                      id="address2"
+                      name="address2"
+                      defaultValue="Address Line 2"
+                      size="small"
+                      onChange={handleEditChange}
                     />
                   </div>
                   <br />
                   <div>
                     <TextField
                       label="Update City"
-                      id="ref_city"
-                      name="ref_city"
+                      id="city"
+                      name="city"
                       defaultValue="City"
                       size="small"
+                      onChange={handleEditChange}
                     />
                   </div>
                   <br />
                   <div>
                     <TextField
                       label="Update State"
-                      id="ref_state"
-                      name='ref_state'
+                      id="state"
+                      name='state'
                       defaultValue="State"
                       size="small"
+                      onChange={handleEditChange}
                     />
                   </div>
                   <br />
                   <div>
                     <TextField
                       label="Update Zip Code"
-                      id="ref_zip"
-                      name='ref_zip'
+                      id="zip"
+                      name='zip'
                       defaultValue="Zip Code"
                       size="small"
+                      onChange={handleEditChange}
+                    />
+                  </div>
+                  <br />
+                  <div>
+                    <TextField
+                      label="Update Country"
+                      id="country"
+                      name='country'
+                      defaultValue="Country"
+                      size="small"
+                      onChange={handleEditChange}
                     />
                   </div>
                 </div>                
@@ -174,22 +210,32 @@ function Address() {
                   
                   Address Line 1:
                   <Typography gutterBottom variant="h6" component="div">
-                    {values.ref_address1}
+                    {values.address1}
+                  </Typography>
+
+                  Address Line 2:
+                  <Typography gutterBottom variant="h6" component="div">
+                    {values.address2}
                   </Typography>
 
                   City:
                   <Typography gutterBottom variant="h6" component="div">
-                    {values.ref_city}
+                    {values.city}
                   </Typography>
 
                   State:
                   <Typography gutterBottom variant="h6" component="div">
-                    {values.ref_state}
+                    {values.state}
                   </Typography>
 
-                  Zip Code:
+                  Zip:
                   <Typography gutterBottom variant="h6" component="div">
-                    {values.ref_zip}
+                    {values.zip}
+                  </Typography>
+
+                  Country:
+                  <Typography gutterBottom variant="h6" component="div">
+                    {values.country}
                   </Typography>
                 </div>
               )}  

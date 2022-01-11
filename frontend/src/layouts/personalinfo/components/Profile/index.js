@@ -73,11 +73,12 @@ function Profile() {
   const classes = useStyles();
 
   const [editing, setEditing] = useState({
-    ref_address1: "",
-    ref_city: "",
-    ref_state: "",
-    ref_zip: "",
-    ref_country: ""
+    firstName: "",
+    lastName: "",
+    preferredName: "",
+    birthday: "",
+    gender: "",
+    ssn: "",
   });
 
   // controlls the mode   
@@ -131,8 +132,8 @@ function Profile() {
                     <div>
                       <TextField
                         label="First Name"
-                        id="ref_address"
-                        name="ref_address"
+                        id="firstName"
+                        name="firstName"
                         size="small"
                         onChange={handleEditChange}
                       />
@@ -141,8 +142,8 @@ function Profile() {
                     <div>
                       <TextField
                         label="Last Name"
-                        id="ref_city"
-                        name="ref_city"
+                        id="lastName"
+                        name="lastName"
                         size="small"
                         onChange={handleEditChange}
                       />
@@ -151,8 +152,8 @@ function Profile() {
                     <div>
                       <TextField
                         label="Update Preferred Name"
-                        id="ref_state"
-                        name="ref_state"
+                        id="preferredName"
+                        name="preferredName"
                         defaultValue="Preferred Name"
                         size="small"
                         onChange={handleEditChange}
@@ -161,8 +162,8 @@ function Profile() {
                     <br />
                     <div>
                       <TextField
-                        id="ref_zip"
-                        name="ref_zip"
+                        id="birthday"
+                        name="birthday"
                         label="Date of Birth"
                         type="date"
                         defaultValue=""
@@ -188,9 +189,20 @@ function Profile() {
                     <div>
                       <TextField
                         label="Update Gender"
-                        id="ref_country"
-                        name="ref_country"
+                        id="gender"
+                        name="gender"
                         defaultValue="Gender"
+                        size="small"
+                        onChange={handleEditChange}
+                      />
+                    </div>
+                    <br />
+                    <div>
+                      <TextField
+                        label="Update Social Security Number"
+                        id="ssn"
+                        name="ssn"
+                        defaultValue="Social Security Number"
                         size="small"
                         onChange={handleEditChange}
                       />
@@ -199,22 +211,22 @@ function Profile() {
                 ) : (
                   <div>
                     First Name:
-                    <Typography id="update_name" name="update_name" gutterBottom variant="h6" component="div">
+                    <Typography id="firstName" name="firstName" gutterBottom variant="h6" component="div">
                       {values.firstName}
                     </Typography>
 
                     Last Name:
-                    <Typography id="update_name" name="update_name" gutterBottom variant="h6" component="div">
+                    <Typography id="lastName" name="lastName" gutterBottom variant="h6" component="div">
                       {values.lastName}
                     </Typography>
 
                     Preferred Name:
-                    <Typography id="preferred_name" name="preferred_name" gutterBottom variant="h6" component="div">
+                    <Typography id="preferredName" name="preferredName" gutterBottom variant="h6" component="div">
                       {values.preferredName}
                     </Typography>
 
                     Date of Birth:
-                    <Typography id="dob" name="dob" gutterBottom variant="h6" component="div">
+                    <Typography id="birthday" name="birthday" gutterBottom variant="h6" component="div">
                       {values.birthday}
                     </Typography>
 
@@ -241,7 +253,6 @@ function Profile() {
                 Update
               </Button>
             </CardActions>
-
           </Card>
 
           {/* <ProfileInfoCard

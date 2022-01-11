@@ -36,21 +36,25 @@ function Vehicle() {
 
     let email = useSelector(selectEmail)
     email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
-    const [values, setValues] = useState({});
+    const [values, setValues] = useState({
+      vehicle_maker: "",
+      vehicle_model: "",
+      vehicle_color: ""
+    });
     
     useEffect(() => {
-        fetchUser();
+      fetchCar();
     }, []);
     
-    const fetchUser = async () => {
+    const fetchCar = async () => {
         try {
-          const res = await fetch('http://localhost:4000/updateCar', {
+          const res = await fetch('http://localhost:4000/getVehicle', {
             method: 'POST',
             body: JSON.stringify({ email }),
             headers: { 'Content-Type': 'application/json' }
           })
           const response = await res.json();
-          setValues(response.user);
+          setValues(response.user.car_info);
         } catch (err) {
           console.log(err)
         }
@@ -89,7 +93,7 @@ function Vehicle() {
           headers: { 'Content-Type': 'application/json' }
         })
         const response = await res.json();
-        fetchUser();
+        fetchCar();
       }
       catch (err) {
         alert('Error');
@@ -104,21 +108,21 @@ function Vehicle() {
                 <Grid item xs={12} md={12} lg={12}>
                     <MDBox mb={3}>
 
-                            <Typography variant="h6" gutterBottom sx={{ marginTop: '50px', backgroundColor: '#546E7A', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
+                            <Typography variant="h6" gutterBottom sx={{ marginTop: 'auto', backgroundColor: '#546E7A', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
                                 Vehicle Section
                             </Typography>
 
                             <Card className={classes.root} variant="outlined" sx={{ borderRadius:'0px', maxWidth: 1000 }}>
                                 <CardActionArea>
                                     <CardContent>
-                                    {editing ? (
+                                    {editingMode ? (
                                         <div>
                                             <div>
                                             <TextField
                                                 label="Update Vehicle Maker"
                                                 id="vehicle_maker"
                                                 name="vehicle_maker"
-                                                defaultValue="Work Authorization"
+                                                defaultValue="Vehicle Maker"
                                                 sx={{ width: 250 }}
                                                 onChange={handleEditChange}
                                             />
@@ -149,17 +153,17 @@ function Vehicle() {
                                     ) : (
                                         <div>
                                 
-                                            Work Authorization:
+                                            Vehicle Maker:
                                             <Typography gutterBottom variant="h6" component="div">
                                                 {values.vehicle_maker}
                                             </Typography>
 
-                                            Work Authorization Start:
+                                            Vehicle Model:
                                             <Typography gutterBottom variant="h6" component="div">
                                                 {values.vehicle_model}
                                             </Typography>
 
-                                            Work Authorization End:
+                                            Vehicle Color:
                                             <Typography gutterBottom variant="h6" component="div">
                                                 {values.vehicle_color}
                                             </Typography>
@@ -188,7 +192,7 @@ function Vehicle() {
                                         Edit
                                     </Button>
                                     <Button size="small" onClick={() => updateCar()} color="secondary">
-                                        Update
+                                      Update
                                     </Button>
                                 </CardActions>
 

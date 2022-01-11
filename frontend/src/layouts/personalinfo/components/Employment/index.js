@@ -36,21 +36,29 @@ function Employment() {
 
     let email = useSelector(selectEmail)
     email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
-    const [values, setValues] = useState({});
+    const [values, setValues] = useState({
+        work_auth: "",
+        opt_type: "",
+        other_work_auth: "",
+        workAuth_start: "",
+        workAuth_exp: ""
+    });
     
     useEffect(() => {
-        fetchUser();
+
+        fetchWork();
+
     }, []);
     
-    const fetchUser = async () => {
+    const fetchWork = async () => {
         try {
-          const res = await fetch('http://localhost:4000/updateWork', {
+          const res = await fetch('http://localhost:4000/getWork', {
             method: 'POST',
             body: JSON.stringify({ email }),
             headers: { 'Content-Type': 'application/json' }
           })
           const response = await res.json();
-          setValues(response.user);
+          setValues(response.user.work_auth_info);
         } catch (err) {
           console.log(err)
         }
@@ -60,8 +68,10 @@ function Employment() {
     
     const [editing, setEditing] = useState({
         work_auth: "",
+        opt_type: "",
+        other_work_auth: "",
         workAuth_start: "",
-        workAuth_start: "",
+        workAuth_exp: ""
     });
     
     // controlls the mode   
@@ -89,7 +99,7 @@ function Employment() {
           headers: { 'Content-Type': 'application/json' }
         })
         const response = await res.json();
-        fetchUser();
+        fetchWork();
       }
       catch (err) {
         alert('Error');
@@ -97,8 +107,13 @@ function Employment() {
       }
       setEditingMode(false);
     };
+
+    // this.state = {
+    //     opened: false
+    // };
     
     return (
+
         <MDBox>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={12} lg={12}>
@@ -111,7 +126,7 @@ function Employment() {
                             <Card className={classes.root} variant="outlined" sx={{ borderRadius:'0px', maxWidth: 1000 }}>
                                 <CardActionArea>
                                     <CardContent>
-                                    {editing ? (
+                                    {editingMode ? (
                                         <div>
                                             <div>
                                             <TextField
@@ -119,6 +134,28 @@ function Employment() {
                                                 id="work_auth"
                                                 name="work_auth"
                                                 defaultValue="Work Authorization"
+                                                sx={{ width: 250 }}
+                                                onChange={handleEditChange}
+                                            />
+                                            </div>
+                                            <br />
+                                            <div>
+                                            <TextField
+                                                label="Update OPT Type"
+                                                id="opt_type"
+                                                name="opt_type"
+                                                defaultValue="OPT Type"
+                                                sx={{ width: 250 }}
+                                                onChange={handleEditChange}
+                                            />
+                                            </div>
+                                            <br />
+                                            <div>
+                                            <TextField
+                                                label="Update Other Work Authorization"
+                                                id="other_work_auth"
+                                                name="other_work_auth"
+                                                defaultValue="Other Work Authorization"
                                                 sx={{ width: 250 }}
                                                 onChange={handleEditChange}
                                             />
@@ -162,6 +199,16 @@ function Employment() {
                                                 {values.work_auth}
                                             </Typography>
 
+                                            OPT Type:
+                                            <Typography gutterBottom variant="h6" component="div">
+                                                {values.opt_type}
+                                            </Typography>
+
+                                            Other Work Authorization:
+                                            <Typography gutterBottom variant="h6" component="div">
+                                                {values.other_work_auth}
+                                            </Typography>
+
                                             Work Authorization Start:
                                             <Typography gutterBottom variant="h6" component="div">
                                                 {values.workAuth_start}
@@ -190,7 +237,7 @@ function Employment() {
                                     )}
                                     </CardContent>
                                 </CardActionArea>
-
+                                
                                 <CardActions>
                                     <Button size="small" onClick={() => setEditingMode(true)} color="secondary">
                                         Edit
@@ -199,6 +246,26 @@ function Employment() {
                                         Update
                                     </Button>
                                 </CardActions>
+
+                                {/* {(() => {
+                                    if (this.state == 'Edit'){
+                                        return (
+                                            <CardActions>
+                                                <Button id='Edit' name='Edit' size="small" onClick={() => setEditingMode(true)} color="secondary">
+                                                    Edit
+                                                </Button>
+                                            </CardActions>
+                                        )
+                                    } else {
+                                        return (
+                                            <CardActions>
+                                                <Button id='Update' name='Update' size="small" onClick={() => updateWork()} color="secondary">
+                                                    Update
+                                                </Button>
+                                            </CardActions>
+                                        )
+                                    }
+                                })} */}
 
                             </Card>
 
