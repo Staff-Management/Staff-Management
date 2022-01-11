@@ -10,7 +10,9 @@ router.post('/sendnotification', userController.sendNotification);
 router.post('/getnotification', userController.getNotification);
 router.post('/deletenotification', userController.deleteNotification);
 router.post('/getuser', userController.getUser);
+router.post('/getemployees', userController.getEmployees);
 router.post('/updateprofile', userController.updateProfile);
+
 // router.post('/updateDriv', userController.updateDriv);
 // router.post('/updateWork', userController.updateWorkAuth);
 // router.post('/updateRef', userController.updateRef);

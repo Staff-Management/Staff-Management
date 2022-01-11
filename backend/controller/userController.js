@@ -152,6 +152,16 @@ module.exports.getUser = async (req, resp) => {
   }
 }
 
+module.exports.getEmployees = async (req, resp) => {
+  try {
+    const data = await User.find({ role: 'employee' }).populate('work_auth_info');
+    resp.status(200).json({ users: data });
+  } catch (err) {
+    const errors = handleErrors(err);
+    resp.status(400).json({ errors })
+  }
+}
+
 module.exports.updateProfile = async (req, resp) => {
   const { email, firstName, lastName, preferredName, birthday, gender, ssn } = req.body;
   try {

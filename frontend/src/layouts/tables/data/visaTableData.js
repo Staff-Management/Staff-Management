@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import MDSnackbar from "components/MDSnackbar";
@@ -17,145 +17,101 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-function createZackData(name, email, workAuth, expDate, dayLeft, actionRequired) {
+const dateDiff = (exp) => {
+  const now = Date.now();
+  const exp_date = new Date(exp);
+  const diff = Math.floor((exp_date - now) / (1000 * 3600 * 24));
+  return diff;
+};
+
+const hasRequiredAction = () => {
+  return true;
+};
+
+const parseWorkAuth = (work_auth) => {
+  switch (work_auth) {
+    case 'f1':
+      return 'F1/OPT';
+    case 'h1b':
+      return 'H1B';
+    case 'l2':
+      return 'L2';
+    case 'h4':
+      return 'H4';
+    case 'other':
+      return 'Other'
+    default:
+      return 'Unknown'
+  }
+};
+
+const decideNextStep = () => {
+  return 'Next Step Placeholder'
+}
+
+const formatUserData = (user) => {
   return {
-    name,
-    email,
-    workAuth,
-    expDate,
-    dayLeft,
-    actionRequired,
+    name: `${user.firstName} ${user.lastName}`,
+    email: user.email,
+    workAuth: parseWorkAuth(user.work_auth_info.work_auth),
+    expDate: user.work_auth_info.workAuth_exp,
+    dayLeft: dateDiff(user.work_auth_info.workAuth_exp),
+    actionRequired: hasRequiredAction(),
     details: [
       {
-        name: 'Zack Yu',
-        visa: 'F1/OPT',
-        startDate: '3/24/2019',
-        endDate: '3/25/2020',
-        documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020',
-          '(ICON) I-20_2/1/2020',
-          '(ICON) I-983_1/25/2020',
-          '(ICON) OPT EAD_11/20/2019 '
-        ],
-        nextStep: 'OPT STEM EAD',
-        actionReq: 'Send Notification',
+        name: `${user.firstName} ${user.lastName}`,
+        workAuth: parseWorkAuth(user.work_auth_info.work_auth),
+        startDate: user.work_auth_info.workAuth_start,
+        endDate: user.work_auth_info.workAuth_exp,
+        documentReceived: formatFiles(user),
+        nextStep: decideNextStep(),
+        actionReq: true,
         editable: true,
       },
     ],
   };
-}
+};
 
-function createKikiData(name, email, workAuth, expDate, dayLeft, actionRequired) {
-  return {
-    name,
-    email,
-    workAuth,
-    expDate,
-    dayLeft,
-    actionRequired,
-    details: [
-      {
-        name: 'Kiki Liu',
-        visa: 'F1/OPT',
-        startDate: '3/24/2020',
-        endDate: '3/25/2021',
-        documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020',
-          '(ICON) I-20_2/1/2020',
-          '(ICON) I-983_1/25/2020',
-          '(ICON) OPT EAD_11/20/2019'
-        ],
-        nextStep: 'OPT STEM EAD',
-        actionReq: 'Send Notification'
-      },
-    ],
-  };
-}
+const field_names = ['opt_receipt', 'opt_ead', 'i983', 'i20', 'opt_stem_receipt', 'opt_stem_ead'];
 
-function createAnthonyData(name, email, workAuth, expDate, dayLeft, actionRequired) {
-  return {
-    name,
-    email,
-    workAuth,
-    expDate,
-    dayLeft,
-    actionRequired,
-    details: [
-      {
-        name: 'Anthony Wang',
-        visa: 'F1/OPT',
-        startDate: '6/24/2020',
-        endDate: '8/25/2021',
-        documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020',
-          '(ICON) I-20_2/1/2020',
-          '(ICON) I-983_1/25/2020',
-          '(ICON) OPT EAD_11/20/2019 '
-        ],
-        nextStep: 'OPT STEM EAD',
-        actionReq: 'Send Notification'
-      },
-    ],
-  };
-}
+const formatFiles = (user) => {
+  const files = [];
+  for (const field_name of field_names) {
+    if (user[field_name] && user[`${field_name}_filename`]) {
+      fetchFileSrc(user.email, field_name).then(res => {
+        files.push(
+          <Link href={res} download={user[`${field_name}_filename`]} underline="hover" >
+            <Typography variant='body' sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mr: 2 }}>
+              {field_name}
+              <FileDownloadIcon color='info' />
+            </Typography>
+          </Link>
+        )
+      });
+    }
+  }
+  return files;
+};
 
-function createSteveData(name, email, workAuth, expDate, dayLeft, actionRequired) {
-  return {
-    name,
-    email,
-    workAuth,
-    expDate,
-    dayLeft,
-    actionRequired,
-    details: [
-      {
-        name: 'Steve Whong',
-        visa: 'F1/OPT',
-        startDate: '1/4/2020',
-        endDate: '5/5/2021',
-        documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020',
-          '(ICON) I-20_2/1/2020',
-          '(ICON) I-983_1/25/2020',
-          '(ICON) OPT EAD_11/20/2019 '
-        ],
-        nextStep: 'OPT STEM EAD',
-        actionReq: 'Send Notification',
-      },
-    ],
-  };
-}
-
-function createKevinData(name, email, workAuth, expDate, dayLeft, actionRequired) {
-  return {
-    name,
-    email,
-    workAuth,
-    expDate,
-    dayLeft,
-    actionRequired,
-    details: [
-      {
-        name: 'Kevin Liu',
-        visa: 'F1/OPT',
-        startDate: '12/4/2020',
-        endDate: '1/20/2021',
-        documentReceived: [
-          '(ICON) OPT STEM Receipt_3/20/2020',
-          '(ICON) I-20_2/1/2020',
-          '(ICON) I-983_1/25/2020',
-          '(ICON) OPT EAD_11/20/2019 '
-        ],
-        nextStep: 'OPT STEM EAD',
-        actionReq: 'Send Notification'
-      },
-    ],
-  };
-}
+const fetchFileSrc = async (email, field_name) => {
+  try {
+    const res = await fetch('http://localhost:4000/getfile', {
+      method: 'POST',
+      body: JSON.stringify({ email, field_name }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    const response = await res.json();
+    return response.data;
+  } catch (err) {
+    console.log(err)
+  }
+};
 
 function Row(props) {
   const email = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com';
@@ -188,6 +144,7 @@ function Row(props) {
       <TableRow>
 
         <TableCell align='center'>{row.name}</TableCell>
+        <TableCell align='center'>{row.email}</TableCell>
         <TableCell align='center'>{row.workAuth}</TableCell>
         <TableCell align='center'>{row.expDate}</TableCell>
         <TableCell align='center'>{row.dayLeft}</TableCell>
@@ -226,7 +183,7 @@ function Row(props) {
                     </TableCell>
                     <TableCell>
                       <Typography variant='h6' align='center'>
-                        Visa
+                        Work Authorization
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -259,19 +216,20 @@ function Row(props) {
                 <TableBody>
                   {row.details.map((detailRow) => (
                     <TableRow key={detailRow}>
-                      <TableCell align='center'>
-                        {detailRow.name}
-                      </TableCell>
-                      <TableCell align='center'>{detailRow.visa}</TableCell>
+                      <TableCell align='center'>{detailRow.name}</TableCell>
+                      <TableCell align='center'>{detailRow.workAuth}</TableCell>
                       <TableCell align='center'>{detailRow.startDate}</TableCell>
                       <TableCell align='center'>{detailRow.endDate}</TableCell>
                       <TableCell align='center'>
-                        {detailRow.documentReceived.map((doc, index) => (
-                          <React.Fragment key={index}>
-                            {doc}
-                            <br />
-                          </React.Fragment>
-                        ))}
+                        {detailRow.documentReceived ?
+                          detailRow.documentReceived.map((component, index) => (
+                            <React.Fragment key={index}>
+                              {component}
+                            </React.Fragment>
+                          ))
+                          :
+                          <></>
+                        }
                       </TableCell>
                       <TableCell align='center'>{detailRow.nextStep}</TableCell>
                       <TableCell align='center'>
@@ -298,32 +256,45 @@ Row.propTypes = {
     workAuth: PropTypes.string.isRequired,
     dayLeft: PropTypes.number.isRequired,
     expDate: PropTypes.string.isRequired,
-    history: PropTypes.arrayOf(
+    detailRow: PropTypes.objectOf(
       PropTypes.shape({
-        visa: PropTypes.string.isRequired,
+        workAuth: PropTypes.string.isRequired,
         startDate: PropTypes.string.isRequired,
         endDate: PropTypes.string.isRequired,
-        documentReceived: PropTypes.string.isRequired,
+        documentReceived: PropTypes.array.isRequired,
         nextStep: PropTypes.string.isRequired,
-        actionReq: PropTypes.string.isRequired,
+        actionReq: PropTypes.bool.isRequired,
       }),
     ),
   }).isRequired,
 };
-
-const rows1 = [
-  createZackData('Zack', 'a@a.com', 'F1/OPT', '3/25/2020', 10, 'Send Notification'),
-  createKikiData('Kiki', 'a@a.com', 'F1/OPT', '5/25/2020', 61, 'Send Notification'),
-  createAnthonyData('Anthony', 'b@b.com', 'F1/OPT', '6/21/2020', 41, 'Send Notification'),
-  createSteveData('Steve', 'b@b.com', 'F1/OPT', '6/16/2020', 66, 'Send Notification'),
-  createKevinData('Kevin', 'c@c.com', 'F1/OPT', '8/18/2020', 88, 'Send Notification'),
-];
 
 export default function CollapsibleTable() {
   const [successSB, setSuccessSB] = useState(false);
 
   const openSuccessSB = () => setSuccessSB(true);
   const closeSuccessSB = () => setSuccessSB(false);
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const fetchUser = async () => {
+    try {
+      const res = await fetch('http://localhost:4000/getemployees', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      const response = await res.json();
+      setRows([]);
+      for (const user of response.users) {
+        setRows(prevState => [...prevState, formatUserData(user)]);
+      }
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const renderSuccessSB = (
     <MDSnackbar
@@ -353,6 +324,11 @@ export default function CollapsibleTable() {
               </TableCell>
               <TableCell>
                 <Typography variant='h6' align='center'>
+                  Email
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant='h6' align='center'>
                   Work Authorization
                 </Typography>
               </TableCell>
@@ -375,9 +351,13 @@ export default function CollapsibleTable() {
           </TableBody>
           {/* </TableHead> */}
           <TableBody>
-            {rows1.map((row) => (
-              <Row key={row.name} row={row} openSuccessSB={openSuccessSB} />
-            ))}
+            {rows ?
+              rows.map((row) => (
+                <Row key={row.email} row={row} openSuccessSB={openSuccessSB} />
+              ))
+              :
+              <></>
+            }
           </TableBody>
         </Table>
       </TableContainer>
