@@ -93,41 +93,36 @@ function Emergency() {
       })
     };
     
-    const updateEmergencyContact = async (e) => {
-      try {
-        console.log(editing);
-        let update_info = editing;
-        for (const key in update_info) {
-          if (update_info[key] === "") {
-            delete update_info[key];
-          }
-        }
-        const res = await fetch('http://localhost:4000/updateRef', {
-          method: 'POST',
-          body: JSON.stringify({ email, ...update_info }),
-          headers: { 'Content-Type': 'application/json' }
-        })
-        const response = await res.json();
-        fetchEmContact();
-      }
-      catch (err) {
-        alert('Error');
-        console.log(err);
-      }
-      setEditingMode(false);
-    };
+    // const updateEmergencyContact = async (e) => {
+    //   try {
+    //     console.log(editing);
+    //     let update_info = editing;
+    //     for (const key in update_info) {
+    //       if (update_info[key] === "") {
+    //         delete update_info[key];
+    //       }
+    //     }
+    //     const res = await fetch('http://localhost:4000/updateRef', {
+    //       method: 'POST',
+    //       body: JSON.stringify({ email, ...update_info }),
+    //       headers: { 'Content-Type': 'application/json' }
+    //     })
+    //     const response = await res.json();
+    //     fetchEmContact();
+    //   }
+    //   catch (err) {
+    //     alert('Error');
+    //     console.log(err);
+    //   }
+    //   setEditingMode(false);
+    // };
 
     function createData(em_firstname, em_middlename, em_lastname, em_phone, em_email, em_relationship) {
         return { em_firstname, em_middlename, em_lastname, em_phone, em_email, em_relationship };
     }
       
     const rows = [
-        createData('First Name', ""),
-        createData('Middle Name', ""),
-        createData('Last Name', ""),
-        createData('Phone', ""),
-        createData('Email', ""),
-        createData('Relationship', ""),
+        createData('First Name', "")
     ];
 
     return (
@@ -287,9 +282,9 @@ function Emergency() {
                                     <Button size="small" onClick={() => setEditingMode(true)} color="secondary">
                                         Edit
                                     </Button>
-                                    <Button size="small" onClick={() => updateEmergencyContact()} color="secondary">
+                                    {/* <Button size="small" onClick={() => updateEmergencyContact()} color="secondary">
                                         Update
-                                    </Button>
+                                    </Button> */}
                                 </CardActions>
                         </Card>
 
