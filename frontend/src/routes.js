@@ -46,6 +46,8 @@ import SignUp from "layouts/authentication/sign-up";
 import Housing from "layouts/housing/housing"
 import Documents from "layouts/visa_status/Documents";
 import Applications from "layouts/applications"
+import HousingInfo from "layouts/houseInfo";
+import Reports from "layouts/facilityReports/reports"
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -131,6 +133,30 @@ const routes = [
     icon: <Icon fontSize="small">person_add</Icon>,
     route: "/authentication/signup",
     component: <SignUp />,
+  },
+  {
+    type: "collapse",
+    name: "House Management",
+    key: "housemanagement",
+    icon: <Icon fontSize="small">house</Icon>,
+    route: "/housemanagement",
+    component: <Housing />,
+  },
+  {
+    type: "collapse",
+    name: "House Information",
+    key: "HouseInfo",
+    icon: <Icon fontSize="small">person_add</Icon>,
+    route: "/houseinfo",
+    component: <HousingInfo />,
+  },
+  {
+    type: "collapse",
+    name: "Facility Report",
+    key: "Facility Report",
+    icon: <Icon fontSize="small">person_add</Icon>,
+    route: "/facilityreports",
+    component: <Reports />,
   }
 ];
 

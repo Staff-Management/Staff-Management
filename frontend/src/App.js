@@ -8,6 +8,7 @@ import Onboarding from './layouts/onboarding/Onboarding';
 import SignUp from './layouts/signup/SignUp';
 import Token from './layouts/token/Token'
 import PersonalInfo from './layouts/personalinfo'
+import HousingDetailInfo from "layouts/houseDetailInfo"
 
 // @mui material components
 import { ThemeProvider } from "@mui/material/styles";
@@ -149,6 +150,7 @@ function App() {
       <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="/housedetail/:landLord" element={<HousingDetailInfo />} />
       </Routes>
     </ThemeProvider>
   );

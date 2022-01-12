@@ -62,6 +62,7 @@ export default function PersonalForm(props) {
    numBeds: "",
    numMattress: "",
    numTables: "",
+   numChairs: "",
   });
   const [tenantsList, setTenantsList] = React.useState([{}])
 
@@ -96,15 +97,12 @@ export default function PersonalForm(props) {
 
   const handleConfirm = async () => {
     const { landLord, landlordEmail, landLordPhone, address1, address2, city, 
-      numEmployees, state, zip, numBeds,numMattress, numTables } = values 
-    const { preferredName, firstName, tenantsPhone } = tenantsList[0];
-    console.log(preferredName, firstName, tenantsPhone);
-    console.log(tenantsList);
+      numEmployees, state, zip, numBeds,numMattress, numTables, numChairs } = values 
     try {
       const res = await fetch('http://localhost:4000/addhouse', {
         method: 'POST',
         body: JSON.stringify({ landLord, landlordEmail, landLordPhone, address1, address2, city, 
-          numEmployees, state, zip, numBeds,numMattress, numTables, tenantsList }),
+          numEmployees, state, zip, numBeds,numMattress, numTables, tenantsList, numChairs }),
         headers: {'Content-Type': 'application/json'}
       })
       const response = await res.json();
@@ -138,8 +136,8 @@ export default function PersonalForm(props) {
         </Grid>
         <Grid item xs={12} sm={6}>
           <TextField
-            id="lanlordEmail"
-            name="lanlordEmail"
+            id="landlordEmail"
+            name="landlordEmail"
             label="Landlord Email"
             fullWidth
             variant="standard"
@@ -225,7 +223,7 @@ export default function PersonalForm(props) {
       <Grid container spacing={3} mb={3}>
       <Grid item xs={12} sm={6}>
           <FormControl variant="standard" fullWidth>
-            <InputLabel htmlFor="zip_code" required>Number of beds</InputLabel>
+            <InputLabel htmlFor="Beds" required>Number of beds</InputLabel>
             <Input
               value={values.numBeds}
               onChange={handleChange}
@@ -237,7 +235,7 @@ export default function PersonalForm(props) {
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormControl variant="standard" fullWidth>
-            <InputLabel htmlFor="zip_code" required>Number of Mattress</InputLabel>
+            <InputLabel htmlFor="Mattress" required>Number of Mattress</InputLabel>
             <Input
               value={values.numMattress}
               onChange={handleChange}
@@ -249,12 +247,24 @@ export default function PersonalForm(props) {
         </Grid>
         <Grid item xs={12} sm={6}>
           <FormControl variant="standard" fullWidth>
-            <InputLabel htmlFor="zip_code" required>Number of Tables</InputLabel>
+            <InputLabel htmlFor="Tables" required>Number of Tables</InputLabel>
             <Input
               value={values.numTables}
               onChange={handleChange}
               name="numTables"
               id="numTables"
+              inputComponent={num}
+            />
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl variant="standard" fullWidth>
+            <InputLabel htmlFor="Chairs" required>Number of Chairs</InputLabel>
+            <Input
+              value={values.numChairs}
+              onChange={handleChange}
+              name="numChairs"
+              id="numChairs"
               inputComponent={num}
             />
           </FormControl>
@@ -271,7 +281,7 @@ export default function PersonalForm(props) {
               <div key={index} className='contact'>
                 <div className='first-contact'>
                   <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
                       <TextField
                         required
                         fullWidth
@@ -282,7 +292,7 @@ export default function PersonalForm(props) {
                         variant="standard"
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
                       <TextField
                         required
                         fullWidth
@@ -293,7 +303,7 @@ export default function PersonalForm(props) {
                         variant="standard"
                       />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
                       <FormControl variant="standard" fullWidth>
                         <InputLabel htmlFor="tenantsPhone" required>Tenant's Phone</InputLabel>
                         <Input
@@ -304,6 +314,28 @@ export default function PersonalForm(props) {
                           inputComponent={PhoneNumber}
                         />
                       </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        onChange={(event) => handleContactChange(event, index)}
+                        id="tenantEmail"
+                        name="tenantEmail"
+                        label="Tenant's Email"
+                        variant="standard"
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        required
+                        fullWidth
+                        onChange={(event) => handleContactChange(event, index)}
+                        id="tenantCar"
+                        name="tenantCar"
+                        label="Tenant's Car"
+                        variant="standard"
+                      />
                     </Grid>
                     <Grid item xs={12} sm={12}>
                       {tenantsList.length - 1 === index && tenantsList.length < 10 && (
