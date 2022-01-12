@@ -78,10 +78,10 @@ function Profile() {
     preferredName: "",
     birthday: "",
     gender: "",
-    ssn: ""
+    ssn: "",
   });
 
-  // controlls the mode 
+  // controlls the mode   
   const [editingMode, setEditingMode] = useState(false);
 
   const handleEditChange = (e) => {
@@ -141,7 +141,7 @@ function Profile() {
                     <br />
                     <div>
                       <TextField
-                        label="Laast Name"
+                        label="Last Name"
                         id="lastName"
                         name="lastName"
                         size="small"
@@ -211,22 +211,22 @@ function Profile() {
                 ) : (
                   <div>
                     First Name:
-                    <Typography id="update_name" name="update_name" gutterBottom variant="h6" component="div">
+                    <Typography id="firstName" name="firstName" gutterBottom variant="h6" component="div">
                       {values.firstName}
                     </Typography>
 
                     Last Name:
-                    <Typography id="update_name" name="update_name" gutterBottom variant="h6" component="div">
+                    <Typography id="lastName" name="lastName" gutterBottom variant="h6" component="div">
                       {values.lastName}
                     </Typography>
 
                     Preferred Name:
-                    <Typography id="preferred_name" name="preferred_name" gutterBottom variant="h6" component="div">
+                    <Typography id="preferredName" name="preferredName" gutterBottom variant="h6" component="div">
                       {values.preferredName}
                     </Typography>
 
                     Date of Birth:
-                    <Typography id="dob" name="dob" gutterBottom variant="h6" component="div">
+                    <Typography id="birthday" name="birthday" gutterBottom variant="h6" component="div">
                       {values.birthday}
                     </Typography>
 
@@ -253,7 +253,6 @@ function Profile() {
                 Update
               </Button>
             </CardActions>
-
           </Card>
 
           {/* <ProfileInfoCard

@@ -11,6 +11,8 @@ import CardContent from '@mui/material/CardContent'
 import TextField from '@mui/material/TextField';
 import { Button, CardActionArea, CardActions, CardHeader } from '@mui/material';
 import { makeStyles } from "@material-ui/core/styles";
+import { selectEmail } from 'slices/userSlice';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles({
     root: {
@@ -31,8 +33,71 @@ const useStyles = makeStyles({
 
 function Contact() {
 
+    let email = useSelector(selectEmail)
+    email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
+    const [values, setValues] = useState({
+      cell_phone: "",
+      work_phone: "",
+    });
+
+    useEffect(() => {
+      fetchContact();
+    }, []);
+
+  const fetchContact = async () => {
+    try {
+      const res = await fetch('http://localhost:4000/getContact', {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      const response = await res.json();
+      setValues(response.user);
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
     const classes = useStyles();
-    const [updating, setUpdating] = useState(false);
+    const [editing, setEditing] = useState({
+      cell_phone: "",
+      work_phone: "",
+    });
+
+    // designs the mode 
+    const [editingMode, setEditingMode] = useState(false);
+
+    const handleEditChange = (e) => {
+      setEditing({
+        ...editing,
+        [e.target.name]: e.target.value
+      })
+    };
+  
+    
+    const updateContact = async (e) => {
+      try {
+        console.log(editing);
+        let update_info = editing;
+        for (const key in update_info) {
+          if (update_info[key] === "") {
+            delete update_info[key];
+          }
+        }
+        const res = await fetch('http://localhost:4000/updateContact', {
+          method: 'POST',
+          body: JSON.stringify({ email, ...update_info }),
+          headers: { 'Content-Type': 'application/json' }
+        })
+        const response = await res.json();
+        fetchContact();
+      }
+      catch (err) {
+        alert('Error');
+        console.log(err);
+      }
+      setEditingMode(false);
+    };
 
     return (
         <MDBox>
@@ -46,64 +111,40 @@ function Contact() {
                         <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1000 }}>
                                 <CardActionArea>
                                     <CardContent>
-                                        {updating ? (
+                                        {editingMode ? (
                                             <div>
                                                 <div>
                                                 <TextField
-                                                    label="Update Personal Email"
-                                                    id="outlined-size-small"
-                                                    defaultValue="Personal Email"
-                                                    size="small"
-                                                />
-                                                </div>
-                                                <br />
-                                                <div>
-                                                <TextField
-                                                    label="Update Work Email"
-                                                    id="outlined-size-small"
-                                                    defaultValue="Work Email"
-                                                    size="small"
-                                                />
-                                                </div>
-                                                <br />
-                                                <div>
-                                                <TextField
                                                     label="Update Cell Phone"
-                                                    id="outlined-size-small"
+                                                    id="cell_phone"
+                                                    name="cell_phone"
                                                     defaultValue="Cell Phone"
                                                     size="small"
+                                                    onChange={handleEditChange}
                                                 />
                                                 </div>
                                                 <br />
                                                 <div>
                                                 <TextField
                                                     label="Update Work Phone"
-                                                    id="outlined-size-small"
+                                                    id="work_phone"
+                                                    name='work_phone'
                                                     defaultValue="Work Phone"
                                                     size="small"
+                                                    onChange={handleEditChange}
                                                 />
                                                 </div>
                                             </div>                
                                         ) : (
                                             <div>
-                                                Personal Email:
-                                                <Typography gutterBottom variant="h6" component="div">
-                                                    tasha.lee@gmail.com
-                                                </Typography>
-
-                                                Work Email:
-                                                <Typography gutterBottom variant="h6" component="div">
-                                                    natasha.lee@company.com
-                                                </Typography>
-
                                                 Cell Phone:
                                                 <Typography gutterBottom variant="h6" component="div">
-                                                    (123) 123-1234
+                                                    {values.cell_phone}
                                                 </Typography>
 
                                                 Work Phone:
                                                 <Typography gutterBottom variant="h6" component="div">
-                                                    (222) 222-2222
+                                                    {values.work_phone}
                                                 </Typography>
                                             </div>
                                         )}
@@ -111,11 +152,11 @@ function Contact() {
                                 </CardActionArea>
 
                                 <CardActions>
-                                    <Button size="small" onClick={() => setUpdating(true)} color="secondary">
+                                    <Button size="small" onClick={() => setEditingMode(true)} color="secondary">
                                         Edit
                                     </Button>
-                                    <Button size="small" onClick={() => setUpdating(false)} color="secondary">
-                                        Update
+                                    <Button size="small" onClick={() => updateContact()} color="secondary">
+                                      Update
                                     </Button>
                                 </CardActions>
                         </Card>

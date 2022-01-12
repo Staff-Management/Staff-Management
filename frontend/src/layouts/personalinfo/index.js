@@ -30,7 +30,8 @@ import Address from "layouts/personalinfo/components/Address";
 import Contact from "./components/Contact";
 import Employment from "./components/Employment";
 import Emergency from "./components/Emergency";
-import DocumentSection from "./components/DocumentSection";
+import Reference from "./components/Reference";
+import Vehicle from "./components/Vehicle";
 
 
 function PersonalInfo() {
@@ -63,14 +64,19 @@ function PersonalInfo() {
         </Grid>
         <MDBox mt={4.5}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={6}>
+            <Grid item xs={12} md={12} lg={12}>
               <MDBox mb={3}>
                 <Emergency />
               </MDBox>
             </Grid>
             <Grid item xs={12} md={6} lg={6}>
               <MDBox mb={3}>
-                <DocumentSection />
+                <Vehicle />
+              </MDBox>
+            </Grid>
+            <Grid item xs={12} md={6} lg={6}>
+              <MDBox mb={3}>
+                <Reference />
               </MDBox>
             </Grid>
           </Grid>
