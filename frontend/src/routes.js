@@ -42,7 +42,7 @@ import Onboarding from "layouts/onboarding/Onboarding";
 import Token from "layouts/token/Token";
 import Notifications from "layouts/notifications"
 import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
+import SignUp from "layouts/signup/SignUp";
 import Housing from "layouts/housing/housing"
 import Documents from "layouts/visa_status/Documents";
 import Applications from "layouts/applications"
@@ -64,14 +64,6 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Visa Status",
-    key: "visa-status",
-    icon: <Icon fontSize="small">table_view</Icon>,
-    route: "/visa-status",
-    component: <Tables />,
-  },
-  {
-    type: "collapse",
     name: "My Visa Status",
     key: "my-visa-status",
     icon: <Icon fontSize="small">article</Icon>,
@@ -88,19 +80,11 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Applications",
-    key: "applications",
-    icon: <Icon fontSize="small">approval</Icon>,
-    route: "/applications",
-    component: <Applications />
-  },
-  {
-    type: "collapse",
-    name: "Token",
-    key: "token",
-    icon: <Icon fontSize="small">key</Icon>,
-    route: "/token",
-    component: <Token />,
+    name: "Facility Report",
+    key: "Facility Report",
+    icon: <Icon fontSize="small">report</Icon>,
+    route: "/facilityreports",
+    component: <Reports />,
   },
   {
     type: "collapse",
@@ -112,11 +96,43 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Applications",
+    key: "applications",
+    icon: <Icon fontSize="small">approval</Icon>,
+    route: "/applications",
+    component: <Applications />
+  },
+  {
+    type: "collapse",
+    name: "Visa Status",
+    key: "visa-status",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/visa-status",
+    component: <Tables />,
+  },
+  {
+    type: "collapse",
+    name: "Token",
+    key: "token",
+    icon: <Icon fontSize="small">key</Icon>,
+    route: "/token",
+    component: <Token />,
+  },
+  {
+    type: "collapse",
     name: "House Management",
     key: "housemanagement",
-    icon: <Icon fontSize="small">house</Icon>,
+    icon: <Icon fontSize="small">maps_home_work</Icon>,
     route: "/housemanagement",
     component: <Housing />,
+  },
+  {
+    type: "collapse",
+    name: "House Information",
+    key: "HouseInfo",
+    icon: <Icon fontSize="small">house</Icon>,
+    route: "/houseinfo",
+    component: <HousingInfo />,
   },
   {
     type: "collapse",
@@ -133,30 +149,6 @@ const routes = [
     icon: <Icon fontSize="small">person_add</Icon>,
     route: "/authentication/signup",
     component: <SignUp />,
-  },
-  {
-    type: "collapse",
-    name: "House Management",
-    key: "housemanagement",
-    icon: <Icon fontSize="small">house</Icon>,
-    route: "/housemanagement",
-    component: <Housing />,
-  },
-  {
-    type: "collapse",
-    name: "House Information",
-    key: "HouseInfo",
-    icon: <Icon fontSize="small">person_add</Icon>,
-    route: "/houseinfo",
-    component: <HousingInfo />,
-  },
-  {
-    type: "collapse",
-    name: "Facility Report",
-    key: "Facility Report",
-    icon: <Icon fontSize="small">person_add</Icon>,
-    route: "/facilityreports",
-    component: <Reports />,
   }
 ];
 

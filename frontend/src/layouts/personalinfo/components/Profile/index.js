@@ -128,88 +128,76 @@ function Profile() {
             <CardActionArea>
               <CardContent>
                 {editingMode ? (
-                  <div>
-                    <div>
-                      <TextField
-                        label="First Name"
-                        id="firstName"
-                        name="firstName"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                  <React.Fragment>
+                    <TextField
+                      label="Update First Name"
+                      id="firstName"
+                      name="firstName"
+                      defaultValue={values.firstName}
+                      size="small"
+                      sx={{ mt: 2, mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Last Name"
-                        id="lastName"
-                        name="lastName"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="Update Last Name"
+                      id="lastName"
+                      name="lastName"
+                      defaultValue={values.lastName}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Update Preferred Name"
-                        id="preferredName"
-                        name="preferredName"
-                        defaultValue="Preferred Name"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="Update Preferred Name"
+                      id="preferredName"
+                      name="preferredName"
+                      defaultValue="Preferred Name"
+                      defaultValue={values.preferredName}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        id="birthday"
-                        name="birthday"
-                        label="Date of Birth"
-                        type="date"
-                        defaultValue=""
-                        sx={{ width: 160 }}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        onChange={handleEditChange}
-                      />
-                    </div>
-                    {/* <br />
-                    <div>
-                      <TextField
-                        label="Update Age"
-                        id="age"
-                        name="age"
-                        defaultValue="Age"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div> */}
+                    <TextField
+                      id="birthday"
+                      name="birthday"
+                      label="Update Date of Birth"
+                      type="date"
+                      defaultValue={values.birthday}
+                      sx={{ width: 160 }}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Update Gender"
-                        id="gender"
-                        name="gender"
-                        defaultValue="Gender"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="Update Gender"
+                      id="gender"
+                      name="gender"
+                      defaultValue={values.gender}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Update Social Security Number"
-                        id="ssn"
-                        name="ssn"
-                        defaultValue="Social Security Number"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
-                  </div>
+                    <TextField
+                      label="Update Social Security Number"
+                      id="ssn"
+                      name="ssn"
+                      defaultValue={values.ssn}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
+                  </React.Fragment>
+
                 ) : (
-                  <div>
+                  <React.Fragment>
+
                     First Name:
                     <Typography id="firstName" name="firstName" gutterBottom variant="h6" component="div">
                       {values.firstName}
@@ -239,7 +227,7 @@ function Profile() {
                     <Typography id="ssn" name="ssn" gutterBottom variant="h6" component="div">
                       {values.ssn}
                     </Typography>
-                  </div>
+                  </React.Fragment>
                 )}
 
               </CardContent>

@@ -16,189 +16,168 @@ import { useSelector } from 'react-redux';
 
 
 const useStyles = makeStyles({
-    root: {
-      minWidth: 500
-    },
-    bullet: {
-      display: "flex",
-      margin: "0 2px",
-      transform: "scale(0.8)"
-    },
-    title: {
-      fontSize: 14
-    },
-    pos: {
-      marginBottom: 12
-    }
-});  
+  root: {
+    minWidth: 500
+  },
+  bullet: {
+    display: "flex",
+    margin: "0 2px",
+    transform: "scale(0.8)"
+  },
+  title: {
+    fontSize: 14
+  },
+  pos: {
+    marginBottom: 12
+  }
+});
 
 function Vehicle() {
 
-    let email = useSelector(selectEmail)
-    email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
-    const [values, setValues] = useState({
-      vehicle_maker: "",
-      vehicle_model: "",
-      vehicle_color: ""
-    });
-    
-    useEffect(() => {
-      fetchCar();
-    }, []);
-    
-    const fetchCar = async () => {
-        try {
-          const res = await fetch('http://localhost:4000/getVehicle', {
-            method: 'POST',
-            body: JSON.stringify({ email }),
-            headers: { 'Content-Type': 'application/json' }
-          })
-          const response = await res.json();
-          setValues(response.user.car_info);
-        } catch (err) {
-          console.log(err)
-        }
-    }
-    
-    const classes = useStyles();
-    
-    const [editing, setEditing] = useState({
-        vehicle_maker: "",
-        vehicle_model: "",
-        vehicle_color: ""
-    });
-    
-    // controlls the mode   
-    const [editingMode, setEditingMode] = useState(false);
-    
-    const handleEditChange = (e) => {
-      setEditing({
-        ...editing,
-        [e.target.name]: e.target.value
+  let email = useSelector(selectEmail)
+  email = email ? email : (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).email : 'a@a.com');
+  const [values, setValues] = useState({
+    vehicle_maker: "",
+    vehicle_model: "",
+    vehicle_color: ""
+  });
+
+  useEffect(() => {
+    fetchCar();
+  }, []);
+
+  const fetchCar = async () => {
+    try {
+      const res = await fetch('http://localhost:4000/getVehicle', {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+        headers: { 'Content-Type': 'application/json' }
       })
-    };
-    
-    const updateCar = async (e) => {
-      try {
-        console.log(editing);
-        let update_info = editing;
-        for (const key in update_info) {
-          if (update_info[key] === "") {
-            delete update_info[key];
-          }
+      const response = await res.json();
+      setValues(response.user.car_info);
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const classes = useStyles();
+
+  const [editing, setEditing] = useState({
+    vehicle_maker: "",
+    vehicle_model: "",
+    vehicle_color: ""
+  });
+
+  // controlls the mode   
+  const [editingMode, setEditingMode] = useState(false);
+
+  const handleEditChange = (e) => {
+    setEditing({
+      ...editing,
+      [e.target.name]: e.target.value
+    })
+  };
+
+  const updateCar = async (e) => {
+    try {
+      console.log(editing);
+      let update_info = editing;
+      for (const key in update_info) {
+        if (update_info[key] === "") {
+          delete update_info[key];
         }
-        const res = await fetch('http://localhost:4000/updateCar', {
-          method: 'POST',
-          body: JSON.stringify({ email, ...update_info }),
-          headers: { 'Content-Type': 'application/json' }
-        })
-        const response = await res.json();
-        fetchCar();
       }
-      catch (err) {
-        alert('Error');
-        console.log(err);
-      }
-      setEditingMode(false);
-    };
-    
-    return (
-        <MDBox>
-            <Grid container spacing={3}>
-                <Grid item xs={12} md={12} lg={12}>
-                    <MDBox mb={3}>
+      const res = await fetch('http://localhost:4000/updateCar', {
+        method: 'POST',
+        body: JSON.stringify({ email, ...update_info }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      const response = await res.json();
+      fetchCar();
+    }
+    catch (err) {
+      alert('Error');
+      console.log(err);
+    }
+    setEditingMode(false);
+  };
 
-                            <Typography variant="h6" gutterBottom sx={{ marginTop: 'auto', backgroundColor: '#546E7A', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
-                                Vehicle Section
-                            </Typography>
+  return (
+    <MDBox>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={12} lg={12}>
+          <MDBox mb={3}>
 
-                            <Card className={classes.root} variant="outlined" sx={{ borderRadius:'0px', maxWidth: 1000 }}>
-                                <CardActionArea>
-                                    <CardContent>
-                                    {editingMode ? (
-                                        <div>
-                                            <div>
-                                            <TextField
-                                                label="Update Vehicle Maker"
-                                                id="vehicle_maker"
-                                                name="vehicle_maker"
-                                                defaultValue="Vehicle Maker"
-                                                sx={{ width: 250 }}
-                                                onChange={handleEditChange}
-                                            />
-                                            </div>
-                                            <br />
-                                            <div>
-                                            <TextField
-                                                label="Update Vehicle Model"
-                                                id="vehicle_model"
-                                                name="vehicle_model"
-                                                defaultValue="Vehicle Model"
-                                                sx={{ width: 250 }}
-                                                onChange={handleEditChange}
-                                            />
-                                            </div>
-                                            <br />
-                                            <div>
-                                            <TextField
-                                                label="Update Vehicle Color"
-                                                id="vehicle_color"
-                                                name="vehicle_color"
-                                                defaultValue="Vehicle Color"
-                                                sx={{ width: 250 }}
-                                                onChange={handleEditChange}
-                                            />
-                                            </div>
-                                        </div>                
-                                    ) : (
-                                        <div>
-                                
-                                            Vehicle Maker:
-                                            <Typography gutterBottom variant="h6" component="div">
-                                                {values.vehicle_maker}
-                                            </Typography>
+            <Typography variant="h6" gutterBottom sx={{ marginTop: 'auto', backgroundColor: '#546E7A', color: '#FFFFFF', textAlign: 'center', pt: '2px', pb: '2px' }}>
+              Vehicle Section
+            </Typography>
 
-                                            Vehicle Model:
-                                            <Typography gutterBottom variant="h6" component="div">
-                                                {values.vehicle_model}
-                                            </Typography>
+            <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1000 }}>
+              <CardActionArea>
+                <CardContent>
+                  {editingMode ? (
+                    <React.Fragment>
+                      <TextField
+                        label="Update Vehicle Maker"
+                        id="vehicle_maker"
+                        name="vehicle_maker"
+                        defaultValue={values.vehicle_maker}
+                        sx={{ width: 250, mt: 2, mb: 2 }}
+                        onChange={handleEditChange}
+                      />
+                      <br />
+                      <TextField
+                        label="Update Vehicle Model"
+                        id="vehicle_model"
+                        name="vehicle_model"
+                        defaultValue={values.vehicle_model}
+                        sx={{ width: 250, mb: 2 }}
+                        onChange={handleEditChange}
+                      />
+                      <br />
+                      <TextField
+                        label="Update Vehicle Color"
+                        id="vehicle_color"
+                        name="vehicle_color"
+                        defaultValue={values.vehicle_color}
+                        sx={{ width: 250, mb: 2 }}
+                        onChange={handleEditChange}
+                      />
+                    </React.Fragment>
 
-                                            Vehicle Color:
-                                            <Typography gutterBottom variant="h6" component="div">
-                                                {values.vehicle_color}
-                                            </Typography>
+                  ) : (
+                    <React.Fragment>
+                      Vehicle Maker:
+                      <Typography gutterBottom variant="h6" component="div">
+                        {values.vehicle_maker}
+                      </Typography>
 
-                                            {/* Employment Start:
-                                            <Typography gutterBottom variant="h6" component="div">
-                                                05 March 2020
-                                            </Typography>
+                      Vehicle Model:
+                      <Typography gutterBottom variant="h6" component="div">
+                        {values.vehicle_model}
+                      </Typography>
 
-                                            Employment End:
-                                            <Typography gutterBottom variant="h6" component="div">
-                                                10 May 2022
-                                            </Typography>
+                      Vehicle Color:
+                      <Typography gutterBottom variant="h6" component="div">
+                        {values.vehicle_color}
+                      </Typography>
+                    </React.Fragment>
+                  )}
+                </CardContent>
+              </CardActionArea>
 
-                                            Job Title:
-                                            <Typography gutterBottom variant="h6" component="div">
-                                                Data Analyst
-                                            </Typography> */}
-                                        </div>
-                                    )}
-                                    </CardContent>
-                                </CardActionArea>
+              <CardActions>
+                <Button size="small" onClick={() => setEditingMode(true)} color="secondary">
+                  Edit
+                </Button>
+                <Button size="small" onClick={() => updateCar()} color="secondary">
+                  Update
+                </Button>
+              </CardActions>
 
-                                <CardActions>
-                                    <Button size="small" onClick={() => setEditingMode(true)} color="secondary">
-                                        Edit
-                                    </Button>
-                                    <Button size="small" onClick={() => updateCar()} color="secondary">
-                                      Update
-                                    </Button>
-                                </CardActions>
+            </Card>
 
-                            </Card>
-
-                            {/* <ProfileInfoCard
+            {/* <ProfileInfoCard
                                 title="Employment Information"
                                 info={{
                                 workAuthorization: "US Citizen",
@@ -218,12 +197,12 @@ function Vehicle() {
                                 action={{ route: "", tooltip: "Edit Profile" }}
                             /> */}
 
-                    </MDBox>
-                </Grid>
-            </Grid>
-        </MDBox>
+          </MDBox>
+        </Grid>
+      </Grid>
+    </MDBox>
 
-    )
+  )
 }
 
 export default Vehicle;

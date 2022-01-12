@@ -78,7 +78,7 @@ function Address() {
       console.log(err)
     }
   }
-  
+
   const classes = useStyles();
   const [editing, setEditing] = useState({
     address1: "",
@@ -98,7 +98,7 @@ function Address() {
     })
   };
 
-  
+
   const updateAddress = async (e) => {
     try {
       console.log(editing);
@@ -137,108 +137,101 @@ function Address() {
           <Card className={classes.root} variant="outlined" sx={{ borderRadius: '0px', maxWidth: 1000 }}>
             <CardActionArea>
               <CardContent>
-              {editingMode ? (
-                <div>
-                  <div>
+                {editingMode ? (
+                  <React.Fragment>
                     <TextField
                       label="Update Address Line 1"
                       id="address1"
                       name="address1"
-                      defaultValue="Address Line 1"
+                      defaultValue={values.address1}
                       size="small"
+                      sx={{ mt: 2, mb: 2 }}
                       onChange={handleEditChange}
                     />
-                  </div>
-                  <br />
-                  <div>
+                    <br />
                     <TextField
                       label="Update Address Line 2"
                       id="address2"
                       name="address2"
-                      defaultValue="Address Line 2"
+                      defaultValue={values.address2}
                       size="small"
+                      sx={{ mb: 2 }}
                       onChange={handleEditChange}
                     />
-                  </div>
-                  <br />
-                  <div>
+                    <br />
                     <TextField
                       label="Update City"
                       id="city"
                       name="city"
-                      defaultValue="City"
+                      defaultValue={values.city}
                       size="small"
+                      sx={{ mb: 2 }}
                       onChange={handleEditChange}
                     />
-                  </div>
-                  <br />
-                  <div>
+                    <br />
                     <TextField
                       label="Update State"
                       id="state"
                       name='state'
-                      defaultValue="State"
+                      defaultValue={values.state}
                       size="small"
+                      sx={{ mb: 2 }}
                       onChange={handleEditChange}
                     />
-                  </div>
-                  <br />
-                  <div>
+                    <br />
                     <TextField
                       label="Update Zip Code"
                       id="zip"
                       name='zip'
-                      defaultValue="Zip Code"
+                      defaultValue={values.zip}
                       size="small"
+                      sx={{ mb: 2 }}
                       onChange={handleEditChange}
                     />
-                  </div>
-                  <br />
-                  <div>
+                    <br />
                     <TextField
                       label="Update Country"
                       id="country"
                       name='country'
-                      defaultValue="Country"
+                      defaultValue={values.country}
                       size="small"
+                      sx={{ mb: 2 }}
                       onChange={handleEditChange}
                     />
-                  </div>
-                </div>                
-              ) : (
-                <div>
-                  
-                  Address Line 1:
-                  <Typography gutterBottom variant="h6" component="div">
-                    {values.address1}
-                  </Typography>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    Address Line 1:
+                    <Typography gutterBottom variant="h6" component="div">
+                      {values.address1}
+                    </Typography>
 
-                  Address Line 2:
-                  <Typography gutterBottom variant="h6" component="div">
-                    {values.address2}
-                  </Typography>
+                    Address Line 2:
+                    <Typography gutterBottom variant="h6" component="div">
+                      {values.address2}
+                    </Typography>
 
-                  City:
-                  <Typography gutterBottom variant="h6" component="div">
-                    {values.city}
-                  </Typography>
+                    City:
+                    <Typography gutterBottom variant="h6" component="div">
+                      {values.city}
+                    </Typography>
 
-                  State:
-                  <Typography gutterBottom variant="h6" component="div">
-                    {values.state}
-                  </Typography>
+                    State:
+                    <Typography gutterBottom variant="h6" component="div">
+                      {values.state}
+                    </Typography>
 
-                  Zip:
-                  <Typography gutterBottom variant="h6" component="div">
-                    {values.zip}
-                  </Typography>
+                    Zip:
+                    <Typography gutterBottom variant="h6" component="div">
+                      {values.zip}
+                    </Typography>
 
-                  Country:
-                  <Typography gutterBottom variant="h6" component="div">
-                    {values.country}
-                  </Typography>
-                </div>
-              )}  
+                    Country:
+                    <Typography gutterBottom variant="h6" component="div">
+                      {values.country}
+                    </Typography>
+                  </React.Fragment>
+                )}
               </CardContent>
             </CardActionArea>
 

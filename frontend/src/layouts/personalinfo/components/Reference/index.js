@@ -145,119 +145,120 @@ function Reference() {
             <CardActionArea>
               <CardContent>
                 {editingMode ? (
-                  <div>
-                    <div>
-                      <TextField
-                        label="First Name"
-                        id="ref_firstname"
-                        name="ref_firstname"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                  <React.Fragment>
+                    <TextField
+                      label="First Name"
+                      id="ref_firstname"
+                      name="ref_firstname"
+                      defaultValue={values.ref_firstname}
+                      size="small"
+                      sx={{ mt: 2, mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Middle Name"
-                        id="ref_middlename"
-                        name="ref_middlename"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="Middle Name"
+                      id="ref_middlename"
+                      name="ref_middlename"
+                      defaultValue={values.ref_middlename}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Last Name"
-                        id="ref_lastname"
-                        name="ref_lastname"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="Last Name"
+                      id="ref_lastname"
+                      name="ref_lastname"
+                      defaultValue={values.ref_lastname}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Address"
-                        id="ref_address1"
-                        name="ref_address1"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="Address"
+                      id="ref_address1"
+                      name="ref_address1"
+                      defaultValue={values.ref_address1}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="City"
-                        id="ref_city"
-                        name="ref_city"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="City"
+                      id="ref_city"
+                      name="ref_city"
+                      defaultValue={values.ref_city}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="State"
-                        id="ref_state"
-                        name="ref_state"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="State"
+                      id="ref_state"
+                      name="ref_state"
+                      defaultValue={values.ref_state}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Country"
-                        id="ref_country"
-                        name="ref_country"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="Country"
+                      id="ref_country"
+                      name="ref_country"
+                      defaultValue={values.ref_country}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Zip Code"
-                        id="ref_zip"
-                        name="ref_zip"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="Zip Code"
+                      id="ref_zip"
+                      name="ref_zip"
+                      defaultValue={values.ref_zip}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Phone"
-                        id="ref_phone"
-                        name="ref_phone"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="Phone"
+                      id="ref_phone"
+                      name="ref_phone"
+                      defaultValue={values.ref_phone}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Email"
-                        id="ref_email"
-                        name="ref_email"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
+                    <TextField
+                      label="Email"
+                      id="ref_email"
+                      name="ref_email"
+                      defaultValue={values.ref_email}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
                     <br />
-                    <div>
-                      <TextField
-                        label="Relationship"
-                        id="ref_relationship"
-                        name="ref_relationship"
-                        size="small"
-                        onChange={handleEditChange}
-                      />
-                    </div>
-                  </div>
+                    <TextField
+                      label="Relationship"
+                      id="ref_relationship"
+                      name="ref_relationship"
+                      defaultValue={values.ref_relationship}
+                      size="small"
+                      sx={{ mb: 2 }}
+                      onChange={handleEditChange}
+                    />
+                  </React.Fragment>
+
                 ) : (
-                  <div>
+                  <React.Fragment>
                     First Name:
                     <Typography id="ref_firstname" name="ref_firstname" gutterBottom variant="h6" component="div">
                       {values.ref_firstname}
@@ -312,7 +313,7 @@ function Reference() {
                     <Typography id="ref_relationship" name="ref_relationship" gutterBottom variant="h6" component="div">
                       {values.ref_relationship}
                     </Typography>
-                  </div>
+                  </React.Fragment>
                 )}
 
               </CardContent>

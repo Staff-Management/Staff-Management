@@ -221,7 +221,7 @@ module.exports.getEmContact = async (req, resp) => {
   const { email } = req.body;
   try {
     const data = await User.findOne({ email }).populate('emergency_contact_info');
-    resp.status(200).json({ user: data });
+    resp.status(200).json({ contacts: data.emergency_contact_info });
   } catch (err) {
     const errors = handleErrors(err);
     resp.status(400).json({ errors })
@@ -352,17 +352,16 @@ module.exports.updateCar = async (req, resp) => {
 //   }
 // }
 
-// module.exports.updateEmContact = async (req, resp) => {
-//   const { email, em_firstname, em_middlename, em_lastname, em_phone, em_email, em_relationship } = req.body;
-//   try {
-//       const addContact = await EmContact.create({ em_firstname, em_middlename, em_lastname, em_phone, em_email, em_relationship });
-//       const data = await User.findOneAndUpdate({email}, { $push: {EmergencyContact: addContact._id} } )
-//       resp.status(200).json({ data })
-//   }catch(e) {
-//       console.log(e);
-//       resp.status(400).send('Error in the outer try')
-//   }
-// }
+module.exports.updateEmContact = async (req, resp) => {
+  const { id, em_firstname, em_middlename, em_lastname, em_phone, em_email, em_relationship } = req.body;
+  try {
+    const data = await EmergencyContact.findByIdAndUpdate(id, { em_firstname, em_middlename, em_lastname, em_phone, em_email, em_relationship });
+    resp.status(200).json({ data })
+  } catch (e) {
+    console.log(e);
+    resp.status(400).send('Error in the outer try')
+  }
+}
 
 module.exports.sendNotification = async (req, resp) => {
   const { from_email, to_email, message } = req.body;

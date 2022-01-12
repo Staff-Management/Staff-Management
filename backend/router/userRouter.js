@@ -20,6 +20,7 @@ router.post('/getWork', userController.getWork);
 router.post('/updateWork', userController.updateWorkAuth);
 
 router.post('/getEmergencyContact', userController.getEmContact);
+router.post('/updateEmContact', userController.updateEmContact);
 
 router.post('/getRef', userController.getRef);
 router.post('/updateRef', userController.updateRef);
