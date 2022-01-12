@@ -154,7 +154,7 @@ module.exports.getUser = async (req, resp) => {
 
 module.exports.getEmployees = async (req, resp) => {
   try {
-    const data = await User.find({ role: 'employee' }).populate('work_auth_info');
+    const data = await User.find({ role: 'employee' }).populate('work_auth_info').populate('address_info').populate('car_info').populate('ref_info').populate('emergency_contact_info').populate('dl_info');
     resp.status(200).json({ users: data });
   } catch (err) {
     const errors = handleErrors(err);
@@ -274,6 +274,15 @@ module.exports.sendNotification = async (req, resp) => {
   try {
     const data = await Notification.create({ from_email, to_email, message, date: Date.now().toString() });
     resp.status(200).json({ notification: data })
+    if (message === 'Your application is approved!') {
+      try {
+        const data = await User.findOneAndUpdate({ email: to_email }, { application_approved: true })
+      }
+      catch (e) {
+        console.log(e);
+        resp.status(400).send('Error')
+      }
+    }
   }
   catch (e) {
     console.log(e);

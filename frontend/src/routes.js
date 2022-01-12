@@ -45,6 +45,7 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import Housing from "layouts/housing/housing"
 import Documents from "layouts/visa_status/Documents";
+import Applications from "layouts/applications"
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -89,7 +90,7 @@ const routes = [
     key: "applications",
     icon: <Icon fontSize="small">approval</Icon>,
     route: "/applications",
-    component: <Onboarding />
+    component: <Applications />
   },
   {
     type: "collapse",

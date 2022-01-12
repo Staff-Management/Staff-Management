@@ -62,7 +62,7 @@ export default function Onboarding() {
               {activeStep === steps.length ? (
                 <React.Fragment>
                   <Typography variant="h5" gutterBottom>
-                    Profile Completed!
+                    Application Submitted! Please wait for HR to review and approve your application.
                   </Typography>
                   <Typography variant="subtitle1">
                   </Typography>

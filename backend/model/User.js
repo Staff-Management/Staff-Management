@@ -134,6 +134,9 @@ const userSchema = new Schema({
   i983_approved: {
     type: Boolean
   },
+  application_approved: {
+    type: Boolean
+  },
   ref_info: {
     type: mongoose.Schema.ObjectId,
     ref: Reference,
